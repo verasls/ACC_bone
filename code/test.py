@@ -20,7 +20,7 @@ ax11 = fig1.add_subplot(1, 1, 1)
 ax11.plot(time, resultant)
 plt.xlabel("Time (cs)")
 plt.ylabel("Resultant acceleration (g)")
-plt.title("Hello")
+plt.title("Click on the plot to select the limits of the region of interest")
 # Use the cursor to select a region of the plot
 # 2 mouse clicks required
 cursor = Cursor(ax11, horizOn=False, useblit=True, color='k', linewidth=1)
