@@ -15,21 +15,33 @@ resultant = np.sqrt((data.iloc[:, 1] ** 2) +
                     (data.iloc[:, 2] ** 2) +
                     (data.iloc[:, 3] ** 2))
 
-fig = plt.figure(figsize=(15, 7))
-ax = fig.add_subplot(1, 1, 1)
-ax.plot(time, resultant)
+fig1 = plt.figure(figsize=(15, 7))
+ax11 = fig1.add_subplot(1, 1, 1)
+ax11.plot(time, resultant)
 plt.xlabel("Time (cs)")
 plt.ylabel("Resultant acceleration (g)")
 plt.title("Hello")
 # Use the cursor to select a region of the plot
 # 2 mouse clicks required
-cursor = Cursor(ax, horizOn=False, useblit=True, color='k', linewidth=1)
+cursor = Cursor(ax11, horizOn=False, useblit=True, color='k', linewidth=1)
 coords_1 = plt.ginput(n=1, timeout=0, show_clicks=False)
 x1, y1 = coords_1[0]
-ax.axvline(x=x1, color="r")
+ax11.axvline(x=x1, color="r")
 
 coords_2 = plt.ginput(n=1, timeout=0, show_clicks=False)
 x2, y2 = coords_2[0]
-ax.axvline(x=x2, color="r")
+ax11.axvline(x=x2, color="r")
 
+plt.show()
+
+# Plot the subregion selected above
+sub_time = range(int(x1), int(x2) + 1)
+sub_resultant = resultant[int(x1):int(x2) + 1]
+
+fig2 = plt.figure(figsize=(15, 7))
+ax21 = fig2.add_subplot(1, 1, 1)
+ax21.plot(sub_time, sub_resultant)
+plt.xlabel("Time (cs)")
+plt.ylabel("Resultant acceleration (g)")
+plt.title("Subplot")
 plt.show()
