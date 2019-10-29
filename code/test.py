@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Cursor
+from statistics import mean
+from scipy.signal import find_peaks
 
 data = pd.read_csv("../data/ID_119_hip_RAW.csv", delimiter=",", skiprows=10)
 
@@ -35,6 +37,7 @@ ax11.axvline(x=x2, color="r")
 # Plot the subregion selected above
 sub_time = range(int(x1), int(x2) + 1)
 sub_resultant = resultant[int(x1):int(x2) + 1]
+sub_resultant = sub_resultant.to_numpy()
 
 fig2 = plt.figure(figsize=(15, 7))
 ax21 = fig2.add_subplot(1, 1, 1)
@@ -44,5 +47,18 @@ plt.ylabel("Resultant acceleration (g)")
 plt.title("Subplot")
 
 cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
+
+plt.show()
+
+# Find peaks in the acceleration signal
+# Consider only the subplot region
+height = mean(sub_resultant)
+distance = 40  # 40 samples = 0.4 seconds
+peaks, _ = find_peaks(sub_resultant, height=height, distance=distance)
+
+fig3 = plt.figure(figsize=(15, 7))
+ax31 = fig3.add_subplot(1, 1, 1)
+ax31.plot(sub_time, sub_resultant)
+ax31.plot(peaks, sub_resultant[peaks], "x")
 
 plt.show()
