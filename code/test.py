@@ -32,8 +32,6 @@ coords_2 = plt.ginput(n=1, timeout=0, show_clicks=False)
 x2, y2 = coords_2[0]
 ax11.axvline(x=x2, color="r")
 
-plt.show()
-
 # Plot the subregion selected above
 sub_time = range(int(x1), int(x2) + 1)
 sub_resultant = resultant[int(x1):int(x2) + 1]
@@ -44,4 +42,7 @@ ax21.plot(sub_time, sub_resultant)
 plt.xlabel("Time (cs)")
 plt.ylabel("Resultant acceleration (g)")
 plt.title("Subplot")
+
+cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
+
 plt.show()
