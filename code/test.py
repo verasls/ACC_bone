@@ -13,9 +13,11 @@ data = pd.read_csv("../data/ID_119_hip_RAW.csv", delimiter=",", skiprows=10)
 
 # Plot acceleration x time
 time = range(0, len(data))
+time = np.asarray(time)
 resultant = np.sqrt((data.iloc[:, 1] ** 2) +
                     (data.iloc[:, 2] ** 2) +
                     (data.iloc[:, 3] ** 2))
+resultant = resultant.to_numpy()
 
 fig1 = plt.figure(figsize=(15, 7))
 ax11 = fig1.add_subplot(1, 1, 1)
@@ -38,7 +40,6 @@ ax11.axvline(x=x2, color="r")
 sub_time = range(int(x1), int(x2) + 1)
 sub_time = np.asarray(sub_time)
 sub_resultant = resultant[int(x1):int(x2) + 1]
-sub_resultant = sub_resultant.to_numpy()
 
 fig2 = plt.figure(figsize=(15, 7))
 ax21 = fig2.add_subplot(1, 1, 1)
@@ -60,5 +61,11 @@ fig3 = plt.figure(figsize=(15, 7))
 ax31 = fig3.add_subplot(1, 1, 1)
 ax31.plot(sub_time, sub_resultant)
 ax31.plot(idx_peaks, sub_resultant[peaks], "x")
+
+plt.xlabel("Time (cs)")
+plt.ylabel("Resultant acceleration (g)")
+plt.title("Subplot")
+
+cursor = Cursor(ax31, useblit=True, color='k', linewidth=1)
 
 plt.show()
