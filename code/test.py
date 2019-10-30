@@ -36,6 +36,7 @@ ax11.axvline(x=x2, color="r")
 
 # Plot the subregion selected above
 sub_time = range(int(x1), int(x2) + 1)
+sub_time = np.asarray(sub_time)
 sub_resultant = resultant[int(x1):int(x2) + 1]
 sub_resultant = sub_resultant.to_numpy()
 
@@ -48,17 +49,16 @@ plt.title("Subplot")
 
 cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
 
-plt.show()
-
 # Find peaks in the acceleration signal
 # Consider only the subplot region
 height = mean(sub_resultant)
 distance = 40  # 40 samples = 0.4 seconds
 peaks, _ = find_peaks(sub_resultant, height=height, distance=distance)
+idx_peaks = peaks + sub_time[0]
 
 fig3 = plt.figure(figsize=(15, 7))
 ax31 = fig3.add_subplot(1, 1, 1)
 ax31.plot(sub_time, sub_resultant)
-ax31.plot(peaks, sub_resultant[peaks], "x")
+ax31.plot(idx_peaks, sub_resultant[peaks], "x")
 
 plt.show()
