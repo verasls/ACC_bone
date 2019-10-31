@@ -24,10 +24,14 @@ ax11 = fig1.add_subplot(1, 1, 1)
 ax11.plot(time, resultant)
 plt.xlabel("Time (cs)")
 plt.ylabel("Resultant acceleration (g)")
-plt.title("Click on the plot to select the limits of the region of interest")
+plt.title("Click on the plot to select the limits of the region of interest\n"
+          "Zoom or pan to view, press any key when ready to click")
 # Use the cursor to select a region of the plot
 # 2 mouse clicks required
 cursor = Cursor(ax11, horizOn=False, useblit=True, color='k', linewidth=1)
+zoom_ok = False
+while not zoom_ok:
+    zoom_ok = plt.waitforbuttonpress()
 coords_1 = plt.ginput(n=1, timeout=0, show_clicks=False)
 x1, y1 = coords_1[0]
 ax11.axvline(x=x1, color="r")
