@@ -7,10 +7,6 @@ from scipy.signal import find_peaks
 
 data = pd.read_csv("../data/ID_119_hip_RAW.csv", delimiter=",", skiprows=10)
 
-# print("Initiating conversion from string to datetime")
-# data["Timestamp"] = pd.to_datetime(data["Timestamp"])
-# print("Conversion done!")
-
 # Plot acceleration x time
 time = range(0, len(data))
 time = np.asarray(time)
