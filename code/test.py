@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Cursor
 from statistics import mean
-from scipy.signal import find_peaks
+from scipy import signal
 
 
 def plot_acceleration(data, axes):
@@ -156,7 +156,8 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
 
     height = mean(acceleration)
     distance = 0.4 * 100  # seconds x sampling frequency
-    peaks, _ = find_peaks(acceleration, height=height, distance=distance)
+    peaks, _ = signal.find_peaks(acceleration, height=height,
+                                 distance=distance)
     idx_peaks = peaks + time[0]
 
     fig3 = plt.figure(figsize=(15, 7))
