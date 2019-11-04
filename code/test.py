@@ -132,9 +132,62 @@ def select_acceleration_ROI(data, axes):
     return(ROI_time, ROI_acceleration)
 
 
+def filter_acceleration(data, axes, onlyROI=True):
+    # Apply a lowpass filter to accelaration signal
+    if onlyROI is True:
+        # Consider only the selected region of interest
+        time, acceleration = select_acceleration_ROI(data, axes)
+    else:
+        # Set data
+        time = range(0, len(data))
+        time = np.asarray(time)
+
+        if axes == 1:
+            acceleration = data.iloc[:, 1]
+            acceleration = acceleration.to_numpy()
+        elif axes == "resultant":
+            acceleration = np.sqrt((data.iloc[:, 1] ** 2) +
+                                   (data.iloc[:, 2] ** 2) +
+                                   (data.iloc[:, 3] ** 2))
+            acceleration = acceleration.to_numpy()
+        else:
+            raise ValueError("Axes argument not allowed")
+
+    # Create the lowpass filter for the acceleration signal
+    N = 4  # Fourth order
+    cutoff = 20  # cut-off frequency (Hz)
+    fnyq = 100 / 2  # Nyquist frequency (half of the sampling frequency)
+    Wn = cutoff / fnyq  # Digital filter parameter
+
+    z, p, k = signal.butter(N, Wn, btype="low", output="zpk")
+    sos = signal.zpk2sos(z, p, k)  # zero-pole-gain design
+
+    # Filter the acceleration signal
+    acceleration_filt = signal.sosfiltfilt(sos, acceleration)
+
+    # Plot filtered and unfiltered data
+    fig3 = plt.figure(figsize=(15, 7))
+    ax31 = fig3.add_subplot(1, 1, 1)
+    ax31.plot(time, acceleration, label="Raw acceleration")
+    ax31.plot(time, acceleration_filt, label="Filtered acceleration")
+
+    if onlyROI is True:
+        plot_title = "Selected region of interest"
+    else:
+        plot_title = "Acceleration x Time"
+
+    plt.legend(loc="upper right")
+    plt.xlabel("Time (cs)")
+    plt.ylabel("Acceleration (g)")
+    plt.title(plot_title)
+
+    cursor = Cursor(ax31, useblit=True, color='k', linewidth=1)
+
+    plt.show(block=False)
+
+
 def find_acceleration_peaks(data, axes, onlyROI=True):
     # Find peaks in the acceleration signal
-
     if onlyROI is True:
         # Consider only the selected region of interest
         time, acceleration = select_acceleration_ROI(data, axes)
