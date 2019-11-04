@@ -58,16 +58,15 @@ def select_acceleration_ROI(data, axes):
     time = range(0, len(data))
     time = np.asarray(time)
 
-    if axes == "X":
+    if axes == 1:
         acceleration = data.iloc[:, 1]
-    elif axes == "Y":
-        acceleration = data.iloc[:, 2]
-    elif axes == "Z":
-        acceleration = data.iloc[:, 3]
     elif axes == "resultant":
         acceleration = np.sqrt((data.iloc[:, 1] ** 2) +
                                (data.iloc[:, 2] ** 2) +
                                (data.iloc[:, 3] ** 2))
+    else:
+        raise ValueError("Axes argument not allowed")
+
     acceleration = acceleration.to_numpy()
 
     # Plot acceleration x time
@@ -144,17 +143,16 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
         time = range(0, len(data))
         time = np.asarray(time)
 
-        if axes == "X":
+        if axes == 1:
             acceleration = data.iloc[:, 1]
-        elif axes == "Y":
-            acceleration = data.iloc[:, 2]
-        elif axes == "Z":
-            acceleration = data.iloc[:, 3]
         elif axes == "resultant":
             acceleration = np.sqrt((data.iloc[:, 1] ** 2) +
                                    (data.iloc[:, 2] ** 2) +
                                    (data.iloc[:, 3] ** 2))
-        acceleration = acceleration.to_numpy()
+        else:
+            raise ValueError("Axes argument not allowed")
+
+    acceleration = acceleration.to_numpy()
 
     height = mean(acceleration)
     distance = 0.4 * 100  # seconds x sampling frequency
