@@ -10,29 +10,41 @@ def plot_acceleration(data, axes):
     time = range(0, len(data))
     time = np.asarray(time)
 
-    if axes == "X":
-        acceleration = data.iloc[:, 1]
-    elif axes == "Y":
-        acceleration = data.iloc[:, 2]
-    elif axes == "Z":
-        acceleration = data.iloc[:, 3]
+    if axes == 1:
+        aX = data.iloc[:, 1]
+        aX = aX.to_numpy()
+    elif axes == 2:
+        aX = data.iloc[:, 1]
+        aY = data.iloc[:, 2]
+        aX = aX.to_numpy()
+        aY = aY.to_numpy()
+    elif axes == 3:
+        aX = data.iloc[:, 1]
+        aY = data.iloc[:, 2]
+        aZ = data.iloc[:, 3]
+        aX = aX.to_numpy()
+        aY = aY.to_numpy()
+        aZ = aZ.to_numpy()
     elif axes == "resultant":
-        acceleration = np.sqrt((data.iloc[:, 1] ** 2) +
-                               (data.iloc[:, 2] ** 2) +
-                               (data.iloc[:, 3] ** 2))
-    acceleration = acceleration.to_numpy()
+        resultant = np.sqrt((data.iloc[:, 1] ** 2) +
+                            (data.iloc[:, 2] ** 2) +
+                            (data.iloc[:, 3] ** 2))
+        resultant = resultant.to_numpy()
 
     # Plot acceleration x time
     fig = plt.figure(figsize=(15, 7))
     ax1 = fig.add_subplot(1, 1, 1)
-    if axes == "X":
-        ax1.plot(time, acceleration, "b-", label="X axis")
-    elif axes == "Y":
-        ax1.plot(time, acceleration, "b-", label="Y axis")
-    elif axes == "Z":
-        ax1.plot(time, acceleration, "b-", label="Z axis")
+    if axes == 1:
+        ax1.plot(time, aX, "b-", label="X axis")
+    elif axes == 2:
+        ax1.plot(time, aX, "b-", label="X axis")
+        ax1.plot(time, aY, "r-", label="Y axis")
+    elif axes == 3:
+        ax1.plot(time, aX, "b-", label="X axis")
+        ax1.plot(time, aY, "r-", label="Y axis")
+        ax1.plot(time, aZ, "g-", label="Z axis")
     elif axes == "resultant":
-        ax1.plot(time, acceleration, "b-", label="Resultant acceleration")
+        ax1.plot(time, resultant, "b-", label="Resultant acceleration")
 
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
