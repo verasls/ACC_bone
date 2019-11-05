@@ -182,6 +182,8 @@ def filter_acceleration(data, axes, onlyROI=True):
 
     plt.show(block=False)
 
+    return(time, acceleration_filt)
+
 
 def find_acceleration_peaks(data, axes, onlyROI=True):
     # Find peaks in the acceleration signal
