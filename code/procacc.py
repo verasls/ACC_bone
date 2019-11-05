@@ -77,7 +77,7 @@ def select_acceleration_ROI(data, axes):
     elif axes == "resultant":
         ax11.plot(time, acceleration, label="Resultant acceleration")
     else:
-    	raise ValueError("Axes argument not allowed")
+        raise ValueError("Axes argument not allowed")
 
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
@@ -217,7 +217,7 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
     elif axes == "resultant":
         ax1.plot(time, acceleration, label="Resultant acceleration")
     else:
-    	raise ValueError("Axes argument not allowed")
+        raise ValueError("Axes argument not allowed")
 
     ax1.plot(idx_peaks, acceleration[peaks], "x", color="orange",
               label="Acceleration peaks")
@@ -235,3 +235,13 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
     cursor = Cursor(ax1, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
+
+
+def process_acceleration(data, axes, selectROI=True, filteracc=True):
+    if filteracc is True:
+        if selectROI is True:
+            filter_acceleration(data, axes, onlyROI=True)
+        elif selectROI is False:
+            filter_acceleration(data, axes, onlyROI=False)
+        else:
+            raise ValueError("selectROI parameter can only be True or False")
