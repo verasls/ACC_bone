@@ -117,12 +117,12 @@ def select_acceleration_ROI(data, axes):
     elif axes == "resultant":
         ax21.plot(ROI_time, ROI_acceleration, label="Resultant acceleration")
 
+    cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
+    
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
     plt.ylabel("Acceleration (g)")
     plt.title("Selected region of interest")
-
-    cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
 
@@ -185,26 +185,37 @@ def filter_acceleration(data, axes, onlyROI=True):
     return(time, acceleration_filt)
 
 
-def find_acceleration_peaks(data, axes, onlyROI=True):
+def find_acceleration_peaks(data, axes, onlyROI=True, filteracc=True):
     # Find peaks in the acceleration signal
     if onlyROI is True:
-        # Consider only the selected region of interest
-        time, acceleration = select_acceleration_ROI(data, axes)
-    else:
-        # Set data
-        time = range(0, len(data))
-        time = np.asarray(time)
-
-        if axes == 1:
-            acceleration = data.iloc[:, 1]
-            acceleration = acceleration.to_numpy()
-        elif axes == "resultant":
-            acceleration = np.sqrt((data.iloc[:, 1] ** 2) +
-                                   (data.iloc[:, 2] ** 2) +
-                                   (data.iloc[:, 3] ** 2))
-            acceleration = acceleration.to_numpy()
+        if filteracc is True:
+            time, acceleration = filter_acceleration(data, axes, onlyROI=True)
+        elif filteracc is False:
+            time, acceleration = select_acceleration_ROI(data, axes)
         else:
-            raise ValueError("Axes argument not allowed")
+            raise ValueError("filteracc parameter can only be True or False")
+    elif onlyROI is False:
+        if filteracc is True:
+            time, acceleration = filter_acceleration(data, axes, onlyROI=False)
+        elif filteracc is False:
+            # Set data
+            time = range(0, len(data))
+            time = np.asarray(time)
+
+            if axes == 1:
+                acceleration = data.iloc[:, 1]
+                acceleration = acceleration.to_numpy()
+            elif axes == "resultant":
+                acceleration = np.sqrt((data.iloc[:, 1] ** 2) +
+                                       (data.iloc[:, 2] ** 2) +
+                                       (data.iloc[:, 3] ** 2))
+                acceleration = acceleration.to_numpy()
+            else:
+                raise ValueError("Axes argument not allowed")
+        else:
+            raise ValueError("filteracc parameter can only be True or False")
+    else:
+        raise ValueError("onlyROI parameter can only be True or False")
 
     height = mean(acceleration)
     distance = 0.4 * 100  # seconds x sampling frequency
@@ -215,9 +226,15 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
     fig = plt.figure(figsize=(15, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     if axes == 1:
-        ax1.plot(time, acceleration, label="X axis")
+        if filteracc is True:
+            ax1.plot(time, acceleration, label="Filtered X axis")
+        elif filteracc is False:
+            ax1.plot(time, acceleration, label="X axis")
     elif axes == "resultant":
-        ax1.plot(time, acceleration, label="Resultant acceleration")
+        if filteracc is True:
+            ax1.plot(time, acceleration, label="Filtered resultant acceleration")
+        elif filteracc is False:
+            ax1.plot(time, acceleration, label="Resultant acceleration")
     else:
         raise ValueError("Axes argument not allowed")
 
@@ -239,11 +256,11 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
     plt.show(block=False)
 
 
-def process_acceleration(data, axes, selectROI=True, filteracc=True):
+def process_acceleration(data, axes, selectROI=True, filteracc=True, findpeaks=True):
     if filteracc is True:
         if selectROI is True:
-            filter_acceleration(data, axes, onlyROI=True)
+            time, acceleration = filter_acceleration(data, axes, onlyROI=True)
         elif selectROI is False:
-            filter_acceleration(data, axes, onlyROI=False)
+            time, acceleration = filter_acceleration(data, axes, onlyROI=False)
         else:
             raise ValueError("selectROI parameter can only be True or False")
