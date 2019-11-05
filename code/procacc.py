@@ -117,12 +117,12 @@ def select_acceleration_ROI(data, axes):
     elif axes == "resultant":
         ax21.plot(ROI_time, ROI_acceleration, label="Resultant acceleration")
 
-    cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
-    
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
     plt.ylabel("Acceleration (g)")
     plt.title("Selected region of interest")
+
+    cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
 
@@ -254,13 +254,3 @@ def find_acceleration_peaks(data, axes, onlyROI=True, filteracc=True):
     cursor = Cursor(ax1, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
-
-
-def process_acceleration(data, axes, selectROI=True, filteracc=True, findpeaks=True):
-    if filteracc is True:
-        if selectROI is True:
-            time, acceleration = filter_acceleration(data, axes, onlyROI=True)
-        elif selectROI is False:
-            time, acceleration = filter_acceleration(data, axes, onlyROI=False)
-        else:
-            raise ValueError("selectROI parameter can only be True or False")
