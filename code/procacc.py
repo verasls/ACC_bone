@@ -72,14 +72,12 @@ def select_acceleration_ROI(data, axes):
     # Plot acceleration x time
     fig1 = plt.figure(figsize=(15, 7))
     ax11 = fig1.add_subplot(1, 1, 1)
-    if axes == "X":
+    if axes == 1:
         ax11.plot(time, acceleration, label="X axis")
-    elif axes == "Y":
-        ax11.plot(time, acceleration, label="Y axis")
-    elif axes == "Z":
-        ax11.plot(time, acceleration, label="Z axis")
     elif axes == "resultant":
         ax11.plot(time, acceleration, label="Resultant acceleration")
+    else:
+    	raise ValueError("Axes argument not allowed")
 
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
