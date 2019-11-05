@@ -212,14 +212,12 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
 
     fig = plt.figure(figsize=(15, 7))
     ax1 = fig.add_subplot(1, 1, 1)
-    if axes == "X":
+    if axes == 1:
         ax1.plot(time, acceleration, label="X axis")
-    elif axes == "Y":
-        ax1.plot(time, acceleration, label="Y axis")
-    elif axes == "Z":
-        ax1.plot(time, acceleration, label="Z axis")
     elif axes == "resultant":
         ax1.plot(time, acceleration, label="Resultant acceleration")
+    else:
+    	raise ValueError("Axes argument not allowed")
 
     ax1.plot(idx_peaks, acceleration[peaks], "x", color="orange",
               label="Acceleration peaks")
