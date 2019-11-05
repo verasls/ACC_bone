@@ -65,7 +65,7 @@ def select_acceleration_ROI(data, axes):
                                (data.iloc[:, 2] ** 2) +
                                (data.iloc[:, 3] ** 2))
     else:
-        raise ValueError("Axes argument not allowed")
+        raise ValueError("axes parameter can only be 1 or resultant")
 
     acceleration = acceleration.to_numpy()
 
@@ -77,7 +77,7 @@ def select_acceleration_ROI(data, axes):
     elif axes == "resultant":
         ax11.plot(time, acceleration, label="Resultant acceleration")
     else:
-        raise ValueError("Axes argument not allowed")
+        raise ValueError("axes parameter can only be 1 or resultant")
 
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
@@ -148,7 +148,7 @@ def filter_acceleration(data, axes, onlyROI=True):
                                    (data.iloc[:, 3] ** 2))
             acceleration = acceleration.to_numpy()
         else:
-            raise ValueError("Axes argument not allowed")
+            raise ValueError("axes parameter can only be 1 or resultant")
 
     # Create the lowpass filter for the acceleration signal
     N = 4  # Fourth order
@@ -211,7 +211,7 @@ def find_acceleration_peaks(data, axes, onlyROI=True, filteracc=True):
                                        (data.iloc[:, 3] ** 2))
                 acceleration = acceleration.to_numpy()
             else:
-                raise ValueError("Axes argument not allowed")
+                raise ValueError("axes parameter can only be 1 or resultant")
         else:
             raise ValueError("filteracc parameter can only be True or False")
     else:
@@ -236,7 +236,7 @@ def find_acceleration_peaks(data, axes, onlyROI=True, filteracc=True):
         elif filteracc is False:
             ax1.plot(time, acceleration, label="Resultant acceleration")
     else:
-        raise ValueError("Axes argument not allowed")
+        raise ValueError("axes parameter can only be 1 or resultant")
 
     ax1.plot(idx_peaks, acceleration[peaks], "x", color="orange",
               label="Acceleration peaks")
