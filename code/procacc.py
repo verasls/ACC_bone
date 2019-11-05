@@ -122,8 +122,6 @@ def select_acceleration_ROI(data, axes):
     plt.ylabel("Acceleration (g)")
     plt.title("Selected region of interest")
 
-    cursor = Cursor(ax21, useblit=True, color='k', linewidth=1)
-
     plt.show(block=False)
 
     return(ROI_time, ROI_acceleration)
@@ -177,8 +175,6 @@ def filter_acceleration(data, axes, onlyROI=True):
     plt.xlabel("Time (cs)")
     plt.ylabel("Acceleration (g)")
     plt.title(plot_title)
-
-    cursor = Cursor(ax1, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
 
@@ -250,7 +246,5 @@ def find_acceleration_peaks(data, axes, onlyROI=True, filteracc=True):
     plt.xlabel("Time (cs)")
     plt.ylabel("Acceleration (g)")
     plt.title(plot_title)
-
-    cursor = Cursor(ax1, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
