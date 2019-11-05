@@ -163,10 +163,10 @@ def filter_acceleration(data, axes, onlyROI=True):
     acceleration_filt = signal.sosfiltfilt(sos, acceleration)
 
     # Plot filtered and unfiltered data
-    fig3 = plt.figure(figsize=(15, 7))
-    ax31 = fig3.add_subplot(1, 1, 1)
-    ax31.plot(time, acceleration, label="Raw acceleration")
-    ax31.plot(time, acceleration_filt, label="Filtered acceleration")
+    fig = plt.figure(figsize=(15, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    ax1.plot(time, acceleration, label="Raw acceleration")
+    ax1.plot(time, acceleration_filt, label="Filtered acceleration")
 
     if onlyROI is True:
         plot_title = "Selected region of interest"
@@ -178,7 +178,7 @@ def filter_acceleration(data, axes, onlyROI=True):
     plt.ylabel("Acceleration (g)")
     plt.title(plot_title)
 
-    cursor = Cursor(ax31, useblit=True, color='k', linewidth=1)
+    cursor = Cursor(ax1, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
 
@@ -210,18 +210,18 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
                                  distance=distance)
     idx_peaks = peaks + time[0]
 
-    fig3 = plt.figure(figsize=(15, 7))
-    ax31 = fig3.add_subplot(1, 1, 1)
+    fig = plt.figure(figsize=(15, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
     if axes == "X":
-        ax31.plot(time, acceleration, label="X axis")
+        ax1.plot(time, acceleration, label="X axis")
     elif axes == "Y":
-        ax31.plot(time, acceleration, label="Y axis")
+        ax1.plot(time, acceleration, label="Y axis")
     elif axes == "Z":
-        ax31.plot(time, acceleration, label="Z axis")
+        ax1.plot(time, acceleration, label="Z axis")
     elif axes == "resultant":
-        ax31.plot(time, acceleration, label="Resultant acceleration")
+        ax1.plot(time, acceleration, label="Resultant acceleration")
 
-    ax31.plot(idx_peaks, acceleration[peaks], "x", color="orange",
+    ax1.plot(idx_peaks, acceleration[peaks], "x", color="orange",
               label="Acceleration peaks")
 
     if onlyROI is True:
@@ -234,6 +234,6 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
     plt.ylabel("Acceleration (g)")
     plt.title(plot_title)
 
-    cursor = Cursor(ax31, useblit=True, color='k', linewidth=1)
+    cursor = Cursor(ax1, useblit=True, color='k', linewidth=1)
 
     plt.show(block=False)
