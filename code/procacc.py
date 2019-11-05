@@ -197,14 +197,14 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
 
         if axes == 1:
             acceleration = data.iloc[:, 1]
+            acceleration = acceleration.to_numpy()
         elif axes == "resultant":
             acceleration = np.sqrt((data.iloc[:, 1] ** 2) +
                                    (data.iloc[:, 2] ** 2) +
                                    (data.iloc[:, 3] ** 2))
+            acceleration = acceleration.to_numpy()
         else:
             raise ValueError("Axes argument not allowed")
-
-    acceleration = acceleration.to_numpy()
 
     height = mean(acceleration)
     distance = 0.4 * 100  # seconds x sampling frequency
