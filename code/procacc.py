@@ -35,16 +35,16 @@ def plot_acceleration(data, axes):
     fig = plt.figure(figsize=(15, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     if axes == 1:
-        ax1.plot(time, aX, "b-", label="X axis")
+        ax1.plot(time, aX, label="X axis")
     elif axes == 2:
-        ax1.plot(time, aX, "b-", label="X axis")
-        ax1.plot(time, aY, "r-", label="Y axis")
+        ax1.plot(time, aX, label="X axis")
+        ax1.plot(time, aY, label="Y axis")
     elif axes == 3:
-        ax1.plot(time, aX, "b-", label="X axis")
-        ax1.plot(time, aY, "r-", label="Y axis")
-        ax1.plot(time, aZ, "g-", label="Z axis")
+        ax1.plot(time, aX, label="X axis")
+        ax1.plot(time, aY, label="Y axis")
+        ax1.plot(time, aZ, label="Z axis")
     elif axes == "resultant":
-        ax1.plot(time, resultant, "b-", label="Resultant acceleration")
+        ax1.plot(time, resultant, label="Resultant acceleration")
 
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
@@ -73,13 +73,13 @@ def select_acceleration_ROI(data, axes):
     fig1 = plt.figure(figsize=(15, 7))
     ax11 = fig1.add_subplot(1, 1, 1)
     if axes == "X":
-        ax11.plot(time, acceleration, "b-", label="X axis")
+        ax11.plot(time, acceleration, label="X axis")
     elif axes == "Y":
-        ax11.plot(time, acceleration, "b-", label="Y axis")
+        ax11.plot(time, acceleration, label="Y axis")
     elif axes == "Z":
-        ax11.plot(time, acceleration, "b-", label="Z axis")
+        ax11.plot(time, acceleration, label="Z axis")
     elif axes == "resultant":
-        ax11.plot(time, acceleration, "b-", label="Resultant acceleration")
+        ax11.plot(time, acceleration, label="Resultant acceleration")
 
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
@@ -111,14 +111,13 @@ def select_acceleration_ROI(data, axes):
     fig2 = plt.figure(figsize=(15, 7))
     ax21 = fig2.add_subplot(1, 1, 1)
     if axes == "X":
-        ax21.plot(ROI_time, ROI_acceleration, "b-", label="X axis")
+        ax21.plot(ROI_time, ROI_acceleration, label="X axis")
     elif axes == "Y":
-        ax21.plot(ROI_time, ROI_acceleration, "b-", label="Y axis")
+        ax21.plot(ROI_time, ROI_acceleration, label="Y axis")
     elif axes == "Z":
-        ax21.plot(ROI_time, ROI_acceleration, "b-", label="Z axis")
+        ax21.plot(ROI_time, ROI_acceleration, label="Z axis")
     elif axes == "resultant":
-        ax21.plot(ROI_time, ROI_acceleration, "b-",
-                  label="Resultant acceleration")
+        ax21.plot(ROI_time, ROI_acceleration, label="Resultant acceleration")
 
     plt.legend(loc="upper right")
     plt.xlabel("Time (cs)")
@@ -216,14 +215,13 @@ def find_acceleration_peaks(data, axes, onlyROI=True):
     fig3 = plt.figure(figsize=(15, 7))
     ax31 = fig3.add_subplot(1, 1, 1)
     if axes == "X":
-        ax31.plot(time, acceleration, "b-", label="X axis")
+        ax31.plot(time, acceleration, label="X axis")
     elif axes == "Y":
-        ax31.plot(time, acceleration, "b-", label="Y axis")
+        ax31.plot(time, acceleration, label="Y axis")
     elif axes == "Z":
-        ax31.plot(time, acceleration, "b-", label="Z axis")
+        ax31.plot(time, acceleration, label="Z axis")
     elif axes == "resultant":
-        ax31.plot(time, acceleration, "b-",
-                  label="Resultant acceleration")
+        ax31.plot(time, acceleration, label="Resultant acceleration")
 
     ax31.plot(idx_peaks, acceleration[peaks], "x", color="orange",
               label="Acceleration peaks")
