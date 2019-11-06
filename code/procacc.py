@@ -6,6 +6,22 @@ from scipy import signal
 
 
 def plot_acceleration(data, axes):
+    """Plots acceleration (g) versus time (cs).
+
+    Args:
+        data: A pandas dataframe with accelerometer data. X, Y and Z axes must
+            be in the columns 1, 2 and 3, respectively. Time must be in the
+            column 0.
+        axes: If 1, plots X axis; if 2, plots X and Y axes; if 3 plots X, Y
+            and Z axes; if "resultant" computes resultant vector and plots it.
+
+    Returns:
+        The acceleration x time plot.
+
+    Raises:
+        ValueError: when axes parameter is a non-suported value.
+    """
+
     # Set data
     time = range(0, len(data))
     time = np.asarray(time)
@@ -30,6 +46,8 @@ def plot_acceleration(data, axes):
                             (data.iloc[:, 2] ** 2) +
                             (data.iloc[:, 3] ** 2))
         resultant = resultant.to_numpy()
+    else:
+        raise ValueError("axes parameter can only be 1, 2, 3 or resultant")
 
     # Plot acceleration x time
     fig = plt.figure(figsize=(15, 7))
@@ -54,6 +72,25 @@ def plot_acceleration(data, axes):
 
 
 def select_acceleration_ROI(data, axes):
+    """Plots acceleration (g) versus time (cs) and uses a GUI to select a
+        region of interest in the plot.
+
+    Args:
+        data: A pandas dataframe with accelerometer data. X, Y and Z axes must
+            be in the columns 1, 2 and 3, respectively. Time must be in the
+            column 0.
+        axes: If 1, plots X axis; if "resultant" computes resultant vector
+            and plots it.
+
+    Returns:
+        The acceleration x time plot; a second plot containing only the
+        selected region of interest; and two numpy arrays with the region
+        of interest acceleration and time values.
+
+    Raises:
+        ValueError: when axes parameter is a non-suported value.
+    """
+    
     # Set data
     time = range(0, len(data))
     time = np.asarray(time)
@@ -128,7 +165,27 @@ def select_acceleration_ROI(data, axes):
 
 
 def filter_acceleration(data, axes, onlyROI=True):
-    # Apply a lowpass filter to accelaration signal
+    """Creates a 4th order Butterwoth lowpass filter with a cut-off frequency
+    of 20Hz and applies to the acceleration signal.
+
+    Args:
+        data: A pandas dataframe with accelerometer data. X, Y and Z axes must
+            be in the columns 1, 2 and 3, respectively. Time must be in the
+            column 0.
+        axes: If 1, plots X axis; if "resultant" computes resultant vector.
+        onlyROI: If True (default), uses the select_acceleration_ROI() function
+        to select a region of interest before applying the filter.
+
+    Returns:
+        The acceleration x time plot; a second plot containing only the
+        selected region of interest (if onlyROI is True); a third plot
+        containing the raw and filtered acceleration signal; and two numpy
+        arrays with the time and filtered acceleration values.
+
+    Raises:
+        ValueError: when axes parameter is a non-suported value.
+    """
+    
     if onlyROI is True:
         # Consider only the selected region of interest
         time, acceleration = select_acceleration_ROI(data, axes)
@@ -182,7 +239,27 @@ def filter_acceleration(data, axes, onlyROI=True):
 
 
 def find_acceleration_peaks(data, axes, onlyROI=True, filteracc=True):
-    # Find peaks in the acceleration signal
+    """Find peaks in the acceleration signal which have a minimum height equal
+    to the average acceleration and a minimum distance of 0.4 seconds.
+
+    Args:
+        data: A pandas dataframe with accelerometer data. X, Y and Z axes must
+            be in the columns 1, 2 and 3, respectively. Time must be in the
+            column 0.
+        axes: If 1, plots X axis; if "resultant" computes resultant vector.
+        onlyROI: If True (default), uses the select_acceleration_ROI() function
+        to select a region of interest before finding the peaks.
+        filteracc: If True (default), uses the filter_acceleration() function to
+        filter the acceleration signal before finding the peaks.
+
+    Returns:
+        The acceleration x time plot; a second plot containing only the
+        selected region of interest (if onlyROI is True); a third plot
+        containing the raw and filtered acceleration signal (if filteracc
+        is True).
+    """
+
+    
     if onlyROI is True:
         if filteracc is True:
             time, acceleration = filter_acceleration(data, axes, onlyROI=True)
