@@ -19,7 +19,7 @@ def plot_acceleration(data, axes):
         The acceleration x time plot.
 
     Raises:
-        ValueError: when axes parameter is a non-suported value.
+        ValueError: When axes parameter is a non-supported value.
     """
 
     # Set data
@@ -88,7 +88,7 @@ def select_acceleration_ROI(data, axes):
         of interest acceleration and time values.
 
     Raises:
-        ValueError: when axes parameter is a non-suported value.
+        ValueError: When axes parameter is a non-supported value.
     """
     
     # Set data
@@ -183,13 +183,14 @@ def filter_acceleration(data, axes, onlyROI=True):
         arrays with the time and filtered acceleration values.
 
     Raises:
-        ValueError: when axes parameter is a non-suported value.
+        ValueError: When axes parameter is a non-supported value.
+        ValueError: When onlyROI parameter is a non-supported value.
     """
     
     if onlyROI is True:
         # Consider only the selected region of interest
         time, acceleration = select_acceleration_ROI(data, axes)
-    else:
+    elif onlyROI is False:
         # Set data
         time = range(0, len(data))
         time = np.asarray(time)
@@ -204,6 +205,8 @@ def filter_acceleration(data, axes, onlyROI=True):
             acceleration = acceleration.to_numpy()
         else:
             raise ValueError("axes parameter can only be 1 or resultant")
+    else:
+        raise ValueError("onlyROI parameter can only be True or False")
 
     # Create the lowpass filter for the acceleration signal
     N = 4  # Fourth order
@@ -257,6 +260,11 @@ def find_acceleration_peaks(data, axes, onlyROI=True, filteracc=True):
         selected region of interest (if onlyROI is True); a third plot
         containing the raw and filtered acceleration signal (if filteracc
         is True).
+
+    Raises:
+        ValueError: When axes parameter is a non-supported value.
+        ValueError: When onlyROI parameter is a non-supported value.
+        ValueError: When filteracc parameter is a non-supported value.
     """
 
     
