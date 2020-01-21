@@ -5,16 +5,21 @@ import matplotlib
 matplotlib.use('MacOSX')
 import matplotlib.pyplot as plt
 
-# Read data
+# Imput from user ------------------------------------------------------------
+
+# Path to data:
 path = "../data/119/2017-12-09_Jumps_5cm_1_m1_119.txt"
+# Subject's body mass (kg)
+body_mass = 74
+# Sample frequency (Hz)
+samp_freq = 1000
+# Minimum time to consider an interval (s)
+threshold = 5 * samp_freq
+
+# ----------------------------------------------------------------------------
+
+# Read data
 data = np.loadtxt(path, delimiter=",")
-samp_freq = 1000  # sample frequency (Hz)
-
-# Get variables of interest
-body_mass = 74  # subject's mass (kg)
-g = 9.81  # gravity acceleration (m/s2)
-
-body_weight = body_mass * g  # body weight (BW; N)
 
 force = data[:, 2]  # ground reaction force (GRF; N)
 time = np.array(range(1, len(force) + 1))
@@ -33,6 +38,8 @@ b, a = signal.butter(N, Wn, btype="low")
 force = signal.filtfilt(b, a, force)
 
 # Get GRF in BW
+g = 9.81  # gravity acceleration (m/s2)
+body_weight = body_mass * g  # body weight (BW; N)
 force_BW = force / body_weight  # ground reaction force (multiples of BW)
 
 # Find peaks
@@ -43,11 +50,12 @@ peaks, properties = signal.find_peaks(force_BW, height=height,
 time_of_peaks = peaks / samp_freq
 
 # Divide bouts
-# Compute the peaks horizontal distance to its left neighbour
+# Vector indicating the peaks horizontal distance to its left neighbour
 widths = []
+# Vector indicating the widths greater than the established threshold
 above_threshold = []
+# Index of the widths in above_threshold
 interval = []
-threshold = 5 * samp_freq  # in seconds * sample frequency
 for i in range(1, len(peaks)):
     widths.append(peaks[i] - peaks[i - 1])
 for i in range(0, len(widths)):
@@ -102,7 +110,15 @@ plt.show()
 # Peak magnitude
 E = force_BW[peaks]
 print("Peak-to-peak strain magnitude (BW):", E)
+# Number of bouts
+if isinstance(interval, int) is True:
+    b = 2
+else:
+    b = interval.size + 1
+print("Number of bouts:", b)
 # Time between bouts
 t = time_last_peaks[0] - time_first_peaks[1]
 print("Time between bouts (s):", round(t, 2))
 print("Time between bouts (h):", round(t / 3600, 4))
+# Number of cycles
+print("Number of cycles (total):", len(peaks))
