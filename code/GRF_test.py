@@ -45,13 +45,39 @@ time_of_peaks = peaks / samp_freq
 # Divide bouts
 # Compute the peaks horizontal distance to its left neighbour
 widths = []
+above_threshold = []
+interval = []
+threshold = 5 * samp_freq  # in seconds * sample frequency
 for i in range(1, len(peaks)):
     widths.append(peaks[i] - peaks[i - 1])
-max_width = widths.index(max(widths)) + 1
+for i in range(0, len(widths)):
+    if widths[i] >= threshold:
+        above_threshold.append(widths[i])
+if len(above_threshold) == 1:
+    interval = widths.index(above_threshold) + 1
+elif len(above_threshold) > 1:
+    for i in range(0, len(above_threshold)):
+        interval.append(widths.index(above_threshold[i]) + 1)
 
-# Mark first and last peaks of the bouts
-first_peaks = np.array([peaks[0], peaks[max_width]])
-last_peaks = np.array([peaks[max_width - 1], peaks[len(peaks) - 1]])
+# Mark first peaks of the bouts
+if isinstance(interval, int) is True:
+    first_peaks = np.array([peaks[0], peaks[interval]])
+else:
+    first_peaks = [peaks[0]]
+    for i in range(0, len(interval)):
+        first_peaks.append(peaks[interval[i]])
+    first_peaks = np.asarray(first_peaks)
+
+# Mark last peaks of the bouts
+if isinstance(interval, int) is True:
+    last_peaks = np.array([peaks[interval - 1], peaks[len(peaks) - 1]])
+else:
+    last_peaks = []
+    for i in range(0, len(interval)):
+        last_peaks.append(peaks[interval[i] - 1])
+    last_peaks.append(peaks[len(peaks) - 1])
+    last_peaks = np.asarray(last_peaks)
+
 time_first_peaks = first_peaks / samp_freq
 time_last_peaks = last_peaks / samp_freq
 
