@@ -41,16 +41,23 @@ distance = 0.4 * samp_freq  # seconds * sampling frequency
 peaks, properties = signal.find_peaks(force_BW, height=height,
                                       distance=distance)
 
-# Loading frequency
+# Divide bouts
 print("Peaks found:", peaks)
-print("Number of peaks", len(peaks))
+# Compute the peaks horizontal distance to its left neighbour
+widths = []
+for i in range(1, len(peaks)):
+    widths.append(peaks[i] - peaks[i - 1])
+print("Widths:", widths)
+print("Max width:", max(widths))
+max_width = widths.index(max(widths)) + 1
+print("Peak with max width:", peaks[max_width])
 
 # Plot
 fig = plt.figure(figsize=(15, 7))
 ax1 = fig.add_subplot(1, 1, 1)
 ax1.plot(time, force_BW)
 ax1.plot(peaks / 1000, force_BW[peaks], "x")
-# plt.xticks(np.arange(min(time), max(time) + 1, 5))
+plt.xticks(np.arange(min(time), max(time) + 1, 5))
 plt.yticks(np.arange(0, 6, 0.5))
 plt.grid()
 plt.show()
