@@ -63,12 +63,18 @@ time_last_peaks = last_peaks / samp_freq
 fig = plt.figure(figsize=(15, 7))
 ax1 = fig.add_subplot(1, 1, 1)
 ax1.plot(time, force_BW)
-ax1.plot(time_of_peaks, force_BW[peaks], "x")
-ax1.plot(time_first_peaks, force_BW[first_peaks], "x")
-ax1.plot(time_last_peaks, force_BW[last_peaks], "x")
+ax1.plot(time_of_peaks, force_BW[peaks], "x", label="Ground reaction force "
+         "peaks")
+ax1.plot(time_first_peaks, force_BW[first_peaks], "x", label="First peak of "
+         "the bout")
+ax1.plot(time_last_peaks, force_BW[last_peaks], "x", label="Last peak of the "
+         "bout")
 plt.xticks(np.arange(min(time), max(time) + 1, 5))
 plt.yticks(np.arange(0, 6, 0.5))
 plt.grid()
+plt.legend(loc="upper right")
+plt.xlabel("Time (s)")
+plt.ylabel("Vertical ground reaction force (BW)")
 plt.show()
 
 # Osteogenic index (OI) variables
