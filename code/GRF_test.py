@@ -43,15 +43,11 @@ peaks, properties = signal.find_peaks(force_BW, height=height,
 time_of_peaks = peaks / samp_freq
 
 # Divide bouts
-print("Peaks found:", peaks)
 # Compute the peaks horizontal distance to its left neighbour
 widths = []
 for i in range(1, len(peaks)):
     widths.append(peaks[i] - peaks[i - 1])
-print("Widths:", widths)
-print("Max width:", max(widths))
 max_width = widths.index(max(widths)) + 1
-print("Peak with max width:", peaks[max_width])
 
 # Mark first and last peaks of the bouts
 first_peaks = np.array([peaks[0], peaks[max_width]])
@@ -77,7 +73,10 @@ plt.xlabel("Time (s)")
 plt.ylabel("Vertical ground reaction force (BW)")
 plt.show()
 
-# Osteogenic index (OI) variables
-# Peak-to-peak strain magnitude
-# E = force_BW[peaks]
-# print("Peak-to-peak strain magnitude:", E)
+# Peak magnitude
+E = force_BW[peaks]
+print("Peak-to-peak strain magnitude (BW):", E)
+# Time between bouts
+t = time_last_peaks[0] - time_first_peaks[1]
+print("Time between bouts (s):", round(t, 2))
+print("Time between bouts (h):", round(t / 3600, 4))
