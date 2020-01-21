@@ -1,1 +1,1 @@
-Repository to test associations between body accelerations and bone health
+Repository to test associations between jumping accelerations and ground reaction force
