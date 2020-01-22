@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # Path to data:
 path = "../data/119/2017-12-09_Jumps_5cm_1_m1_119.txt"
 # Subject's body mass (kg)
-body_mass = 74
+body_mass = 71.25
 # Sample frequency (Hz)
 samp_freq = 1000
 # Minimum time to consider an interval (s)
