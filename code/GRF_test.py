@@ -89,6 +89,22 @@ else:
 time_first_peaks = first_peaks / samp_freq
 time_last_peaks = last_peaks / samp_freq
 
+# Group peaks in bouts
+# b = number of bouts
+if isinstance(interval, int) is True:
+    b = 2
+else:
+    b = interval.size + 1
+# Put the peaks in a dictionary
+bouts = {}
+for i in range(1, b + 1):
+    first_peak_idx = int(*np.where(peaks == first_peaks[i - 1]))
+    last_peak_idx = int(*np.where(peaks == last_peaks[i - 1]))
+    bout = peaks[first_peak_idx:last_peak_idx + 1]
+
+    key_name = "bout_" + str(i)
+    bouts[key_name] = bout
+
 # Plot
 fig = plt.figure(figsize=(15, 7))
 ax1 = fig.add_subplot(1, 1, 1)
@@ -111,10 +127,6 @@ plt.show()
 E = force_BW[peaks]
 print("Peak-to-peak strain magnitude (BW):", E)
 # Number of bouts
-if isinstance(interval, int) is True:
-    b = 2
-else:
-    b = interval.size + 1
 print("Number of bouts:", b)
 # Time between bouts
 t = time_last_peaks[0] - time_first_peaks[1]
