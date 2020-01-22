@@ -129,7 +129,7 @@ print("Peak-to-peak strain magnitude (BW):", E)
 # Number of bouts
 print("Number of bouts:", b)
 # Time between bouts
-t = time_last_peaks[0] - time_first_peaks[1]
+t = time_first_peaks[1] - time_last_peaks[0]
 print("Time between bouts (s):", round(t, 2))
 print("Time between bouts (h):", round(t / 3600, 4))
 # Number of cycles (total)
