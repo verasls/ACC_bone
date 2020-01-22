@@ -132,5 +132,11 @@ print("Number of bouts:", b)
 t = time_last_peaks[0] - time_first_peaks[1]
 print("Time between bouts (s):", round(t, 2))
 print("Time between bouts (h):", round(t / 3600, 4))
-# Number of cycles
+# Number of cycles (total)
 print("Number of cycles (total):", len(peaks))
+# Number of cycles (per bout)
+print("Number of cycles (per bout):")
+for i in range(0, len(bouts.keys())):
+    message = "Bout " + str(i + 1) + ": "
+    message = message + str(len(bouts[list(bouts.keys())[i]]))
+    print(message)
