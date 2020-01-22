@@ -140,3 +140,16 @@ for i in range(0, len(bouts.keys())):
     message = "Bout " + str(i + 1) + ": "
     message = message + str(len(bouts[list(bouts.keys())[i]]))
     print(message)
+# Loading frequency
+print("Loading freqeuncy (per bout):")
+for i in range(1, b + 1):
+    key_name = "bout_" + str(i)
+    time_peaks_bout_i = bouts[key_name] / samp_freq
+    delta_time_bout_i = time_peaks_bout_i[-1] - time_peaks_bout_i[0]
+    n_cycles_bout_i = len(bouts[key_name])
+
+    freq_bout_i = n_cycles_bout_i / delta_time_bout_i
+
+    message = "Bout " + str(i) + ": "
+    message = message + str(round(freq_bout_i, 2)) + " Hz"
+    print(message)
