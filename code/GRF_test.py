@@ -136,9 +136,10 @@ print("Time between bouts (h):", round(t / 3600, 4))
 print("Number of cycles (total):", len(peaks))
 # Number of cycles (per bout)
 print("Number of cycles (per bout):")
-for i in range(0, len(bouts.keys())):
-    message = "Bout " + str(i + 1) + ": "
-    message = message + str(len(bouts[list(bouts.keys())[i]]))
+for i in range(1, b + 1):
+    key_name = "bout_" + str(i)
+    message = "Bout " + str(i) + ": "
+    message = message + str(len(bouts[key_name]))
     print(message)
 # Loading frequency
 print("Loading freqeuncy (per bout):")
