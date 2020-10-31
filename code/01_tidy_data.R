@@ -99,7 +99,7 @@ running_rates_df_wide <- read_csv(
 running_rates_df_res <- running_rates_df_wide %>% 
   select(
     id, trial, filename, acc_placement, speed,
-    pATR_g = pRATR_gs, 
+    pATR_gs = pRATR_gs, 
     pLR_Ns = pRLR_Ns, pLR_BWs = pRLR_BWs
   ) %>% 
   mutate(
@@ -110,7 +110,7 @@ running_rates_df_res <- running_rates_df_wide %>%
 running_rates_df_ver <- running_rates_df_wide %>% 
   select(
     id, trial, filename, acc_placement, speed,
-    pATR_g = pVATR_gs, 
+    pATR_gs = pVATR_gs, 
     pLR_Ns = pVLR_Ns, pLR_BWs = pVLR_BWs
   ) %>% 
   mutate(
