@@ -1,5 +1,6 @@
 # Load packages -----------------------------------------------------------
 
+library(here)
 library(tidyverse)
 library(readxl)
 library(janitor)
@@ -7,7 +8,7 @@ library(lvmisc)
 
 # Read anthropometric data ------------------------------------------------
 
-anthropometric <- read_csv("data/anthropometric_data.csv") %>%
+anthropometric <- read_csv(here("data", "anthropometric_data.csv")) %>%
   select(id = ID, everything()) %>% 
   mutate(
     BMI = bmi(body_mass, height / 100),
@@ -16,10 +17,14 @@ anthropometric <- read_csv("data/anthropometric_data.csv") %>%
 
 # Obtain running data -----------------------------------------------------
 
-running_df_wide <- read_xlsx("data/GRF_ACC_data_all.xlsx", sheet = "all") %>% 
+# Data with force and acceleration
+running_df_wide <- read_xlsx(
+  here("data", "GRF_ACC_data_all.xlsx"), sheet = "all"
+) %>% 
   clean_names() %>% 
   select(
-    id, trial = visita, filename = nome, acc_placement = local_acelerometro,
+    raw_imu, id, trial = visita, filename = nome,
+    acc_placement = local_acelerometro,
     speed = velocidade_km_h, 
     res_n_peaks = ftot_numero_picos_ftot,
     ver_n_peaks = fvt_numero_picos_fvt,
@@ -30,7 +35,12 @@ running_df_wide <- read_xlsx("data/GRF_ACC_data_all.xlsx", sheet = "all") %>%
     pVGRF_N = fvt_med_picos_fvt_n,
     pVGRF_BW = fvt_med_picos_fvt_bw
   ) %>% 
-  filter(speed > 6 & acc_placement %in% c("ankle", "back", "waist"))
+  filter(
+    raw_imu == "imu" &
+    speed > 6 &
+    acc_placement %in% c("ankle", "back", "waist")
+  ) %>% 
+  select(id, everything())
 
 running_df_res <- running_df_wide %>% 
   select(
@@ -69,6 +79,66 @@ running_df <- rbind(running_df_res, running_df_ver) %>%
     id, trial, filename, subj, body_mass, BMI, BMI_cat, everything()
   )
 
+# Data with force and acceleration rates
+running_rates_df_wide <- read_csv(
+  here("data", "max_rates_IMU_running.csv")
+) %>% 
+  clean_names() %>% 
+  select(
+    id, trial = visita, filename = nome, acc_placement = local_acelerometro,
+    speed = velocidade_km_h, 
+    pRATR_gs = max_rates_atot_med_atot_g_s,
+    pRLR_Ns = max_rates_ftot_med_ftot_n_s,
+    pRLR_BWs = max_rates_ftot_med_ftot_bw,
+    pVATR_gs = max_rates_avt_med_avt_g_s,
+    pVLR_Ns = max_rates_fvt_med_fvt_n_s,
+    pVLR_BWs = max_rates_fvt_med_fvt_bw
+  ) %>% 
+  filter(speed > 6 & acc_placement %in% c("ankle", "back", "waist"))
+
+running_rates_df_res <- running_rates_df_wide %>% 
+  select(
+    id, trial, filename, acc_placement, speed,
+    pATR_g = pRATR_gs, 
+    pLR_Ns = pRLR_Ns, pLR_BWs = pRLR_BWs
+  ) %>% 
+  mutate(
+    vector = "resultant",
+    .after = acc_placement
+  )
+
+running_rates_df_ver <- running_rates_df_wide %>% 
+  select(
+    id, trial, filename, acc_placement, speed,
+    pATR_g = pVATR_gs, 
+    pLR_Ns = pVLR_Ns, pLR_BWs = pVLR_BWs
+  ) %>% 
+  mutate(
+    vector = "vertical",
+    .after = acc_placement
+  )
+
+running_rates_df <- rbind(running_rates_df_res, running_rates_df_ver) %>% 
+  mutate(
+    # Create another subj identifier
+    subj = paste0(id, "m", trial),
+    subj = ifelse(str_length(subj) == 3, paste0("00", subj), subj),
+    subj = ifelse(str_length(subj) == 4, paste0("0", subj), subj)
+  ) %>% 
+  left_join(
+    select(anthropometric, id, trial, body_mass, BMI, BMI_cat),
+    by = c("id", "trial")
+  ) %>% 
+  select(
+    id, trial, filename, subj, body_mass, BMI, BMI_cat, everything()
+  )
+
+# Join both running data frames
+running_df <- running_df %>% 
+  left_join(running_rates_df)
+
+write_csv(running_df, here("data", "running_data.csv"))
+
 # Obtain jumping data -----------------------------------------------------
 
 data_dir <- "/Volumes/LV_HD_2/Accelerometry/GRF_ACC/"
@@ -94,7 +164,7 @@ jumping_df <- files %>%
     # Create another subj identifier
     subj = paste0(id, "m", trial),
     subj = ifelse(str_length(subj) == 3, paste0("00", subj), subj),
-    subj = ifelse(str_length(subj) == 4, paste0("0", subj), subj),
+    subj = ifelse(str_length(subj) == 4, paste0("0", subj), subj)
   ) %>% 
   left_join(
     select(anthropometric, id, trial, BMI, BMI_cat), 
@@ -109,4 +179,4 @@ jumping_df <- files %>%
   arrange(subj)
 
 # Write jumping data
-write_csv(jumping_df, "data/jumping_data.csv")
+write_csv(jumping_df, here("data", "jumping_data.csv"))
