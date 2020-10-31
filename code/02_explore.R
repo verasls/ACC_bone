@@ -1,7 +1,8 @@
-# Load packages -----------------------------------------------------------
+# Load packages and functions ---------------------------------------------
 
 library(here)
 library(tidyverse)
+source(here("code", "functions", "plot_functions.R"))
 
 # Load data ---------------------------------------------------------------
 
@@ -50,151 +51,32 @@ jumping_df %>%
 
 # Histograms --------------------------------------------------------------
 
-# Running - resultant
-running_df %>% 
-  filter(vector == "resultant") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pGRF_N)) +
-  facet_grid(acc_placement ~ speed)
+# Vectors with variables to plot in histograms
+hist_df <- tibble(
+  vectors = c(rep("resultant", 4), rep("vertical", 4)),
+  hist_vars = rep(c("pGRF_N", "pACC_g", "pLR_Ns", "pATR_gs"), 2)
+)
 
-running_df %>% 
-  filter(vector == "resultant") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pACC_g)) +
-  facet_grid(acc_placement ~ speed)
+# Running 
+map2(
+  hist_df$vectors, hist_df$hist_vars,
+  ~ histogram(running_df, .x, .y, "acc_placement", "speed")
+)
 
-running_df %>% 
-  filter(vector == "resultant") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pLR_Ns)) +
-  facet_grid(acc_placement ~ speed)
+# Jumping
+drop_jumps <- filter(jumping_df, jump_type == "drop jumps")
+box_jumps <- filter(jumping_df, jump_type == "box jumps")
+continuous_jumps <- filter(jumping_df, jump_type == "continuous jumps")
 
-running_df %>% 
-  filter(vector == "resultant") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pATR_gs)) +
-  facet_grid(acc_placement ~ speed)
-
-# Running - vertical
-running_df %>% 
-  filter(vector == "vertical") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pGRF_N)) +
-  facet_grid(acc_placement ~ speed)
-
-running_df %>% 
-  filter(vector == "vertical") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pACC_g)) +
-  facet_grid(acc_placement ~ speed)
-
-running_df %>% 
-  filter(vector == "vertical") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pLR_Ns)) +
-  facet_grid(acc_placement ~ speed)
-
-running_df %>% 
-  filter(vector == "vertical") %>% 
-  ggplot() +
-  geom_histogram(aes(x = pATR_gs)) +
-  facet_grid(acc_placement ~ speed)
-
-# Jumping - resultant - drop jumps
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "drop jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pGRF_N)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "drop jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pACC_g)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "drop jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pLR_Ns)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "drop jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pATR_gs)) +
-  facet_grid(acc_placement ~ jump_height)
-
-# Jumping - resultant - box jumps
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "box jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pGRF_N)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "box jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pACC_g)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "box jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pLR_Ns)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "box jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pATR_gs)) +
-  facet_grid(acc_placement ~ jump_height)
-
-# Jumping - resultant - continuous jumps
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "continuous jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pGRF_N)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "continuous jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pACC_g)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "continuous jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pLR_Ns)) +
-  facet_grid(acc_placement ~ jump_height)
-
-jumping_df %>% 
-  filter(
-    vector == "resultant" & jump_type == "continuous jumps"
-  ) %>% 
-  ggplot() + 
-  geom_histogram(aes(x = pATR_gs)) +
-  facet_grid(acc_placement ~ jump_height)
+map2(
+  hist_df$vectors, hist_df$hist_vars,
+  ~ histogram(drop_jumps, .x, .y, "acc_placement", "jump_height")
+)
+map2(
+  hist_df$vectors, hist_df$hist_vars,
+  ~ histogram(box_jumps, .x, .y, "acc_placement", "jump_height")
+)
+map2(
+  hist_df$vectors, hist_df$hist_vars,
+  ~ histogram(continuous_jumps, .x, .y, "acc_placement", "jump_height")
+)
