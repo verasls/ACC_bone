@@ -4,7 +4,7 @@ histogram <- function(data, vector_name, var, grid_y, grid_x) {
   #
   # Args:
   #   data: A data frame.
-  #   vector name: A character string with the vector name. Either "resultant"
+  #   vector_name: A character string with the vector name. Either "resultant"
   #   or "vertical".
   #   var: A character string with the variable name to be plot in the
   #   histogram.
