@@ -12,7 +12,13 @@ running_df <- read_csv(here("data", "running_data.csv")) %>%
     acc_placement = as_factor(acc_placement),
     vector = as_factor(vector),
     speed = as_factor(speed),
-    run = as_factor(paste0("running ", speed, "km/h"))
+    run = as_factor(paste0("running ", speed, "km/h")),
+    BMI_cat = fct_relevel(
+      as_factor(BMI_cat),
+      levels = c(
+        "Normal weight", "Overweight", "Obesity class I"
+      )
+    )
   )
 
 jumping_df <- read_csv(here("data", "jumping_data.csv")) %>% 
@@ -22,7 +28,14 @@ jumping_df <- read_csv(here("data", "jumping_data.csv")) %>%
     jump_type = as_factor(jump_type),
     jump_height = as_factor(jump_height),
     jump = as_factor(paste0(jump_type, " ", jump_height, "cm")),
-    jump = fct_relevel(jump, "drop jumps 40cm", after = 7)
+    jump = fct_relevel(jump, "drop jumps 40cm", after = 7),
+    BMI_cat = fct_relevel(
+      as_factor(BMI_cat),
+      levels = c(
+        "Normal weight", "Overweight", "Obesity class I",
+        "Obesity class II", "Obesity class III"
+      )
+    )
   )
 
 # Sample size per activity ------------------------------------------------
@@ -132,4 +145,27 @@ map2(
 map2(
   corr_df$vectors, corr_df$placement,
   ~ my_correlate(jumping_df, .x, .y)
+)
+
+# Scatterplot -------------------------------------------------------------
+
+placements <- c("ankle", "lower back", "hip")
+# Running
+map(
+  placements,
+  ~ scatterplot(running_df, pACC_g, pGRF_N, .x)
+)
+map(
+  placements,
+  ~ scatterplot(running_df, pATR_gs, pLR_Ns, .x)
+)
+
+# Jumping
+map(
+  placements,
+  ~ scatterplot(jumping_df, pACC_g, pGRF_N, .x)
+)
+map(
+  placements,
+  ~ scatterplot(jumping_df, pATR_gs, pLR_Ns, .x)
 )
