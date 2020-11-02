@@ -42,3 +42,21 @@ box_plot <- function(data, x, y, placement) {
     ) +
     ggplot2::labs(title = placement)
 }
+
+scatterplot <- function(data, x, y, placement) {
+  # scatterplot plots a scatterplot of y by x, with different colours by
+  # BMI_cat and facets by vector.
+  #
+  # Args:
+  #   data: A data frame.
+  #   x, y: The name of the variable (unquoted) to be plot in the x and y axis.
+  #   placement: A character string with the name of the accelerometer
+  #   placement (either "ankle", "low back" or "hip").
+  #
+  # Returns:
+  #   A ggplot object.
+  ggplot2::ggplot(dplyr::filter(data, acc_placement == placement)) +
+    ggplot2::geom_point(aes(x = {{ x }}, y = {{ y }}, colour = BMI_cat)) +
+    ggplot2::facet_grid(~ vector) +
+    ggplot2::labs(title = placement)
+}
