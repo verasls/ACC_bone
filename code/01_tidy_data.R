@@ -135,7 +135,16 @@ running_rates_df <- rbind(running_rates_df_res, running_rates_df_ver) %>%
 
 # Join both running data frames
 running_df <- running_df %>% 
-  left_join(running_rates_df)
+  left_join(running_rates_df) %>% 
+  mutate(
+    # Recode acc_placement levels
+    acc_placement = recode(
+      acc_placement,
+      "ankle" = "ankle",
+      "back" = "lower back",
+      "waist" = "hip"
+    )
+  )
 
 write_csv(running_df, here("data", "running_data.csv"))
 
@@ -164,7 +173,14 @@ jumping_df <- files %>%
     # Create another subj identifier
     subj = paste0(id, "m", trial),
     subj = ifelse(str_length(subj) == 3, paste0("00", subj), subj),
-    subj = ifelse(str_length(subj) == 4, paste0("0", subj), subj)
+    subj = ifelse(str_length(subj) == 4, paste0("0", subj), subj),
+    # Recode acc_placement levels
+    acc_placement = recode(
+      acc_placement,
+      "ankle" = "ankle",
+      "back" = "lower back",
+      "waist" = "hip"
+    )
   ) %>% 
   left_join(
     select(anthropometric, id, trial, BMI, BMI_cat), 
