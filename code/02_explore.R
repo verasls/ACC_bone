@@ -113,3 +113,17 @@ map(
   c("ankle", "lower back", "hip"),
   ~ box_plot(jumping_df, jump, pATR_gs, .x)
 )
+
+# Correlations ------------------------------------------------------------
+
+# Running
+map2(
+  corr_df$vectors, corr_df$placement,
+  ~ my_correlate(running_df, .x, .y)
+)
+
+# Jumping
+map2(
+  corr_df$vectors, corr_df$placement,
+  ~ my_correlate(jumping_df, .x, .y)
+)
