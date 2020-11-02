@@ -10,7 +10,8 @@ running_df <- read_csv(here("data", "running_data.csv")) %>%
   mutate(
     acc_placement = as_factor(acc_placement),
     vector = as_factor(vector),
-    speed = as_factor(speed)
+    speed = as_factor(speed),
+    run = as_factor(paste0("running ", speed, "km/h"))
   )
 
 jumping_df <- read_csv(here("data", "jumping_data.csv")) %>% 
@@ -18,7 +19,9 @@ jumping_df <- read_csv(here("data", "jumping_data.csv")) %>%
     acc_placement = as_factor(acc_placement),
     vector = as_factor(vector),
     jump_type = as_factor(jump_type),
-    jump_height = as_factor(jump_height)
+    jump_height = as_factor(jump_height),
+    jump = as_factor(paste0(jump_type, " ", jump_height, "cm")),
+    jump = fct_relevel(jump, "drop jumps 40cm", after = 7)
   )
 
 # Sample size per activity ------------------------------------------------
@@ -79,4 +82,34 @@ map2(
 map2(
   hist_df$vectors, hist_df$hist_vars,
   ~ histogram(continuous_jumps, .x, .y, "acc_placement", "jump_height")
+)
+
+# Ground reaction force and acceleration magnitude per activity -----------
+
+# Ground reaction force
+box_plot(running_df, run, pGRF_BW, "lower back")
+box_plot(jumping_df, jump, pGRF_BW, "lower back")
+
+# Loading rate
+box_plot(running_df, run, pLR_BWs, "lower back")
+box_plot(jumping_df, jump, pLR_BWs, "lower back")
+
+# Acceleration
+map(
+  c("ankle", "lower back", "hip"),
+  ~ box_plot(running_df, run, pACC_g, .x)
+)
+map(
+  c("ankle", "lower back", "hip"),
+  ~ box_plot(jumping_df, jump, pACC_g, .x)
+)
+
+# Acceleration transient rate
+map(
+  c("ankle", "lower back", "hip"),
+  ~ box_plot(running_df, run, pATR_gs, .x)
+)
+map(
+  c("ankle", "lower back", "hip"),
+  ~ box_plot(jumping_df, jump, pATR_gs, .x)
 )
