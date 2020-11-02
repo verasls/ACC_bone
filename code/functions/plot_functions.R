@@ -33,23 +33,11 @@ box_plot <- function(data, x, y, placement) {
   #   A ggplot object.
   data <- dplyr::mutate(
     dplyr::group_by(data, {{ x }}, vector),
-    outlier = ifelse(is_outlier({{ y }}), subj, NA)
+    outlier = ifelse(lvmisc::is_outlier({{ y }}, na.rm = TRUE), subj, NA)
   )
   ggplot2::ggplot(data = data, aes(x = {{ x }}, y = {{ y }}, fill = vector)) +
     ggplot2::geom_boxplot() +
     ggrepel::geom_text_repel(
       aes(label = outlier), na.rm = TRUE, position = position_dodge(1)
     )
-}
-
-is_outlier <- function(x) {
-  # is_outlier checks whether the values of a variable are outliers.
-  #
-  # Args:
-  #   x: A numeric vector.
-  #
-  # Returns:
-  #   The x value when it is an outlier
-  x < quantile(x, 0.25, na.rm = TRUE) - 1.5 * IQR(x, na.rm = TRUE) | 
-  x > quantile(x, 0.75, na.rm = TRUE) + 1.5 * IQR(x, na.rm = TRUE)
 }
