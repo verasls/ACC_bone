@@ -3,6 +3,7 @@
 library(here)
 library(tidyverse)
 source(here("code", "functions", "plot_functions.R"))
+source(here("code", "functions", "utils.R"))
 
 # Load data ---------------------------------------------------------------
 
@@ -115,6 +116,11 @@ map(
 )
 
 # Correlations ------------------------------------------------------------
+
+corr_df <- tibble(
+  vectors = c(rep("resultant", 3), rep("vertical", 3)),
+  placement = rep(c("ankle", "lower back", "hip"), 2)
+)
 
 # Running
 map2(
