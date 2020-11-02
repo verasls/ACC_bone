@@ -16,7 +16,7 @@ histogram <- function(data, vector_name, var, grid_y, grid_x) {
   ggplot2::ggplot(dplyr::filter(data, vector == vector_name)) +
     ggplot2::geom_histogram(aes(x = .data[[var]])) +
     ggplot2::facet_grid(vars(.data[[grid_y]]), vars(.data[[grid_x]])) +
-    labs(title = vector_name)
+    ggplot2::labs(title = vector_name)
 }
 
 box_plot <- function(data, x, y, placement) {
@@ -39,5 +39,6 @@ box_plot <- function(data, x, y, placement) {
     ggplot2::geom_boxplot() +
     ggrepel::geom_text_repel(
       aes(label = outlier), na.rm = TRUE, position = position_dodge(1)
-    )
+    ) +
+    ggplot2::labs(title = placement)
 }
