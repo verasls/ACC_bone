@@ -14,8 +14,10 @@ histogram <- function(data, vector_name, var, grid_y, grid_x) {
   # Returns:
   #   A ggplot object.
   ggplot2::ggplot(dplyr::filter(data, vector == vector_name)) +
-    ggplot2::geom_histogram(aes(x = .data[[var]])) +
-    ggplot2::facet_grid(vars(.data[[grid_y]]), vars(.data[[grid_x]])) +
+    ggplot2::geom_histogram(ggplot2::aes(x = .data[[var]])) +
+    ggplot2::facet_grid(
+      ggplot2::vars(.data[[grid_y]]), ggplot2::vars(.data[[grid_x]])
+    ) +
     ggplot2::labs(title = vector_name)
 }
 
@@ -35,10 +37,12 @@ box_plot <- function(data, x, y, placement) {
     dplyr::group_by(data, {{ x }}, vector),
     outlier = ifelse(lvmisc::is_outlier({{ y }}, na.rm = TRUE), subj, NA)
   )
-  ggplot2::ggplot(data = data, aes(x = {{ x }}, y = {{ y }}, fill = vector)) +
+  ggplot2::ggplot(
+    data = data, ggplot2::aes(x = {{ x }}, y = {{ y }}, fill = vector)
+  ) +
     ggplot2::geom_boxplot() +
     ggrepel::geom_text_repel(
-      aes(label = outlier), na.rm = TRUE, position = position_dodge(1)
+      ggplot2::aes(label = outlier), na.rm = TRUE, position = position_dodge(1)
     ) +
     ggplot2::labs(title = placement)
 }
@@ -56,7 +60,33 @@ scatterplot <- function(data, x, y, placement) {
   # Returns:
   #   A ggplot object.
   ggplot2::ggplot(dplyr::filter(data, acc_placement == placement)) +
-    ggplot2::geom_point(aes(x = {{ x }}, y = {{ y }}, colour = BMI_cat)) +
+    ggplot2::geom_point(
+      ggplot2::aes(x = {{ x }}, y = {{ y }}, colour = BMI_cat)
+    ) +
     ggplot2::facet_grid(~ vector) +
     ggplot2::labs(title = placement)
+}
+
+bland_altman <- function(actual, predicted) {
+  # bland_altman plots a Bland-Altman plot: a scatterplot of the difference
+  # between actual and predicted values by their mean, with a horizontal line
+  # at the bias (mean difference) and and one in the upper and lower limits of
+  # agreement (bias +/- 1.96 * standard deviation).
+  #
+  # Args:
+  #   actual, predicted: A numerical vector.
+  #
+  # Returns:
+  #   A ggplot object.
+  data <- tibble::tibble(
+    mean = (actual + predicted) / 2,
+    diff = actual - predicted
+  )
+  bias <- lvmisc::bias(actual, predicted)
+  loa <- lvmisc::loa(actual, predicted)
+  ggplot2::ggplot(data) +
+    ggplot2::geom_point(ggplot2::aes(x = mean, y = diff)) +
+    ggplot2::geom_hline(yintercept = bias) +
+    ggplot2::geom_hline(yintercept = loa[[1]], linetype = "dotted") +
+    ggplot2::geom_hline(yintercept = loa[[2]], linetype = "dotted")
 }
