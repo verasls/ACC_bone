@@ -141,7 +141,7 @@ running_df <- running_df %>%
     acc_placement = recode(
       acc_placement,
       "ankle" = "ankle",
-      "back" = "lower back",
+      "back" = "lower_back",
       "waist" = "hip"
     )
   )
@@ -178,7 +178,7 @@ jumping_df <- files %>%
     acc_placement = recode(
       acc_placement,
       "ankle" = "ankle",
-      "back" = "lower back",
+      "back" = "lower_back",
       "waist" = "hip"
     )
   ) %>% 

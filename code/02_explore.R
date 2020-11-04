@@ -101,30 +101,30 @@ map2(
 # Ground reaction force and acceleration magnitude per activity -----------
 
 # Ground reaction force
-box_plot(running_df, run, pGRF_BW, "lower back")
-box_plot(jumping_df, jump, pGRF_BW, "lower back")
+box_plot(running_df, run, pGRF_BW, "lower_back")
+box_plot(jumping_df, jump, pGRF_BW, "lower_back")
 
 # Loading rate
-box_plot(running_df, run, pLR_BWs, "lower back")
-box_plot(jumping_df, jump, pLR_BWs, "lower back")
+box_plot(running_df, run, pLR_BWs, "lower_back")
+box_plot(jumping_df, jump, pLR_BWs, "lower_back")
 
 # Acceleration
 map(
-  c("ankle", "lower back", "hip"),
+  c("ankle", "lower_back", "hip"),
   ~ box_plot(running_df, run, pACC_g, .x)
 )
 map(
-  c("ankle", "lower back", "hip"),
+  c("ankle", "lower_back", "hip"),
   ~ box_plot(jumping_df, jump, pACC_g, .x)
 )
 
 # Acceleration transient rate
 map(
-  c("ankle", "lower back", "hip"),
+  c("ankle", "lower_back", "hip"),
   ~ box_plot(running_df, run, pATR_gs, .x)
 )
 map(
-  c("ankle", "lower back", "hip"),
+  c("ankle", "lower_back", "hip"),
   ~ box_plot(jumping_df, jump, pATR_gs, .x)
 )
 
@@ -132,7 +132,7 @@ map(
 
 corr_df <- tibble(
   vectors = c(rep("resultant", 3), rep("vertical", 3)),
-  placement = rep(c("ankle", "lower back", "hip"), 2)
+  placement = rep(c("ankle", "lower_back", "hip"), 2)
 )
 
 # Running
@@ -149,7 +149,7 @@ map2(
 
 # Scatterplot -------------------------------------------------------------
 
-placements <- c("ankle", "lower back", "hip")
+placements <- c("ankle", "lower_back", "hip")
 # Running
 map(
   placements,
