@@ -24,3 +24,15 @@ accuracy <- function(data, model) {
     plot = bland_altman(actual, predicted)
   )
 }
+
+get_coefficients <- function(model) {
+  # get_coefficients extract coefficients from a model.
+  #
+  # Args:
+  #   model: A lmerMod object.
+  #
+  # Returns:
+  #   A named numeric vector with the model coefficients.
+  coefficients <- stats::coef(summary(model))
+  coefficients[, 1]
+}
