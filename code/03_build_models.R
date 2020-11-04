@@ -16,16 +16,18 @@ model_df <- data.frame(
   vector = c(rep("resultant", 3), rep("vertical", 3)),
   placement = rep(c("ankle", "lower_back", "hip"), 2)
 )
-GRF_formula <- as.formula(
-  "pGRF_N ~ pACC_g + I(pACC_g^2) + body_mass + body_mass:pACC_g + (1 | subj)"
-)
-
-# Jumping
-# List of filtered data frames
 jump_data <- map2(
   model_df$vector, model_df$placement, 
   ~ filter_data(jumping_df, .x, .y)
 )
+GRF_formula <- as.formula(
+  "pGRF_N ~ pACC_g + I(pACC_g^2) + body_mass + body_mass:pACC_g + (1 | subj)"
+)
+LR_formula <- as.formula(
+  "pLR_Ns ~ pATR_gs + I(pATR_gs^2) + body_mass + body_mass:pATR_gs + (1 | subj)"
+)
+
+# Jumping GRF
 # Build models
 GRF_models_jumping <- map(jump_data, ~ lmer(GRF_formula, .x)) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
@@ -33,4 +35,14 @@ GRF_models_jumping <- map(jump_data, ~ lmer(GRF_formula, .x)) %>%
 GRF_accuracy_jumping <- map2(jump_data, GRF_models_jumping, accuracy) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
 # Extract coefficients
-GRF_model_coefficients_jumping <- map(GRF_models_jumping, get_coefficients)
+GRF_coefficients_jumping <- map(GRF_models_jumping, get_coefficients)
+
+# Jumping LR
+# Build models
+LR_models_jumping <- map(jump_data, ~ lmer(LR_formula, .x)) %>% 
+  set_names(paste0(model_df$placement, "_", model_df$vector))
+# Compute accuracy indices
+LR_accuracy_jumping <- map2(jump_data, LR_models_jumping, accuracy) %>% 
+  set_names(paste0(model_df$placement, "_", model_df$vector))
+# Extract coefficients
+LR_coefficients_jumping <- map(LR_models_jumping, get_coefficients)
