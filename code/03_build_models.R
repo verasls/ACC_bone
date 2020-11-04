@@ -32,3 +32,5 @@ GRF_models_jumping <- map(jump_data, ~ lmer(GRF_formula, .x)) %>%
 # Compute accuracy indices
 GRF_accuracy_jumping <- map2(jump_data, GRF_models_jumping, accuracy) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
+# Extract coefficients
+GRF_model_coefficients_jumping <- map(GRF_models_jumping, get_coefficients)
