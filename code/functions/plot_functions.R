@@ -71,23 +71,51 @@ bland_altman <- function(data, title) {
   # bland_altman plots a Bland-Altman plot: a scatterplot of the difference
   # between actual and predicted values by their mean, with a horizontal line
   # at the bias (mean difference) and and one in the upper and lower limits of
-  # agreement (bias +/- 1.96 * standard deviation).
+  # agreement (bias +/- 1.96 * standard deviation), and runs some statistical
+  # tests on the plot data.
   #
   # Args:
-  #   actual, predicted: A numerical vector.
+  #   data: A data frame with one column for the actual values and another
+  #   to the predicted values.
   #
   # Returns:
-  #   A ggplot object.
+  #   A list with: a data frame with proportional bias results, a data frame
+  #   with t-test results and a ggplot object.
   plot_data <- tibble::tibble(
     mean = (data$actual + data$predicted) / 2,
     diff = data$actual - data$predicted
   )
+  
+  l <- stats::lm(diff ~ mean, plot_data) %>%
+    summary()
+  r2 <- broman::myround(l$r.squared, 2)
+  l_p_value <- l$coefficients[2, 4]
+  l_p_value <- ifelse(
+    broman::myround(l_p_value, 3) == "0.000", 
+    "<0.001", 
+    broman::myround(l_p_value, 3)
+  )
+  
+  t <- stats::t.test(plot_data$diff, mu = 0)
+  t_p_value <- t$p.value
+  t_p_value <- ifelse(
+    broman::myround(t_p_value, 3) == "0.000",
+    "<0.001",
+    broman::myround(t_p_value, 3)
+  )
+  
   bias <- lvmisc::bias(data$actual, data$predicted)
   loa <- lvmisc::loa(data$actual, data$predicted)
-  ggplot2::ggplot(plot_data) +
+  p <- ggplot2::ggplot(plot_data) +
     ggplot2::geom_point(ggplot2::aes(x = mean, y = diff)) +
     ggplot2::geom_hline(yintercept = bias) +
     ggplot2::geom_hline(yintercept = loa[[1]], linetype = "dotted") +
     ggplot2::geom_hline(yintercept = loa[[2]], linetype = "dotted") +
     ggplot2::labs(title = title)
+  
+  list(
+    proportional_bias = data.frame(p_value = l_p_value, r2),
+    bias_equals_0 = data.frame(p_value = t_p_value),
+    plot = p
+  )
 }
