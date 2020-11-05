@@ -39,8 +39,14 @@ LR_formula <- as.formula(
 # Build models
 GRF_models_running <- map(running_data, ~ lmer(GRF_formula, .x)) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
-# Compute accuracy indices (with leave-one-out cross-validation)
-GRF_accuracy_running <- map(running_data, ~ loocv_accuracy(.x, GRF_formula)) %>% 
+# Cross validate (leave-one-out cross-validation)
+GRF_loocv_running <- map(running_data, ~ loocv(.x, GRF_formula)) %>% 
+  set_names(paste0(model_df$placement, "_", model_df$vector))
+# Compute accuracy indices
+GRF_accuracy_running <- map2(
+  running_data, GRF_loocv_running, 
+  ~ accuracy(.x, GRF_formula, .y$actual, .y$predicted)
+) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
 # Extract coefficients
 GRF_coefficients_running <- map(GRF_models_running, get_coefficients)
@@ -49,8 +55,14 @@ GRF_coefficients_running <- map(GRF_models_running, get_coefficients)
 # Build models
 LR_models_running <- map(running_data, ~ lmer(LR_formula, .x)) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
+# Cross validate (leave-one-out cross-validation)
+LR_loocv_running <- map(running_data, ~ loocv(.x, LR_formula)) %>% 
+  set_names(paste0(model_df$placement, "_", model_df$vector))
 # Compute accuracy indices
-LR_accuracy_running <- map(running_data, ~ loocv_accuracy(.x, LR_formula)) %>% 
+LR_accuracy_running <- map2(
+  running_data, LR_loocv_running, 
+  ~ accuracy(.x, LR_formula, .y$actual, .y$predicted)
+) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
 # Extract coefficients
 LR_coefficients_running <- map(LR_models_running, get_coefficients)
@@ -59,8 +71,14 @@ LR_coefficients_running <- map(LR_models_running, get_coefficients)
 # Build models
 GRF_models_jumping <- map(jumping_data, ~ lmer(GRF_formula, .x)) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
+# Cross validate (leave-one-out cross-validation)
+GRF_loocv_jumping <- map(jumping_data, ~ loocv(.x, GRF_formula)) %>% 
+  set_names(paste0(model_df$placement, "_", model_df$vector))
 # Compute accuracy indices
-GRF_accuracy_jumping <- map(jumping_data, ~ loocv_accuracy(.x, GRF_formula)) %>% 
+GRF_accuracy_jumping <- map2(
+  running_data, GRF_loocv_jumping, 
+  ~ accuracy(.x, GRF_formula, .y$actual, .y$predicted)
+) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
 # Extract coefficients
 GRF_coefficients_jumping <- map(GRF_models_jumping, get_coefficients)
@@ -69,8 +87,14 @@ GRF_coefficients_jumping <- map(GRF_models_jumping, get_coefficients)
 # Build models
 LR_models_jumping <- map(jumping_data, ~ lmer(LR_formula, .x)) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
+# Cross validate (leave-one-out cross-validation)
+LR_loocv_jumping <- map(jumping_data, ~ loocv(.x, LR_formula)) %>% 
+  set_names(paste0(model_df$placement, "_", model_df$vector))
 # Compute accuracy indices
-LR_accuracy_jumping <- map(jumping_data, ~ loocv_accuracy(.x, LR_formula)) %>% 
+LR_accuracy_jumping <- map2(
+  running_data, LR_loocv_jumping, 
+  ~ accuracy(.x, LR_formula, .y$actual, .y$predicted)
+) %>% 
   set_names(paste0(model_df$placement, "_", model_df$vector))
 # Extract coefficients
 LR_coefficients_jumping <- map(LR_models_jumping, get_coefficients)
