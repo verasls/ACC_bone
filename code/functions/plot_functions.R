@@ -67,7 +67,7 @@ scatterplot <- function(data, x, y, placement) {
     ggplot2::labs(title = placement)
 }
 
-bland_altman <- function(actual, predicted) {
+bland_altman <- function(data, title) {
   # bland_altman plots a Bland-Altman plot: a scatterplot of the difference
   # between actual and predicted values by their mean, with a horizontal line
   # at the bias (mean difference) and and one in the upper and lower limits of
@@ -78,15 +78,16 @@ bland_altman <- function(actual, predicted) {
   #
   # Returns:
   #   A ggplot object.
-  data <- tibble::tibble(
-    mean = (actual + predicted) / 2,
-    diff = actual - predicted
+  plot_data <- tibble::tibble(
+    mean = (data$actual + data$predicted) / 2,
+    diff = data$actual - data$predicted
   )
-  bias <- lvmisc::bias(actual, predicted)
-  loa <- lvmisc::loa(actual, predicted)
-  ggplot2::ggplot(data) +
+  bias <- lvmisc::bias(data$actual, data$predicted)
+  loa <- lvmisc::loa(data$actual, data$predicted)
+  ggplot2::ggplot(plot_data) +
     ggplot2::geom_point(ggplot2::aes(x = mean, y = diff)) +
     ggplot2::geom_hline(yintercept = bias) +
     ggplot2::geom_hline(yintercept = loa[[1]], linetype = "dotted") +
-    ggplot2::geom_hline(yintercept = loa[[2]], linetype = "dotted")
+    ggplot2::geom_hline(yintercept = loa[[2]], linetype = "dotted") +
+    ggplot2::labs(title = title)
 }
