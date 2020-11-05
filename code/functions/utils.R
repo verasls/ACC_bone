@@ -32,3 +32,27 @@ filter_data <- function(data, vector_name, placement) {
   #   A data frame.
   dplyr::filter(data, vector == vector_name, acc_placement == placement)
 }
+
+prepare_data <- function(data) {
+  # prepare_data prepares data to test differences between actual and predicted
+  # values among accelerometer placements and activity types.
+  #
+  # Args:
+  #   data: A data frame.
+  #
+  # Return:
+  #   A tibble.
+  data %>% 
+    tidyr::pivot_longer(
+      cols = c(actual, predicted),
+      names_to = "value_type",
+      values_to = "value"
+    ) %>% 
+    dplyr::mutate(
+      value_type = dplyr::recode(
+        value_type, 
+        "predicted" = paste0(acc_placement, "_", vector),
+        "actual" = paste0("actual_", vector)
+      )
+    )
+}
