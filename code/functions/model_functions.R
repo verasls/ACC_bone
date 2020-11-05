@@ -11,19 +11,19 @@ get_coefficients <- function(model) {
 }
 
 # Define functions to extract data sets
-get_training_data <- function(x) analysis(x)
-get_testing_data <- function(x) assessment(x)
+get_training_data <- function(x) rsample::analysis(x)
+get_testing_data <- function(x) rsample::assessment(x)
 
-loocv_accuracy <- function(data, formula) {
+loocv <- function(data, formula) {
   # loocv cross-validates the model using the leave-one-out cross-validation
-  #  (LOOCV) approach and compute some accuracy indices.
+  #  (LOOCV) approach.
   #
   # Args:
   #   data: A data frame.
   #   formula: The model formula.
   #
   # Returns:
-  #   A data frame with the LOOCV accuracy indices.
+  #   A data frame with the actual and predicted values.
   outcome <- as.character(formula.tools::lhs(formula))
   loocv_split <- rsample::group_vfold_cv(data, group = "subj")
   training_data <- purrr::map(loocv_split$splits, get_training_data)
@@ -39,6 +39,19 @@ loocv_accuracy <- function(data, formula) {
   actual <- purrr::map(testing_data, outcome) %>% 
     purrr::as_vector()
   
+  tibble::tibble(actual, predicted)
+}
+
+accuracy <- function(data, formula, actual, predicted) {
+  # accuracy computes some accuracy indices.
+  #
+  # Args:
+  #   data: A data frame.
+  #   formula: The model formula.
+  #   actual, predicted: A numerical vector.
+  #
+  # Returns:
+  #   A data frame with the accuracy indices.
   R2 <- piecewiseSEM::rsquared(lme4::lmer(GRF_formula, data = data))[[6]]
   MAE <- lvmisc::mean_error_abs(actual, predicted)
   MAPE <- lvmisc::mean_error_abs_pct(actual, predicted)
