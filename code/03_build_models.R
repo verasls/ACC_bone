@@ -109,3 +109,68 @@ LR_accuracy_jumping <- map2(
 LR_plots_jumping <- map2(LR_loocv_jumping, names, bland_altman)
 # Extract coefficients
 LR_coefficients_jumping <- map(LR_models_jumping, get_coefficients)
+
+# Test differences between actual and predicted values --------------------
+
+vectors <- c("resultant", "vertical")
+test_formula <- as.formula("value ~ value_type * activity_type + (1 | subj)")
+
+# Running GRF
+GRF_test_running <- map_dfr(GRF_loocv_running, rbind) %>% 
+  prepare_data()
+GRF_test_models_running <- map(
+  vectors,
+  ~ lmer(
+    test_formula,
+    data = GRF_test_running %>% filter(vector == .x)
+  )
+) %>% 
+  map(
+    ~ anova(.x, type = 3, test = "F")
+  ) %>% 
+  set_names(vectors)
+
+# Running LR
+LR_test_running <- map_dfr(LR_loocv_running, rbind) %>% 
+  prepare_data()
+LR_test_models_running <- map(
+  vectors,
+  ~ lmer(
+    test_formula,
+    data = LR_test_running %>% filter(vector == .x)
+  )
+) %>% 
+  map(
+    ~ anova(.x, type = 3, test = "F")
+  ) %>% 
+  set_names(vectors)
+
+# Jumping GRF
+GRF_test_jumping <- map_dfr(GRF_loocv_jumping, rbind) %>% 
+  prepare_data()
+GRF_test_models_jumping <- map(
+  vectors,
+  ~ lmer(
+    test_formula,
+    data = GRF_test_jumping %>% filter(vector == .x)
+  )
+) %>% 
+  map(
+  ~ anova(.x, type = 3, test = "F")
+) %>% 
+  set_names(vectors)
+
+# Jumping LR
+LR_test_jumping <- map_dfr(LR_loocv_jumping, rbind) %>% 
+  prepare_data()
+LR_test_models_jumping <- map(
+  vectors,
+  ~ lmer(
+    test_formula,
+    data = LR_test_jumping %>% filter(vector == .x)
+  )
+) %>% 
+  map(
+    ~ anova(.x, type = 3, test = "F")
+  ) %>% 
+  set_names(vectors)
