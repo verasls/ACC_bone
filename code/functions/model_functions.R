@@ -39,7 +39,16 @@ loocv <- function(data, formula) {
   actual <- purrr::map(testing_data, outcome) %>% 
     purrr::as_vector()
   
-  tibble::tibble(actual, predicted)
+  if ("jump_type" %in% colnames(data)) {
+    activity_type <- data$jump_type
+  } else {
+    activity_type <- data$speed
+  }
+  
+    tibble::tibble(
+    subj = data$subj, acc_placement = data$acc_placement, vector = data$vector,
+    activity_type, actual, predicted
+  )
 }
 
 accuracy <- function(data, formula, actual, predicted) {
