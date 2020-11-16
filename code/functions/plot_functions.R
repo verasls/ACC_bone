@@ -22,7 +22,7 @@ histogram <- function(data, vector_name, var, grid_y, grid_x) {
 }
 
 box_plot <- function(data, x, y, placement) {
-  # box_plot plots a boxplot of y by x, grouping by vector (resultant and 
+  # box_plot plots a boxplot of y by x, grouping by vector (resultant and
   # vertical) and labeling outliers.
   #
   # Args:
@@ -85,17 +85,17 @@ bland_altman <- function(data, title) {
     mean = (data$actual + data$predicted) / 2,
     diff = data$actual - data$predicted
   )
-  
+
   l <- stats::lm(diff ~ mean, plot_data) %>%
     summary()
   r2 <- broman::myround(l$r.squared, 2)
   l_p_value <- l$coefficients[2, 4]
   l_p_value <- ifelse(
-    broman::myround(l_p_value, 3) == "0.000", 
-    "<0.001", 
+    broman::myround(l_p_value, 3) == "0.000",
+    "<0.001",
     broman::myround(l_p_value, 3)
   )
-  
+
   t <- stats::t.test(plot_data$diff, mu = 0)
   t_p_value <- t$p.value
   t_p_value <- ifelse(
@@ -103,7 +103,7 @@ bland_altman <- function(data, title) {
     "<0.001",
     broman::myround(t_p_value, 3)
   )
-  
+
   bias <- lvmisc::bias(data$actual, data$predicted, na.rm = TRUE)
   loa <- lvmisc::loa(data$actual, data$predicted, na.rm = TRUE)
   p <- ggplot2::ggplot(plot_data) +
@@ -112,7 +112,7 @@ bland_altman <- function(data, title) {
     ggplot2::geom_hline(yintercept = loa[[1]], linetype = "dotted") +
     ggplot2::geom_hline(yintercept = loa[[2]], linetype = "dotted") +
     ggplot2::labs(title = title)
-  
+
   list(
     proportional_bias = data.frame(p_value = l_p_value, r2),
     bias_equals_0 = data.frame(p_value = t_p_value),
