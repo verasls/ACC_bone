@@ -28,23 +28,23 @@ loocv <- function(data, formula) {
   loocv_split <- rsample::group_vfold_cv(data, group = "subj")
   training_data <- purrr::map(loocv_split$splits, get_training_data)
   testing_data <- purrr::map(loocv_split$splits, get_testing_data)
-  
+
   trained_models <- purrr::map(training_data, ~ lme4::lmer(formula, data = .x))
   predicted <- purrr::map2(
     trained_models, testing_data,
     ~ stats::predict(.x, newdata = .y, allow.new.levels = TRUE)
-  ) %>% 
-    purrr::as_vector() %>% 
+  ) %>%
+    purrr::as_vector() %>%
     unname()
-  actual <- purrr::map(testing_data, outcome) %>% 
+  actual <- purrr::map(testing_data, outcome) %>%
     purrr::as_vector()
-  
+
   if ("jump_type" %in% colnames(data)) {
     activity_type <- data$jump_type
   } else {
     activity_type <- data$speed
   }
-  
+
     tibble::tibble(
     subj = data$subj, acc_placement = data$acc_placement, vector = data$vector,
     activity_type, actual, predicted
@@ -61,9 +61,9 @@ accuracy <- function(data, formula, actual, predicted) {
   #
   # Returns:
   #   A data frame with the accuracy indices.
-  R2 <- piecewiseSEM::rsquared(lme4::lmer(GRF_formula, data = data))[[6]]
-  MAE <- lvmisc::mean_error_abs(actual, predicted)
-  MAPE <- lvmisc::mean_error_abs_pct(actual, predicted)
-  RMSE <- lvmisc::mean_error_sqr_root(actual, predicted)
+  R2 <- piecewiseSEM::rsquared(lme4::lmer(formula, data = data))[[6]]
+  MAE <- lvmisc::mean_error_abs(actual, predicted, na.rm = TRUE)
+  MAPE <- lvmisc::mean_error_abs_pct(actual, predicted, na.rm = TRUE)
+  RMSE <- lvmisc::mean_error_sqr_root(actual, predicted, na.rm = TRUE)
   data.frame(R2, MAE, MAPE, RMSE)
 }
