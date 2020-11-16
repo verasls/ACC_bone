@@ -104,8 +104,8 @@ bland_altman <- function(data, title) {
     broman::myround(t_p_value, 3)
   )
   
-  bias <- lvmisc::bias(data$actual, data$predicted)
-  loa <- lvmisc::loa(data$actual, data$predicted)
+  bias <- lvmisc::bias(data$actual, data$predicted, na.rm = TRUE)
+  loa <- lvmisc::loa(data$actual, data$predicted, na.rm = TRUE)
   p <- ggplot2::ggplot(plot_data) +
     ggplot2::geom_point(ggplot2::aes(x = mean, y = diff)) +
     ggplot2::geom_hline(yintercept = bias) +
