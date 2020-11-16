@@ -3,14 +3,14 @@
 library(here)
 library(tidyverse)
 library(lme4)
-source(here("code", "functions", "utils.R"))
-source(here("code", "functions", "model_functions.R"))
-source(here("code", "functions", "plot_functions.R"))
+source(here("code/functions/utils.R"))
+source(here("code/functions/model_functions.R"))
+source(here("code/functions/plot_functions.R"))
 
 # Load data ---------------------------------------------------------------
 
-running_df <- read_csv(here("data", "running_data.csv"))
-jumping_df <- read_csv(here("data", "jumping_data.csv"))
+running_df <- read_csv(here("data/running_data.csv"))
+jumping_df <- read_csv(here("data/jumping_data.csv"))
 
 # Build models ------------------------------------------------------------
 

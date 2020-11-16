@@ -2,12 +2,12 @@
 
 library(here)
 library(tidyverse)
-source(here("code", "functions", "plot_functions.R"))
-source(here("code", "functions", "utils.R"))
+source(here("code/functions/plot_functions.R"))
+source(here("code/functions/utils.R"))
 
 # Load data ---------------------------------------------------------------
 
-running_df <- read_csv(here("data", "running_data.csv")) %>% 
+running_df <- read_csv(here("data/running_data.csv")) %>%
   mutate(
     acc_placement = as_factor(acc_placement),
     vector = as_factor(vector),
@@ -21,7 +21,7 @@ running_df <- read_csv(here("data", "running_data.csv")) %>%
     )
   )
 
-jumping_df <- read_csv(here("data", "jumping_data.csv")) %>% 
+jumping_df <- read_csv(here("data/jumping_data.csv")) %>%
   mutate(
     acc_placement = as_factor(acc_placement),
     vector = as_factor(vector),
@@ -46,21 +46,21 @@ running_df %>%
   summarise_all(~ sum(!is.na(.))) %>%
   knitr::kable()
 
-jumping_df %>% 
-  group_by(acc_placement, vector, jump_type, jump_height) %>% 
-  select(acc_placement, vector, jump_type, jump_height, pGRF_N, pLR_Ns) %>% 
-  summarise_all(~ sum(!is.na(.))) %>% 
+jumping_df %>%
+  group_by(acc_placement, vector, jump_type, jump_height) %>%
+  select(acc_placement, vector, jump_type, jump_height, pGRF_N, pLR_Ns) %>%
+  summarise_all(~ sum(!is.na(.))) %>%
   knitr::kable()
 
 # Number of peaks median and IQR ------------------------------------------
 
-running_df %>% 
+running_df %>%
   summarise(
     n_peaks_median = median(n_peaks), n_peaks_iqr = IQR(n_peaks)
   )
 
-jumping_df %>% 
-  group_by(jump_type) %>% 
+jumping_df %>%
+  group_by(jump_type) %>%
   summarise(
     n_peaks_median = median(n_peaks), n_peaks_iqr = IQR(n_peaks),
     .groups = "drop"
@@ -74,7 +74,7 @@ hist_df <- tibble(
   hist_vars = rep(c("pGRF_N", "pACC_g", "pLR_Ns", "pATR_gs"), 2)
 )
 
-# Running 
+# Running
 map2(
   hist_df$vectors, hist_df$hist_vars,
   ~ histogram(running_df, .x, .y, "acc_placement", "speed")
