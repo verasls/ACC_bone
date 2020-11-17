@@ -48,8 +48,7 @@ data <- running_df %>%
 boxplot_GRF <- data %>%
   filter(acc_placement == "lower_back") %>%
   ggplot(aes(x = activity, y = pGRF_BW)) +
-  geom_boxplot(aes(fill = vector), outlier.shape = NA) +
-  geom_jitter(size = 0.4, alpha = 0.6) +
+  geom_boxplot(aes(fill = vector), outlier.size = 0.8) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 7),
@@ -58,30 +57,18 @@ boxplot_GRF <- data %>%
   ) +
   theme_light() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.x = element_blank(),
     legend.title = element_blank(),
     legend.position = "top"
   ) +
   labs(x = "", y = "pGRF (BW)")
-
-agg_tiff(
-  here("figs/boxplot_GRF.tiff"),
-  width = 30,
-  height = 20,
-  units = "cm",
-  res = 300,
-  scaling = 1.5
-)
-plot(boxplot_GRF)
-dev.off()
 
 # ACC boxplots ------------------------------------------------------------
 
 boxplot_ACC_ankle <- data %>%
   filter(acc_placement == "ankle") %>%
   ggplot(aes(x = activity, y = pACC_g)) +
-  geom_boxplot(aes(fill = vector), outlier.shape = NA) +
-  geom_jitter(size = 0.4, alpha = 0.6) +
+  geom_boxplot(aes(fill = vector), outlier.size = 0.8) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 16),
@@ -90,7 +77,7 @@ boxplot_ACC_ankle <- data %>%
   ) +
   theme_light() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.x = element_blank(),
     legend.title = element_blank(),
     legend.position = "none"
   ) +
@@ -99,8 +86,7 @@ boxplot_ACC_ankle <- data %>%
 boxplot_ACC_back <- data %>%
   filter(acc_placement == "lower_back") %>%
   ggplot(aes(x = activity, y = pACC_g)) +
-  geom_boxplot(aes(fill = vector), outlier.shape = NA) +
-  geom_jitter(size = 0.4, alpha = 0.6) +
+  geom_boxplot(aes(fill = vector), outlier.size = 0.8) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 13),
@@ -109,7 +95,7 @@ boxplot_ACC_back <- data %>%
   ) +
   theme_light() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.x = element_blank(),
     legend.title = element_blank(),
     legend.position = "none"
   ) +
@@ -118,8 +104,7 @@ boxplot_ACC_back <- data %>%
 boxplot_ACC_hip <- data %>%
   filter(acc_placement == "hip") %>%
   ggplot(aes(x = activity, y = pACC_g)) +
-  geom_boxplot(aes(fill = vector), outlier.shape = NA) +
-  geom_jitter(size = 0.4, alpha = 0.6) +
+  geom_boxplot(aes(fill = vector), outlier.size = 0.8) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 13),
@@ -134,52 +119,20 @@ boxplot_ACC_hip <- data %>%
   ) +
   labs(x = "", y = "pACC (g)")
 
-agg_tiff(
-  here("figs/boxplot_ACC_ankle.tiff"),
-  width = 30,
-  height = 20,
-  units = "cm",
-  res = 300,
-  scaling = 1.5
-)
-plot(boxplot_ACC_ankle)
-dev.off()
+# Combine GRF/ACC boxplot -------------------------------------------------
 
-agg_tiff(
-  here("figs/boxplot_ACC_back.tiff"),
-  width = 30,
-  height = 20,
-  units = "cm",
-  res = 300,
-  scaling = 1.5
-)
-plot(boxplot_ACC_back)
-dev.off()
-
-agg_tiff(
-  here("figs/boxplot_ACC_hip.tiff"),
-  width = 30,
-  height = 20,
-  units = "cm",
-  res = 300,
-  scaling = 1.5
-)
-plot(boxplot_ACC_hip)
-dev.off()
-
-# Combined GRF/ACC boxplot ------------------------------------------------
-
-a <- boxplot_GRF + boxplot_ACC_ankle + boxplot_ACC_back + boxplot_ACC_hip +
-  plot_layout(nrow = 1, byrow = FALSE, guides = "collect") &
+a <- boxplot_GRF + boxplot_ACC_back + boxplot_ACC_hip +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(nrow = 3, byrow = FALSE, guides = "collect") &
   theme(legend.position = "top")
 
 agg_tiff(
   here("figs/boxplot.tiff"),
-  width = 120,
-  height = 20,
+  width = 40,
+  height = 60,
   units = "cm",
   res = 300,
-  scaling = 1.5
+  scaling = 2
 )
 plot(a)
 dev.off()
