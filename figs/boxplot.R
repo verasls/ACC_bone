@@ -208,3 +208,82 @@ agg_tiff(
 )
 plot(a)
 dev.off()
+
+# Try another combination -------------------------------------------------
+
+boxplot_GRF_2 <- data %>%
+  filter(vector == "Resultant" & acc_placement == "lower_back") %>%
+  ggplot(aes(x = activity, y = pGRF_BW)) +
+  geom_boxplot(outlier.size = 0.8) +
+  scale_y_continuous(
+    limits = c(0, 7),
+    expand = c(0, 0),
+    breaks = seq(0, 7, 1)
+  ) +
+  theme_light() +
+  theme(axis.text.x = element_blank()) +
+  labs(x = "", y = "pGRF (BW)")
+
+boxplot_LR_2 <- data %>%
+  filter(vector == "Resultant" & acc_placement == "lower_back") %>%
+  ggplot(aes(x = activity, y = pLR_BWs)) +
+  geom_boxplot(outlier.size = 0.8) +
+  scale_y_continuous(
+    limits = c(0, 350),
+    expand = c(0, 0),
+    breaks = seq(0, 350, 50)
+  ) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "", y = "pLR (BW/s)")
+
+boxplot_ACC <- data %>%
+  filter(vector == "Resultant" & acc_placement != "ankle") %>%
+  ggplot(aes(x = activity, y = pACC_g)) +
+  geom_boxplot(aes(fill = acc_placement), outlier.size = 0.8) +
+  scale_fill_manual(values = c("white", "gray")) +
+  scale_y_continuous(
+    limits = c(0, 13),
+    expand = c(0, 0),
+    breaks = seq(0, 13, 1)
+  ) +
+  theme_light() +
+  theme(
+    axis.text.x = element_blank(),
+    legend.title = element_blank(),
+    legend.position = "right"
+  ) +
+  labs(x = "", y = "pACC (g)")
+
+boxplot_ATR <- data %>%
+  filter(vector == "Resultant" & acc_placement != "ankle") %>%
+  ggplot(aes(x = activity, y = pATR_gs)) +
+  geom_boxplot(aes(fill = acc_placement), outlier.size = 0.8) +
+  scale_fill_manual(values = c("white", "gray")) +
+  scale_y_continuous(
+    limits = c(0, 650),
+    expand = c(0, 0),
+    breaks = seq(0, 650, 1)
+  ) +
+  theme_light() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.title = element_blank(),
+    legend.position = "right"
+  ) +
+  labs(x = "", y = "pATR (g/s)")
+
+b <- boxplot_GRF_2 + boxplot_ACC + boxplot_LR_2 + boxplot_ATR +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides = "collect")
+
+agg_tiff(
+  here("figs/boxplot_2.tiff"),
+  width = 80,
+  height = 50,
+  units = "cm",
+  res = 100,
+  scaling = 2
+)
+plot(b)
+dev.off()
