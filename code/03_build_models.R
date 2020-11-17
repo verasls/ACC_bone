@@ -32,10 +32,10 @@ jumping_data <- map2(
 )
 
 GRF_formula <- as.formula(
-  "pGRF_N ~ pACC_g + I(pACC_g^2) + body_mass + body_mass:pACC_g + (1 | subj)"
+  "pGRF_N ~ pACC_g + body_mass + body_mass:pACC_g + (1 | subj)"
 )
 LR_formula <- as.formula(
-  "pLR_Ns ~ pATR_gs + I(pATR_gs^2) + body_mass + body_mass:pATR_gs + (1 | subj)"
+  "pLR_Ns ~ pATR_gs + body_mass + body_mass:pATR_gs + (1 | subj)"
 )
 
 # Running GRF
@@ -101,7 +101,7 @@ LR_loocv_jumping <- map(jumping_data, ~ loocv(.x, LR_formula)) %>%
   set_names(names)
 # Compute accuracy indices
 LR_accuracy_jumping <- map2(
-  running_data, LR_loocv_jumping,
+  jumping_data, LR_loocv_jumping,
   ~ accuracy(.x, LR_formula, .y$actual, .y$predicted)
 ) %>%
   set_names(names)
