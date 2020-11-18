@@ -222,7 +222,7 @@ boxplot_GRF_2 <- data %>%
   ) +
   theme_light() +
   theme(axis.text.x = element_blank()) +
-  labs(x = "", y = "pGRF (BW)")
+  labs(x = "", y = "pRGRF (BW)")
 
 boxplot_LR_2 <- data %>%
   filter(vector == "Resultant" & acc_placement == "lower_back") %>%
@@ -235,7 +235,7 @@ boxplot_LR_2 <- data %>%
   ) +
   theme_light() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "", y = "pLR (BW/s)")
+  labs(x = "", y = "pRLR (BW/s)")
 
 boxplot_ACC <- data %>%
   filter(vector == "Resultant" & acc_placement != "ankle") %>%
@@ -253,7 +253,7 @@ boxplot_ACC <- data %>%
     legend.title = element_blank(),
     legend.position = "right"
   ) +
-  labs(x = "", y = "pACC (g)")
+  labs(x = "", y = "pRACC (g)")
 
 boxplot_ATR <- data %>%
   filter(vector == "Resultant" & acc_placement != "ankle") %>%
@@ -263,7 +263,7 @@ boxplot_ATR <- data %>%
   scale_y_continuous(
     limits = c(0, 650),
     expand = c(0, 0),
-    breaks = seq(0, 650, 1)
+    breaks = seq(0, 650, 50)
   ) +
   theme_light() +
   theme(
@@ -271,7 +271,7 @@ boxplot_ATR <- data %>%
     legend.title = element_blank(),
     legend.position = "right"
   ) +
-  labs(x = "", y = "pATR (g/s)")
+  labs(x = "", y = "pRATR (g/s)")
 
 b <- boxplot_GRF_2 + boxplot_ACC + boxplot_LR_2 + boxplot_ATR +
   plot_annotation(tag_levels = "A") +
