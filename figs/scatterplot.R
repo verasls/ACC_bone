@@ -157,30 +157,44 @@ scatter_ACC_jumping_hip_res <- jumping_df %>%
   theme(legend.title = element_blank()) +
   labs(x = "pACC (g)", y = "pGRF (N)")
 
-# Combine GRF x ACC plots -------------------------------------------------
+# LR x ATR plots ----------------------------------------------------------
 
 # Running
-scatter_ACC_running <- scatter_ACC_running_ankle_res +
-  scatter_ACC_running_back_res +
-  scatter_ACC_running_hip_res +
-  scatter_ACC_running_ankle_ver +
-  scatter_ACC_running_back_ver +
-  scatter_ACC_running_hip_ver +
-  plot_annotation(tag_levels = "A") +
-  plot_layout(guides = "collect") &
-  theme(legend.position = "bottom")
-agg_tiff(
-  here("figs/scatterplot_ACC_running.tiff"),
-  width = 120,
-  height = 50,
-  units = "cm",
-  res = 100,
-  scaling = 2
-)
-plot(scatter_ACC_running)
-dev.off()
+scatter_ATR_running_ankle_res <- running_df %>%
+  filter(acc_placement == "ankle" & vector == "resultant") %>%
+  ggplot(aes(x = pATR_gs, y = pLR_Ns, color = BMI_cat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(0, 60000),
+    expand = c(0, 0),
+    breaks = seq(0, 60000, 10000)
+  ) +
+  theme_light() +
+  theme(legend.title = element_blank()) +
+  labs(
+    x = quote("pRATR" ~ (g %.% s^-1)),
+    y = quote("pRLR" ~ (N %.% s^-1))
+  )
 
-# LR x ATR plots ----------------------------------------------------------
+scatter_ATR_running_back_res <- running_df %>%
+  filter(acc_placement == "lower_back" & vector == "resultant") %>%
+  ggplot(aes(x = pATR_gs, y = pLR_Ns, color = BMI_cat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(0, 60000),
+    expand = c(0, 0),
+    breaks = seq(0, 60000, 10000)
+  ) +
+  theme_light() +
+  theme(legend.title = element_blank()) +
+  labs(
+    x = quote("pRATR" ~ (g %.% s^-1)),
+    y = quote("pRLR" ~ (N %.% s^-1))
+  )
 
 scatter_ATR_running_hip_res <- running_df %>%
   filter(acc_placement == "hip" & vector == "resultant") %>%
@@ -195,8 +209,66 @@ scatter_ATR_running_hip_res <- running_df %>%
   ) +
   theme_light() +
   theme(legend.title = element_blank()) +
-  labs(x = "pATR (g/s)", y = "pLR (N/s)")
+  labs(
+    x = quote("pRATR" ~ (g %.% s^-1)),
+    y = quote("pRLR" ~ (N %.% s^-1))
+  )
 
+scatter_ATR_running_ankle_ver <- running_df %>%
+  filter(acc_placement == "ankle" & vector == "vertical") %>%
+  ggplot(aes(x = pATR_gs, y = pLR_Ns, color = BMI_cat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(0, 60000),
+    expand = c(0, 0),
+    breaks = seq(0, 60000, 10000)
+  ) +
+  theme_light() +
+  theme(legend.title = element_blank()) +
+  labs(
+    x = quote("pVATR" ~ (g %.% s^-1)),
+    y = quote("pVLR" ~ (N %.% s^-1))
+  )
+
+scatter_ATR_running_back_ver <- running_df %>%
+  filter(acc_placement == "lower_back" & vector == "vertical") %>%
+  ggplot(aes(x = pATR_gs, y = pLR_Ns, color = BMI_cat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(0, 60000),
+    expand = c(0, 0),
+    breaks = seq(0, 60000, 10000)
+  ) +
+  theme_light() +
+  theme(legend.title = element_blank()) +
+  labs(
+    x = quote("pVATR" ~ (g %.% s^-1)),
+    y = quote("pVLR" ~ (N %.% s^-1))
+  )
+
+scatter_ATR_running_hip_ver <- running_df %>%
+  filter(acc_placement == "hip" & vector == "vertical") %>%
+  ggplot(aes(x = pATR_gs, y = pLR_Ns, color = BMI_cat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(0, 60000),
+    expand = c(0, 0),
+    breaks = seq(0, 60000, 10000)
+  ) +
+  theme_light() +
+  theme(legend.title = element_blank()) +
+  labs(
+    x = quote("pVATR" ~ (g %.% s^-1)),
+    y = quote("pVLR" ~ (N %.% s^-1))
+  )
+
+# Jumping
 scatter_ATR_jumping_hip_res <- jumping_df %>%
   filter(acc_placement == "hip" & vector == "resultant") %>%
   ggplot(aes(x = pATR_gs, y = pLR_Ns, color = BMI_cat)) +
@@ -211,3 +283,47 @@ scatter_ATR_jumping_hip_res <- jumping_df %>%
   theme_light() +
   theme(legend.title = element_blank()) +
   labs(x = "pATR (g/s)", y = "pLR (N/s)")
+
+# Combine and save plots --------------------------------------------------
+
+# Running GFR x ACC
+scatter_ACC_running <- scatter_ACC_running_ankle_res +
+  scatter_ACC_running_back_res +
+  scatter_ACC_running_hip_res +
+  scatter_ACC_running_ankle_ver +
+  scatter_ACC_running_back_ver +
+  scatter_ACC_running_hip_ver +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+agg_tiff(
+  here("figs/scatterplot_GRF_ACC_running.tiff"),
+  width = 120,
+  height = 50,
+  units = "cm",
+  res = 100,
+  scaling = 2
+)
+plot(scatter_ACC_running)
+dev.off()
+
+# Running LR x ATR
+scatter_ATR_running <- scatter_ATR_running_ankle_res +
+  scatter_ATR_running_back_res +
+  scatter_ATR_running_hip_res +
+  scatter_ATR_running_ankle_ver +
+  scatter_ATR_running_back_ver +
+  scatter_ATR_running_hip_ver +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+agg_tiff(
+  here("figs/scatterplot_LR_ATR_running.tiff"),
+  width = 120,
+  height = 50,
+  units = "cm",
+  res = 100,
+  scaling = 2
+)
+plot(scatter_ATR_running)
+dev.off()
