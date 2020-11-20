@@ -9,8 +9,8 @@ source(here("code/functions/plot_functions.R"))
 
 # Load data ---------------------------------------------------------------
 
-running_df <- read_csv(here("data/running_data.csv"))
-jumping_df <- read_csv(here("data/jumping_data.csv"))
+running_df <- read_csv(here("data/processed/running_data.csv"))
+jumping_df <- read_csv(here("data/processed/jumping_data.csv"))
 
 # Build models ------------------------------------------------------------
 

@@ -7,7 +7,7 @@ source(here("code/functions/utils.R"))
 
 # Load data ---------------------------------------------------------------
 
-running_df <- read_csv(here("data/running_data.csv")) %>%
+running_df <- read_csv(here("data/processed/running_data.csv")) %>%
   mutate(
     acc_placement = as_factor(acc_placement),
     vector = as_factor(vector),
@@ -21,7 +21,7 @@ running_df <- read_csv(here("data/running_data.csv")) %>%
     )
   )
 
-jumping_df <- read_csv(here("data/jumping_data.csv")) %>%
+jumping_df <- read_csv(here("data/processed/jumping_data.csv")) %>%
   mutate(
     acc_placement = as_factor(acc_placement),
     vector = as_factor(vector),

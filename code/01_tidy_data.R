@@ -8,7 +8,7 @@ library(lvmisc)
 
 # Read anthropometric data ------------------------------------------------
 
-anthropometric <- read_csv(here("data/anthropometric_data.csv")) %>%
+anthropometric <- read_csv(here("data/raw/anthropometric_data.csv")) %>%
   select(id = ID, everything()) %>%
   mutate(
     BMI = bmi(body_mass, height / 100),
@@ -19,7 +19,7 @@ anthropometric <- read_csv(here("data/anthropometric_data.csv")) %>%
 
 # Data with force and acceleration
 running_df_wide <- read_xlsx(
-  here("data/GRF_ACC_data_all.xlsx"), sheet = "all"
+  here("data/raw/GRF_ACC_data_all.xlsx"), sheet = "all"
 ) %>%
   clean_names() %>%
   select(
@@ -81,7 +81,7 @@ running_df <- rbind(running_df_res, running_df_ver) %>%
 
 # Data with force and acceleration rates
 running_rates_df_wide <- read_csv(
-  here("data/max_rates_IMU_running.csv")
+  here("data/raw/max_rates_IMU_running.csv")
 ) %>%
   clean_names() %>%
   select(
@@ -146,7 +146,7 @@ running_df <- running_df %>%
     )
   )
 
-write_csv(running_df, here("data/running_data.csv"))
+write_csv(running_df, here("data/processed/running_data.csv"))
 
 # Obtain jumping data -----------------------------------------------------
 
@@ -195,4 +195,4 @@ jumping_df <- files %>%
   arrange(subj)
 
 # Write jumping data
-write_csv(jumping_df, here("data/jumping_data.csv"))
+write_csv(jumping_df, here("data/processed/jumping_data.csv"))
