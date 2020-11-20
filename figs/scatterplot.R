@@ -8,7 +8,7 @@ library(ggsci)
 
 # Load data ---------------------------------------------------------------
 
-running_df <- read_csv(here("data/running_data.csv")) %>%
+running_df <- read_csv(here("data/processed/running_data.csv")) %>%
   mutate(
     BMI_cat = fct_relevel(
       as_factor(BMI_cat),
@@ -18,7 +18,7 @@ running_df <- read_csv(here("data/running_data.csv")) %>%
     )
   )
 
-jumping_df <- read_csv(here("data/jumping_data.csv")) %>%
+jumping_df <- read_csv(here("data/processed/jumping_data.csv")) %>%
   mutate(
     BMI_cat = fct_relevel(
       as_factor(BMI_cat),

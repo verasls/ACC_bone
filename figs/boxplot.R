@@ -7,14 +7,14 @@ library(patchwork)
 
 # Load data ---------------------------------------------------------------
 
-running_df <- read_csv(here("data/running_data.csv")) %>%
+running_df <- read_csv(here("data/processed/running_data.csv")) %>%
   mutate(
     run = as_factor(paste0("running ", speed, "km/h")),
   ) %>%
   select(
     subj, acc_placement, vector, run, pGRF_BW, pACC_g, pLR_BWs, pATR_gs
   )
-jumping_df <- read_csv(here("data/jumping_data.csv")) %>%
+jumping_df <- read_csv(here("data/processed/jumping_data.csv")) %>%
   mutate(
     jump = as_factor(paste0(jump_type, " ", jump_height, "cm")),
     jump = fct_relevel(jump, "drop jumps 40cm", after = 7),
