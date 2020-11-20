@@ -174,3 +174,18 @@ LR_test_models_jumping <- map(
     ~ anova(.x, type = 3, test = "F")
   ) %>%
   set_names(vectors)
+
+# Write LOOCV data --------------------------------------------------------
+
+loocv_df <- list(
+  GRF_loocv_running = GRF_loocv_running,
+  GRF_loocv_jumping = GRF_loocv_jumping,
+  LR_loocv_running = LR_loocv_running,
+  LR_loocv_jumping = LR_loocv_jumping
+) %>%
+  map(bind_data)
+
+walk2(
+  loocv_df, names(loocv_df),
+  ~ write_data(.x, .y, here("data/processed/"))
+)
