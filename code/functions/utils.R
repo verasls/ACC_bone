@@ -56,3 +56,27 @@ prepare_data <- function(data) {
       )
     )
 }
+
+bind_data <- function(list) {
+  # bind_data combines a list of data frames by row.
+  #
+  # Args:
+  #   list: A list of data frames.
+  #
+  # Returns:
+  #   A data frame.
+  purrr::map_dfr(list, rbind)
+}
+
+write_data <- function(data, name, path) {
+  # write_data writes a data frame into a csv file with the specified filename
+  # and path.
+  #
+  # Args:
+  #   data: A data frame.
+  #   name, path: A character string.
+  #
+  # Returns:
+  #   Write data as a csv file.
+  readr::write_csv(data, paste0(path, name, ".csv"))
+}
