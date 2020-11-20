@@ -161,6 +161,127 @@ BA_GRF_running_hip_ver <- GRF_loocv_running %>%
     y = "Actual - Predicted pVGRF (N)"
   )
 
+# Jumping
+BA_GRF_jumping_ankle_res <- GRF_loocv_jumping %>%
+  filter(acc_placement == "ankle" & vector == "resultant") %>%
+  publication_bland_altman() +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(-1500, 2000),
+    expand = c(0, 0),
+    breaks = seq(-1500, 2000, 500)
+  ) +
+  theme_light() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "Ankle",
+    x = "Mean of Actual and Predicted pRGRF (N)",
+    y = "Actual - Predicted pRGRF (N)"
+  )
+
+BA_GRF_jumping_back_res <- GRF_loocv_jumping %>%
+  filter(acc_placement == "lower_back" & vector == "resultant") %>%
+  publication_bland_altman() +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(-1600, 1600),
+    expand = c(0, 0),
+    breaks = seq(-1600, 1600, 400)
+  ) +
+  theme_light() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "Lower Back",
+    x = "Mean of Actual and Predicted pRGRF (N)",
+    y = "Actual - Predicted pRGRF (N)"
+  )
+
+BA_GRF_jumping_hip_res <- GRF_loocv_jumping %>%
+  filter(acc_placement == "hip" & vector == "resultant") %>%
+  publication_bland_altman() +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(-2000, 1500),
+    expand = c(0, 0),
+    breaks = seq(-2000, 1500, 500)
+  ) +
+  theme_light() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "Hip",
+    x = "Mean of Actual and Predicted pRGRF (N)",
+    y = "Actual - Predicted pRGRF (N)"
+  )
+
+BA_GRF_jumping_ankle_ver <- GRF_loocv_jumping %>%
+  filter(acc_placement == "ankle" & vector == "vertical") %>%
+  publication_bland_altman() +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(-1600, 2000),
+    expand = c(0, 0),
+    breaks = seq(-1600, 2000, 600)
+  ) +
+  theme_light() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "Ankle",
+    x = "Mean of Actual and Predicted pVGRF (N)",
+    y = "Actual - Predicted pVGRF (N)"
+  )
+
+BA_GRF_jumping_back_ver <- GRF_loocv_jumping %>%
+  filter(acc_placement == "lower_back" & vector == "vertical") %>%
+  publication_bland_altman() +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(-1600, 1600),
+    expand = c(0, 0),
+    breaks = seq(-1600, 1600, 400)
+  ) +
+  theme_light() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "Lower Back",
+    x = "Mean of Actual and Predicted pVGRF (N)",
+    y = "Actual - Predicted pVGRF (N)"
+  )
+
+BA_GRF_jumping_hip_ver <- GRF_loocv_jumping %>%
+  filter(acc_placement == "hip" & vector == "vertical") %>%
+  publication_bland_altman() +
+  scale_color_nejm() +
+  scale_y_continuous(
+    limits = c(-2000, 1600),
+    expand = c(0, 0),
+    breaks = seq(-2000, 1600, 600)
+  ) +
+  theme_light() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "Hip",
+    x = "Mean of Actual and Predicted pVGRF (N)",
+    y = "Actual - Predicted pVGRF (N)"
+  )
+
   # Combine and save plots ------------------------------------------------
 
 # Running GFR x ACC
@@ -182,4 +303,25 @@ agg_tiff(
   scaling = 2
 )
 plot(BA_GRF_running)
+dev.off()
+
+# Jumping GFR x ACC
+BA_GRF_jumping <- BA_GRF_jumping_ankle_res +
+  BA_GRF_jumping_back_res +
+  BA_GRF_jumping_hip_res +
+  BA_GRF_jumping_ankle_ver +
+  BA_GRF_jumping_back_ver +
+  BA_GRF_jumping_hip_ver +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+agg_tiff(
+  here("figs/bland-altman_GRF_jumping.tiff"),
+  width = 120,
+  height = 50,
+  units = "cm",
+  res = 100,
+  scaling = 2
+)
+plot(BA_GRF_jumping)
 dev.off()
