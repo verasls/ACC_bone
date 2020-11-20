@@ -119,3 +119,29 @@ bland_altman <- function(data, title) {
     plot = p
   )
 }
+
+publication_bland_altman <- function(data) {
+  # publication_bland_altman plots a Bland-Altman plot with different points
+  # color according to the body mass index (BMI) category.
+  #
+  # Args:
+  #   data: A data frame with one column for the actual values and another
+  #   to the predicted values.
+  #
+  # Returns:
+  #   A ggplot object.
+  data <- dplyr::mutate(
+    data,
+    mean = (actual + predicted) / 2,
+    diff = actual - predicted
+  )
+
+  bias <- lvmisc::bias(data$actual, data$predicted, na.rm = TRUE)
+  loa <- lvmisc::loa(data$actual, data$predicted, na.rm = TRUE)
+
+  ggplot2::ggplot(data) +
+    ggplot2::geom_point(ggplot2::aes(x = mean, y = diff, color = BMI_cat)) +
+    ggplot2::geom_hline(yintercept = bias) +
+    ggplot2::geom_hline(yintercept = loa[[1]], linetype = "dotted") +
+    ggplot2::geom_hline(yintercept = loa[[2]], linetype = "dotted")
+}
