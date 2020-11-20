@@ -146,9 +146,9 @@ BA_GRF_running_hip_ver <- GRF_loocv_running %>%
   publication_bland_altman() +
   scale_color_nejm() +
   scale_y_continuous(
-    limits = c(-600, 500),
+    limits = c(-600, 600),
     expand = c(0, 0),
-    breaks = seq(-600, 500, 200)
+    breaks = seq(-600, 600, 200)
   ) +
   theme_light() +
   theme(
@@ -229,7 +229,7 @@ BA_GRF_jumping_ankle_ver <- GRF_loocv_jumping %>%
   scale_y_continuous(
     limits = c(-1600, 2000),
     expand = c(0, 0),
-    breaks = seq(-1600, 2000, 600)
+    breaks = seq(-1600, 2000, 400)
   ) +
   theme_light() +
   theme(
@@ -269,7 +269,7 @@ BA_GRF_jumping_hip_ver <- GRF_loocv_jumping %>%
   scale_y_continuous(
     limits = c(-2000, 1600),
     expand = c(0, 0),
-    breaks = seq(-2000, 1600, 600)
+    breaks = seq(-2000, 1600, 400)
   ) +
   theme_light() +
   theme(
