@@ -37,7 +37,7 @@ data <- running_df %>%
     ),
     activity = str_to_sentence(activity),
     activity = as_factor(activity),
-    activity = fct_relevel(activity, "drop jumps 40cm", after = 15)
+    activity = fct_relevel(activity, "Drop jumps 40cm", after = 15)
   )
 
 # GRF boxplot -------------------------------------------------------------
