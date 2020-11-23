@@ -17,8 +17,7 @@ running_df <- read_csv(here("data/processed/running_data.csv")) %>%
   )
 jumping_df <- read_csv(here("data/processed/jumping_data.csv")) %>%
   mutate(
-    jump = as_factor(paste0(jump_type, " ", jump_height, "cm")),
-    jump = fct_relevel(jump, "drop jumps 40cm", after = 7),
+    jump = as_factor(paste0(jump_type, " ", jump_height, " cm"))
   ) %>%
   select(
     subj, acc_placement, vector, jump, pGRF_BW, pACC_g, pLR_BWs, pATR_gs
@@ -41,6 +40,20 @@ data <- running_df %>%
     activity = fct_relevel(activity, "Drop jumps 40cm", after = 15)
   )
 
+# Set x axis labels
+x_labs <- scale_x_discrete(
+    labels = c(
+      "Running 7km/h" = quote("Running 7" ~ km %.% h^-1),
+      "Running 8km/h" = quote("Running 8" ~ km %.% h^-1),
+      "Running 9km/h" = quote("Running 9" ~ km %.% h^-1),
+      "Running 10km/h" = quote("Running 10" ~ km %.% h^-1),
+      "Running 11km/h" = quote("Running 11" ~ km %.% h^-1),
+      "Running 12km/h" = quote("Running 12" ~ km %.% h^-1),
+      "Running 13km/h" = quote("Running 13" ~ km %.% h^-1),
+      "Running 14km/h" = quote("Running 14" ~ km %.% h^-1)
+    )
+  )
+
 # GRF boxplot -------------------------------------------------------------
 
 boxplot_GRF_res <- data %>%
@@ -57,6 +70,7 @@ boxplot_GRF_res <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 7, 1)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -77,6 +91,7 @@ boxplot_GRF_ver <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 7, 1)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -95,6 +110,7 @@ boxplot_ACC_res <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 13, 1)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -113,6 +129,7 @@ boxplot_ACC_ver <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 13, 1)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -137,6 +154,7 @@ boxplot_LR_res <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 350, 50)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -157,6 +175,7 @@ boxplot_LR_ver <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 350, 50)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -175,6 +194,7 @@ boxplot_ATR_res <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 650, 50)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -193,6 +213,7 @@ boxplot_ATR_ver <- data %>%
     expand = c(0, 0),
     breaks = seq(0, 650, 50)
   ) +
+  x_labs +
   theme_light() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
