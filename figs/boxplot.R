@@ -101,7 +101,7 @@ boxplot_ACC_res <- data %>%
     legend.title = element_blank(),
     legend.position = "right"
   ) +
-  labs(x = "", y = "pRACC (g)")
+  labs(x = "", y = quote("pRACC" ~ (italic(g))))
 
 boxplot_ACC_ver <- data %>%
   filter(vector == "vertical" & acc_placement != "Ankle") %>%
@@ -119,7 +119,7 @@ boxplot_ACC_ver <- data %>%
     legend.title = element_blank(),
     legend.position = "right"
   ) +
-  labs(x = "", y = "pVACC (g)")
+  labs(x = "", y = quote("pVACC" ~ (italic(g))))
 
 # LR boxplot --------------------------------------------------------------
 
@@ -181,7 +181,7 @@ boxplot_ATR_res <- data %>%
     legend.title = element_blank(),
     legend.position = "right"
   ) +
-  labs(x = "", y = quote("pRATR" ~ (g %.% s^-1)))
+  labs(x = "", y = quote("pRATR" ~ (italic(g) %.% s^-1)))
 
 boxplot_ATR_ver <- data %>%
   filter(vector == "vertical" & acc_placement != "Ankle") %>%
@@ -199,7 +199,7 @@ boxplot_ATR_ver <- data %>%
     legend.title = element_blank(),
     legend.position = "right"
   ) +
-  labs(x = "", y = quote("pVATR" ~ (g %.% s^-1)))
+  labs(x = "", y = quote("pVATR" ~ (italic(g) %.% s^-1)))
 
 # Combine and save plots --------------------------------------------------
 
