@@ -142,6 +142,6 @@ publication_bland_altman <- function(data) {
   ggplot2::ggplot(data) +
     ggplot2::geom_point(ggplot2::aes(x = mean, y = diff, color = BMI_cat)) +
     ggplot2::geom_hline(yintercept = bias) +
-    ggplot2::geom_hline(yintercept = loa[[1]], linetype = "dotted") +
-    ggplot2::geom_hline(yintercept = loa[[2]], linetype = "dotted")
+    ggplot2::geom_hline(yintercept = loa[[1]], linetype = "longdash") +
+    ggplot2::geom_hline(yintercept = loa[[2]], linetype = "longdash")
 }
