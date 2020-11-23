@@ -2,6 +2,7 @@
 
 library(here)
 library(tidyverse)
+library(ggpattern)
 library(ragg)
 library(patchwork)
 
@@ -45,7 +46,11 @@ data <- running_df %>%
 boxplot_GRF_res <- data %>%
   filter(acc_placement == "Lower Back" & vector == "resultant") %>%
   ggplot(aes(x = activity, y = pGRF_BW)) +
-  geom_boxplot(outlier.size = 0.8) +
+  geom_boxplot_pattern(
+    outlier.size = 0.8,
+    pattern_density = 0.01,
+    pattern_spacing = 0.01
+  ) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 7),
@@ -61,7 +66,11 @@ boxplot_GRF_res <- data %>%
 boxplot_GRF_ver <- data %>%
   filter(acc_placement == "Lower Back" & vector == "vertical") %>%
   ggplot(aes(x = activity, y = pGRF_BW)) +
-  geom_boxplot(outlier.size = 0.8) +
+  geom_boxplot_pattern(
+    outlier.size = 0.8,
+    pattern_density = 0.01,
+    pattern_spacing = 0.01
+  ) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 7),
@@ -117,7 +126,11 @@ boxplot_ACC_ver <- data %>%
 boxplot_LR_res <- data %>%
   filter(acc_placement == "Lower Back" & vector == "resultant") %>%
   ggplot(aes(x = activity, y = pLR_BWs)) +
-  geom_boxplot(outlier.size = 0.8) +
+  geom_boxplot_pattern(
+    outlier.size = 0.8,
+    pattern_density = 0.01,
+    pattern_spacing = 0.01
+  ) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 350),
@@ -133,7 +146,11 @@ boxplot_LR_res <- data %>%
 boxplot_LR_ver <- data %>%
   filter(acc_placement == "Lower Back" & vector == "vertical") %>%
   ggplot(aes(x = activity, y = pLR_BWs)) +
-  geom_boxplot(outlier.size = 0.8) +
+  geom_boxplot_pattern(
+    outlier.size = 0.8,
+    pattern_density = 0.01,
+    pattern_spacing = 0.01
+  ) +
   scale_fill_manual(values = c("white", "gray")) +
   scale_y_continuous(
     limits = c(0, 350),
