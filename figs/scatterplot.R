@@ -48,7 +48,7 @@ scatter_ACC_running_ankle_res <- running_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Ankle", x = "pRACC (g)", y = "pRGRF (N)")
+  labs(title = "Ankle", x = quote("pRACC" ~ (italic(g))), y = "pRGRF (N)")
 
 scatter_ACC_running_back_res <- running_df %>%
   filter(acc_placement == "lower_back" & vector == "resultant") %>%
@@ -66,7 +66,7 @@ scatter_ACC_running_back_res <- running_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Lower Back", x = "pRACC (g)", y = "pRGRF (N)")
+  labs(title = "Lower Back", x = quote("pRACC" ~ (italic(g))), y = "pRGRF (N)")
 
 scatter_ACC_running_hip_res <- running_df %>%
   filter(acc_placement == "hip" & vector == "resultant") %>%
@@ -84,7 +84,7 @@ scatter_ACC_running_hip_res <- running_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Hip", x = "pRACC (g)", y = "pRGRF (N)")
+  labs(title = "Hip", x = quote("pRACC" ~ (italic(g))), y = "pRGRF (N)")
 
 scatter_ACC_running_ankle_ver <- running_df %>%
   filter(acc_placement == "ankle" & vector == "vertical") %>%
@@ -102,7 +102,7 @@ scatter_ACC_running_ankle_ver <- running_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Ankle", x = "pVACC (g)", y = "pVGRF (N)")
+  labs(title = "Ankle", x = quote("pVACC" ~ (italic(g))), y = "pVGRF (N)")
 
 scatter_ACC_running_back_ver <- running_df %>%
   filter(acc_placement == "lower_back" & vector == "vertical") %>%
@@ -120,7 +120,7 @@ scatter_ACC_running_back_ver <- running_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Lower Back", x = "pVACC (g)", y = "pVGRF (N)")
+  labs(title = "Lower Back", x = quote("pVACC" ~ (italic(g))), y = "pVGRF (N)")
 
 scatter_ACC_running_hip_ver <- running_df %>%
   filter(acc_placement == "hip" & vector == "vertical") %>%
@@ -138,7 +138,7 @@ scatter_ACC_running_hip_ver <- running_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Hip", x = "pVACC (g)", y = "pVGRF (N)")
+  labs(title = "Hip", x = quote("pVACC" ~ (italic(g))), y = "pVGRF (N)")
 
 
 # Jumping
@@ -158,7 +158,7 @@ scatter_ACC_jumping_ankle_res <- jumping_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Ankle", x = "pRACC (g)", y = "pRGRF (N)")
+  labs(title = "Ankle", x = quote("pRACC" ~ (italic(g))), y = "pRGRF (N)")
 
 scatter_ACC_jumping_back_res <- jumping_df %>%
   filter(acc_placement == "lower_back" & vector == "resultant") %>%
@@ -176,7 +176,7 @@ scatter_ACC_jumping_back_res <- jumping_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Lower Back", x = "pRACC (g)", y = "pRGRF (N)")
+  labs(title = "Lower Back", x = quote("pRACC" ~ (italic(g))), y = "pRGRF (N)")
 
 scatter_ACC_jumping_hip_res <- jumping_df %>%
   filter(acc_placement == "hip" & vector == "resultant") %>%
@@ -194,7 +194,7 @@ scatter_ACC_jumping_hip_res <- jumping_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Hip", x = "pRACC (g)", y = "pRGRF (N)")
+  labs(title = "Hip", x = quote("pRACC" ~ (italic(g))), y = "pRGRF (N)")
 
 scatter_ACC_jumping_ankle_ver <- jumping_df %>%
   filter(acc_placement == "ankle" & vector == "vertical") %>%
@@ -212,7 +212,7 @@ scatter_ACC_jumping_ankle_ver <- jumping_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Ankle", x = "pVACC (g)", y = "pVGRF (N)")
+  labs(title = "Ankle", x = quote("pVACC" ~ (italic(g))), y = "pVGRF (N)")
 
 scatter_ACC_jumping_back_ver <- jumping_df %>%
   filter(acc_placement == "lower_back" & vector == "vertical") %>%
@@ -230,7 +230,7 @@ scatter_ACC_jumping_back_ver <- jumping_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Lower Back", x = "pVACC (g)", y = "pVGRF (N)")
+  labs(title = "Lower Back", x = quote("pVACC" ~ (italic(g))), y = "pVGRF (N)")
 
 scatter_ACC_jumping_hip_ver <- jumping_df %>%
   filter(acc_placement == "hip" & vector == "vertical") %>%
@@ -248,7 +248,7 @@ scatter_ACC_jumping_hip_ver <- jumping_df %>%
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank()
   ) +
-  labs(title = "Hip", x = "pVACC (g)", y = "pVGRF (N)")
+  labs(title = "Hip", x = quote("pVACC" ~ (italic(g))), y = "pVGRF (N)")
 
 # LR x ATR plots ----------------------------------------------------------
 
@@ -271,7 +271,7 @@ scatter_ATR_running_ankle_res <- running_df %>%
   ) +
   labs(
     title = "Ankle",
-    x = quote("pRATR" ~ (g %.% s^-1)),
+    x = quote("pRATR" ~ (italic(g) %.% s^-1)),
     y = quote("pRLR" ~ (N %.% s^-1))
   )
 
@@ -293,7 +293,7 @@ scatter_ATR_running_back_res <- running_df %>%
   ) +
   labs(
     title = "Lower Back",
-    x = quote("pRATR" ~ (g %.% s^-1)),
+    x = quote("pRATR" ~ (italic(g) %.% s^-1)),
     y = quote("pRLR" ~ (N %.% s^-1))
   )
 
@@ -315,7 +315,7 @@ scatter_ATR_running_hip_res <- running_df %>%
   ) +
   labs(
     title = "Hip",
-    x = quote("pRATR" ~ (g %.% s^-1)),
+    x = quote("pRATR" ~ (italic(g) %.% s^-1)),
     y = quote("pRLR" ~ (N %.% s^-1))
   )
 
@@ -337,7 +337,7 @@ scatter_ATR_running_ankle_ver <- running_df %>%
   ) +
   labs(
     title = "Ankle",
-    x = quote("pVATR" ~ (g %.% s^-1)),
+    x = quote("pVATR" ~ (italic(g) %.% s^-1)),
     y = quote("pVLR" ~ (N %.% s^-1))
   )
 
@@ -359,7 +359,7 @@ scatter_ATR_running_back_ver <- running_df %>%
   ) +
   labs(
     title = "Lower Back",
-    x = quote("pVATR" ~ (g %.% s^-1)),
+    x = quote("pVATR" ~ (italic(g) %.% s^-1)),
     y = quote("pVLR" ~ (N %.% s^-1))
   )
 
@@ -381,7 +381,7 @@ scatter_ATR_running_hip_ver <- running_df %>%
   ) +
   labs(
     title = "Hip",
-    x = quote("pVATR" ~ (g %.% s^-1)),
+    x = quote("pVATR" ~ (italic(g) %.% s^-1)),
     y = quote("pVLR" ~ (N %.% s^-1))
   )
 
@@ -404,7 +404,7 @@ scatter_ATR_jumping_ankle_res <- jumping_df %>%
   ) +
   labs(
     title = "Ankle",
-    x = quote("pRATR" ~ (g %.% s^-1)),
+    x = quote("pRATR" ~ (italic(g) %.% s^-1)),
     y = quote("pRLR" ~ (N %.% s^-1))
   )
 
@@ -426,7 +426,7 @@ scatter_ATR_jumping_back_res <- jumping_df %>%
   ) +
   labs(
     title = "Lower Back",
-    x = quote("pRATR" ~ (g %.% s^-1)),
+    x = quote("pRATR" ~ (italic(g) %.% s^-1)),
     y = quote("pRLR" ~ (N %.% s^-1))
   )
 
@@ -448,7 +448,7 @@ scatter_ATR_jumping_hip_res <- jumping_df %>%
   ) +
   labs(
     title = "Hip",
-    x = quote("pRATR" ~ (g %.% s^-1)),
+    x = quote("pRATR" ~ (italic(g) %.% s^-1)),
     y = quote("pRLR" ~ (N %.% s^-1))
   )
 
@@ -470,7 +470,7 @@ scatter_ATR_jumping_ankle_ver <- jumping_df %>%
   ) +
   labs(
     title = "Ankle",
-    x = quote("pVATR" ~ (g %.% s^-1)),
+    x = quote("pVATR" ~ (italic(g) %.% s^-1)),
     y = quote("pVLR" ~ (N %.% s^-1))
   )
 
@@ -492,7 +492,7 @@ scatter_ATR_jumping_back_ver <- jumping_df %>%
   ) +
   labs(
     title = "Lower Back",
-    x = quote("pVATR" ~ (g %.% s^-1)),
+    x = quote("pVATR" ~ (italic(g) %.% s^-1)),
     y = quote("pVLR" ~ (N %.% s^-1))
   )
 
@@ -514,7 +514,7 @@ scatter_ATR_jumping_hip_ver <- jumping_df %>%
   ) +
   labs(
     title = "Hip",
-    x = quote("pVATR" ~ (g %.% s^-1)),
+    x = quote("pVATR" ~ (italic(g) %.% s^-1)),
     y = quote("pVLR" ~ (N %.% s^-1))
   )
 
