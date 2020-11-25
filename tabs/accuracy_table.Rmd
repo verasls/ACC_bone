@@ -1,0 +1,59 @@
+```{r setup, include = FALSE, cache = TRUE}
+knitr::opts_chunk$set(echo = FALSE)
+library(here)
+source(here("code/03_build_models.R"))
+```
+```{r make_table, include = FALSE} 
+# Load packages and functions ---------------------------------------------
+
+library(here)
+library(glue)
+library(kableExtra)
+source(here("code/functions/table_functions.R"))
+
+# Load models data --------------------------------------------------------
+
+source(here("code/03_build_models.R"))
+
+# Build table -------------------------------------------------------------
+
+# Create a list with equation coefficients and accuracy indices
+placements <- c("Ankle", "Lower back", "Hip")
+coeffs <- list(
+  ankle = list(
+    resultant = GRF_coefficients_jumping$ankle_resultant,
+    vertical = GRF_coefficients_jumping$ankle_vertical
+  ),
+  back = list(
+    resultant = GRF_coefficients_jumping$lower_back_resultant,
+    vertical = GRF_coefficients_jumping$lower_back_vertical
+  ),
+  hip = list(
+    resultant = GRF_coefficients_jumping$hip_resultant,
+    vertical = GRF_coefficients_jumping$hip_vertical
+  )
+)
+accuracy <- list(
+  ankle = list(
+    resultant = GRF_accuracy_jumping$ankle_resultant,
+    vertical = GRF_accuracy_jumping$ankle_vertical
+  ),
+  back = list(
+    resultant = GRF_accuracy_jumping$lower_back_resultant,
+    vertical = GRF_accuracy_jumping$lower_back_vertical
+  ),
+  hip = list(
+    resultant = GRF_accuracy_jumping$hip_resultant,
+    vertical = GRF_accuracy_jumping$hip_vertical
+  )
+)
+
+a <- c("Ankle", "Lower back", "Hip")
+b <- c("ankle", "back", "hip")
+table <- map2_dfr(a, b, ~ accuracy_table(.x, coeffs[[.y]], accuracy[[.y]]))
+```
+```{r table, echo = FALSE}
+kbl(table, booktabs = TRUE) %>%
+  kable_styling(latex_options = "scale_down")
+```
+
