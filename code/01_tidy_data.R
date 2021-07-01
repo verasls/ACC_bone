@@ -19,7 +19,12 @@ mechanical_load_data <- read_csv(here("data", "jumping_data.csv")) |>
   select(-c(body_mass, BMI, BMI_cat)) |>
   left_join(anthropometric, by = c("id", "trial")) |>
   mutate(
-    across(c(acc_placement, vector, jump_type), as_factor)
+    across(c(acc_placement, vector, jump_type), as_factor),
+    jump = as_factor(
+      str_to_sentence(paste0(jump_type, " ", jump_height, "cm"))
+    ),
+    jump = fct_relevel(jump, "Drop jumps 40cm", after = 7),
+    .after = jump_height
   )
 
 # Export data as rda ------------------------------------------------------
