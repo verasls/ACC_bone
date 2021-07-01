@@ -1,171 +1,100 @@
-# Load packages and functions ---------------------------------------------
+# Load packages -----------------------------------------------------------
 
 library(here)
 library(tidyverse)
-source(here("code/functions/plot_functions.R"))
-source(here("code/functions/utils.R"))
+library(corrr)
+library(lvmisc)
 
 # Load data ---------------------------------------------------------------
 
-running_df <- read_csv(here("data/processed/running_data.csv")) %>%
-  mutate(
-    acc_placement = as_factor(acc_placement),
-    vector = as_factor(vector),
-    speed = as_factor(speed),
-    run = as_factor(paste0("running ", speed, "km/h")),
-    BMI_cat = fct_relevel(
-      as_factor(BMI_cat),
-      levels = c(
-        "Normal weight", "Overweight", "Obesity class I"
-      )
-    )
-  )
-
-jumping_df <- read_csv(here("data/processed/jumping_data.csv")) %>%
-  mutate(
-    acc_placement = as_factor(acc_placement),
-    vector = as_factor(vector),
-    jump_type = as_factor(jump_type),
-    jump_height = as_factor(jump_height),
-    jump = as_factor(paste0(jump_type, " ", jump_height, "cm")),
-    jump = fct_relevel(jump, "drop jumps 40cm", after = 7),
-    BMI_cat = fct_relevel(
-      as_factor(BMI_cat),
-      levels = c(
-        "Normal weight", "Overweight", "Obesity class I",
-        "Obesity class II", "Obesity class III"
-      )
-    )
-  )
+load(here("data", "mechanical_load_data.rda"))
 
 # Sample size per activity ------------------------------------------------
 
-running_df %>%
-  group_by(acc_placement, vector, speed) %>%
-  select(acc_placement, vector, speed, pGRF_N, pLR_Ns) %>%
-  summarise_all(~ sum(!is.na(.))) %>%
-  knitr::kable()
+sample_size <- mechanical_load_data |>
+  group_by(acc_placement, vector, jump_type, jump_height) |>
+  select(acc_placement, vector, jump_type, jump_height, pGRF_N, pLR_Ns) |>
+  summarise_all(~ sum(!is.na(.)))
 
-jumping_df %>%
-  group_by(acc_placement, vector, jump_type, jump_height) %>%
-  select(acc_placement, vector, jump_type, jump_height, pGRF_N, pLR_Ns) %>%
-  summarise_all(~ sum(!is.na(.))) %>%
-  knitr::kable()
+# Sample descriptives -----------------------------------------------------
 
-# Number of peaks median and IQR ------------------------------------------
-
-running_df %>%
+sample_descriptives <- mechanical_load_data |>
+  # Filter only one data point per participant
+  filter(
+    acc_placement == "hip" & vector == "resultant" &
+    jump_type == "drop jumps" & jump_height == 10
+  ) |>
+  select(age, height, body_mass, BMI) |>
   summarise(
-    n_peaks_median = median(n_peaks), n_peaks_iqr = IQR(n_peaks)
-  )
+    across(where(is.double), list(mean = mean, sd = sd), na.rm = TRUE)
+  ) |>
+  round(1)
 
-jumping_df %>%
-  group_by(jump_type) %>%
-  summarise(
-    n_peaks_median = median(n_peaks), n_peaks_iqr = IQR(n_peaks),
-    .groups = "drop"
-  )
+sample_size_sex <- mechanical_load_data |>
+  # Filter only one data point per participant
+  filter(
+    acc_placement == "hip" & vector == "resultant" &
+    jump_type == "drop jumps" & jump_height == 10
+  ) |>
+  select(sex) |>
+  as_vector() |>
+  unname() |>
+  table()
 
-# Histograms --------------------------------------------------------------
-
-# Vectors with variables to plot in histograms
-hist_df <- tibble(
-  vectors = c(rep("resultant", 4), rep("vertical", 4)),
-  hist_vars = rep(c("pGRF_N", "pACC_g", "pLR_Ns", "pATR_gs"), 2)
-)
-
-# Running
-map2(
-  hist_df$vectors, hist_df$hist_vars,
-  ~ histogram(running_df, .x, .y, "acc_placement", "speed")
-)
-
-# Jumping
-drop_jumps <- filter(jumping_df, jump_type == "drop jumps")
-box_jumps <- filter(jumping_df, jump_type == "box jumps")
-continuous_jumps <- filter(jumping_df, jump_type == "continuous jumps")
-
-map2(
-  hist_df$vectors, hist_df$hist_vars,
-  ~ histogram(drop_jumps, .x, .y, "acc_placement", "jump_height")
-)
-map2(
-  hist_df$vectors, hist_df$hist_vars,
-  ~ histogram(box_jumps, .x, .y, "acc_placement", "jump_height")
-)
-map2(
-  hist_df$vectors, hist_df$hist_vars,
-  ~ histogram(continuous_jumps, .x, .y, "acc_placement", "jump_height")
-)
-
-# Ground reaction force and acceleration magnitude per activity -----------
+# GRF and ACC magnitude and rate per jump ---------------------------------
 
 # Ground reaction force
-box_plot(running_df, run, pGRF_BW, "lower_back")
-box_plot(jumping_df, jump, pGRF_BW, "lower_back")
+GRF_jump_plots <- mechanical_load_data |>
+  filter(acc_placement == "hip") |>
+  ggplot(aes(x = jump, y = pGRF_BW, fill = vector)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # Loading rate
-box_plot(running_df, run, pLR_BWs, "lower_back")
-box_plot(jumping_df, jump, pLR_BWs, "lower_back")
+LR_jump_plots <- mechanical_load_data |>
+  filter(acc_placement == "hip") |>
+  ggplot(aes(x = jump, y = pLR_BWs, fill = vector)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # Acceleration
-map(
-  c("ankle", "lower_back", "hip"),
-  ~ box_plot(running_df, run, pACC_g, .x)
-)
-map(
-  c("ankle", "lower_back", "hip"),
-  ~ box_plot(jumping_df, jump, pACC_g, .x)
-)
+ACC_jump_plots <- mechanical_load_data |>
+  ggplot(aes(x = jump, y = pACC_g, fill = vector)) +
+  geom_boxplot() +
+  facet_wrap(~ acc_placement) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# Acceleration transient rate
-map(
-  c("ankle", "lower_back", "hip"),
-  ~ box_plot(running_df, run, pATR_gs, .x)
-)
-map(
-  c("ankle", "lower_back", "hip"),
-  ~ box_plot(jumping_df, jump, pATR_gs, .x)
-)
+# Acceleration rate
+AR_jump_plots <- mechanical_load_data |>
+  ggplot(aes(x = jump, y = pAR_gs, fill = vector)) +
+  geom_boxplot() +
+  facet_wrap(~ acc_placement)
 
 # Correlations ------------------------------------------------------------
 
-corr_df <- tibble(
+info <- tibble(
   vectors = c(rep("resultant", 3), rep("vertical", 3)),
   placement = rep(c("ankle", "lower_back", "hip"), 2)
 )
+correlations <- map2(
+  info$vectors, info$placement,
+  ~ mechanical_load_data |>
+    filter(vector == .x & acc_placement == .y) |>
+    select(pGRF_N, pLR_Ns, pACC_g, pAR_gs, body_mass)
+) |>
+  set_names(paste(info$vectors, info$placement, sep = "_")) |>
+  map(correlate)
 
-# Running
-map2(
-  corr_df$vectors, corr_df$placement,
-  ~ my_correlate(running_df, .x, .y)
-)
+# Scatterplots ------------------------------------------------------------
 
-# Jumping
-map2(
-  corr_df$vectors, corr_df$placement,
-  ~ my_correlate(jumping_df, .x, .y)
-)
+# GRF x ACC
+GRF_ACC_scatterplot <- plot_scatter(
+  mechanical_load_data, pACC_g, pGRF_N, color = BMI_cat
+) +
+  facet_wrap(~ acc_placement)
 
-# Scatterplot -------------------------------------------------------------
-
-placements <- c("ankle", "lower_back", "hip")
-# Running
-map(
-  placements,
-  ~ scatterplot(running_df, pACC_g, pGRF_N, .x)
-)
-map(
-  placements,
-  ~ scatterplot(running_df, pATR_gs, pLR_Ns, .x)
-)
-
-# Jumping
-map(
-  placements,
-  ~ scatterplot(jumping_df, pACC_g, pGRF_N, .x)
-)
-map(
-  placements,
-  ~ scatterplot(jumping_df, pATR_gs, pLR_Ns, .x)
-)
+# LR x AR
+LR_AR_scatterplot <- plot_scatter(
+  mechanical_load_data, pAR_gs, pLR_Ns, color = BMI_cat
+) +
+  facet_wrap(~ acc_placement)
