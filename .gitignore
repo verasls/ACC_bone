@@ -1,5 +1,6 @@
 data/
 docs/
+output/
 *cache/
 .Rproj.user
 *.tiff
