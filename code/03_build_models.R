@@ -4,7 +4,6 @@ library(here)
 library(tidyverse)
 library(lme4)
 library(lvmisc)
-library(emmeans)
 
 # Load and prepare data ---------------------------------------------------
 
