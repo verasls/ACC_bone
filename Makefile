@@ -17,13 +17,16 @@ figures/figS3.png: output/loocv_data.rda figures/figS3.R
 	R CMD BATCH figures/figS2.R
 
 ## output     : Generates all output
-output: output/loocv_data.rda output/prediction_models.rda
+output: output/loocv_data.rda output/prediction_models.rda output/jump_type_accuracy.rda
 
 output/loocv_data.rda: data/mechanical_load_data.rda code/03_build_models.R
 	R CMD BATCH code/03_build_models.R
 
 output/prediction_models.rda: data/mechanical_load_data.rda code/03_build_models.R
 	R CMD BATCH code/03_build_models.R
+
+output/jump_type_accuracy.rda: output/loocv_data.rda code/04_analyse_results.R
+	R CMD BATCH code/04_analyse_results.R
 
 ## data       : Processes raw data
 data: data/mechanical_load_data.rda
