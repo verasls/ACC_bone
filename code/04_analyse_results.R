@@ -71,11 +71,11 @@ if (!dir.exists(here("output"))) {
   dir.create(here("output"))
 }
 save(
-  drop_jumps_ver_GRF_accuracy, drop_jumps_ver_GRF_accuracy,
+  drop_jumps_res_GRF_accuracy, drop_jumps_ver_GRF_accuracy,
   drop_jumps_res_LR_accuracy, drop_jumps_ver_LR_accuracy,
-  box_jumps_ver_GRF_accuracy, box_jumps_ver_GRF_accuracy,
+  box_jumps_res_GRF_accuracy, box_jumps_ver_GRF_accuracy,
   box_jumps_res_LR_accuracy, box_jumps_ver_LR_accuracy,
-  continuous_jumps_ver_GRF_accuracy, continuous_jumps_ver_GRF_accuracy,
+  continuous_jumps_res_GRF_accuracy, continuous_jumps_ver_GRF_accuracy,
   continuous_jumps_res_LR_accuracy, continuous_jumps_ver_LR_accuracy,
   file = here("output", "jump_type_accuracy.rda")
 )
