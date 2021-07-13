@@ -10,9 +10,6 @@ library(patchwork)
 load(here("data", "mechanical_load_data.rda"))
 mechanical_load_data <- mechanical_load_data |>
   mutate(
-    # acc_placement = fct_relevel(
-    #   acc_placement, "hip", "lower_back", "ankle"
-    # )
     acc_placement = recode_factor(
       acc_placement,
       hip = "Hip",
