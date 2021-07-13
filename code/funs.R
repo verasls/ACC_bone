@@ -34,6 +34,30 @@ build_formula_table <- function(model, cv, outcome, vector) {
   )
 }
 
+# Build table with accuracy indices per jump type
+#
+# Params:
+#    accuracy: A list of length 3 with the lvmisc_accuracy objects.
+#    vector: A character vector with the vector used in the model. Either
+# "resultant" or "vertical".
+#    jump_type: A character vector with the jump type. Either "drop", "box" or
+# "continuous".
+#
+# Returns:
+#    A tibble with the table with accuracy indices per jump type.
+build_accuracy_table <- function(accuracy, vector, jump_type) {
+  data <- tibble::tibble(
+    Vector = rep(stringr::str_to_sentence(vector), 3),
+    `Accelerometer placement` = c("Ankle", "Lower back", "Hip"),
+    R2 = broman::myround(unname(purrr::map_dbl(accuracy, "R2_cond")), 2),
+    MAE = broman::myround(unname(purrr::map_dbl(accuracy, "MAE"))),
+    MAPE = broman::myround(unname(purrr::map_dbl(accuracy, "MAPE")) * 100),
+    RMSE = broman::myround(unname(purrr::map_dbl(accuracy, "RMSE"))),
+  )
+  names(data)[3:6] <- paste0(names(data)[3:6], "_", jump_type)
+  data
+}
+
 # Get regression equation formula with coefficients and variables
 #
 # Params:
