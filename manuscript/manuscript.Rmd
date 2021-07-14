@@ -1,0 +1,53 @@
+---
+# title:
+output:
+  bookdown::pdf_document2:
+    toc: false
+    includes:
+      in_header: "preamble.tex"
+    latex_engine: lualatex
+  word_document:
+    reference_docx: style_reference.docx
+always_allow_html: true
+# bibliography: bibliography.bib
+csl: nlm.csl
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, results = "hide", message = FALSE, warning = FALSE
+)
+```
+
+```{r source}
+library(here)
+library(bookdown)
+source(here("code", "02_explore.R"))
+```
+
+<!--
+<center>
+Lucas Veras$^{1,2}$, Florêncio Diniz-Sousa$^{1,2}$, Giorjines Boppre$^{1,2}$, Vítor Devezas$^3$, Hugo Santos-Sousa$^3$, John Preto$^3$, João Paulo Vilas-Boas$^{4,5}$, Leandro Machado$^{4,5}$, José Oliveira$^{1,2}$, Hélder Fonseca$^{1,2}$
+</center>
+
+\bigskip
+
+1 - Research Center in Physical Activity, Health and Leisure (CIAFEL), Faculty of Sport, University of Porto, Porto, Portugal
+
+2 - Laboratory for Integrative and Translational Research in Population Health (ITR), University of Porto, Porto, Portugal
+
+3 - General Surgery Department, São João Medical Center, Porto, Portugal
+
+4 - Center of Research, Education, Innovation and Intervention in Sport (CIFI2D), Faculty of Sport, University of Porto, Porto, Portugal
+
+5 - Biomechanics Laboratory (LABIOMEP-UP), University of Porto, Porto, Portugal
+
+\leftskip=0.5in \rightskip=0.5in
+
+\bigskip
+-->
+
+
+# Methods {.unnumbered}
+
+The study protocol was approved by the local Ethics Committee (CES 192-14), and all participants were informed about the experiments purpose and protocol before giving written informed consent. A total of `r max(sample_size$pGRF_N)` adults were enrolled (`r unname(sample_size_sex["M"])` males; `r sample_descriptives$age_mean`±`r sample_descriptives$age_sd` years; `r sample_descriptives$height_mean`±`r sample_descriptives$height_sd` cm; `r sample_descriptives$body_mass_mean`±`r sample_descriptives$body_mass_sd` kg; `r sample_descriptives$BMI_mean`±`r sample_descriptives$BMI_sd` kg·m^-2^, X̄±SD). No participant reported any neurological or musculoskeletal limitations. Height and body mass were assessed following standard procedures with a stadiometer (model 213; Seca, Hamburg, Germany) and a digital scale (model 899; Seca, Hamburg, Germany), respectively.
