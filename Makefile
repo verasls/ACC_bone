@@ -4,10 +4,10 @@ manuscript: manuscript/manuscript.pdf
 ## word       : Generates the manuscript docx file
 word: manuscript/manuscript.docx
 
-manuscript/manuscript.pdf: manuscript/manuscript.Rmd manuscript/nlm.csl manuscript/preamble.tex
+manuscript/manuscript.pdf: manuscript/manuscript.Rmd manuscript/nlm.csl manuscript/preamble.tex code/02_explore.R
 	Rscript -e 'rmarkdown::render("$<")'
 
-manuscript/manuscript.docx: manuscript/manuscript.Rmd manuscript/nlm.csl manuscript/preamble.tex manuscript/style_reference.docx
+manuscript/manuscript.docx: manuscript/manuscript.Rmd manuscript/nlm.csl manuscript/preamble.tex manuscript/style_reference.docx code/02_explore.R
 	Rscript -e 'rmarkdown::render("$<", output_format = "word_document")'
 
 ## figures    : Generates all figures
