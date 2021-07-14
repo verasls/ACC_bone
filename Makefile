@@ -1,3 +1,15 @@
+## manuscript : Generates the manuscript pdf file
+manuscript: manuscript/manuscript.pdf
+
+## word       : Generates the manuscript docx file
+word: manuscript/manuscript.docx
+
+manuscript/manuscript.pdf: manuscript/manuscript.Rmd manuscript/nlm.csl manuscript/preamble.tex
+	Rscript -e 'rmarkdown::render("$<")'
+
+manuscript/manuscript.docx: manuscript/manuscript.Rmd manuscript/nlm.csl manuscript/preamble.tex manuscript/style_reference.docx
+	Rscript -e 'rmarkdown::render("$<", output_format = "word_document")'
+
 ## figures    : Generates all figures
 figures: figures/fig1.png figures/fig2.png figures/figS1.png figures/figS2.png figures/figS3.png
 
@@ -40,11 +52,11 @@ install:
 
 ## clean      : Removes auto-generated files
 clean:
-	\rm -f *.Rout .Rdata
+	\rm -f *.Rout .Rdata manuscript/*.log manuscript/manuscript.tex
 
 ## cleanall   : Removes auto-generated files, including processed data, figures and the manuscript pdf
 cleanall:
-	\rm -f *.Rout .Rdata data/*.rda output/* figures/*.png figures/*.tiff
+	\rm -f *.Rout .Rdata manuscript/*.log manuscript/manuscript.tex data/*.rda output/* figures/*.tiff manuscript/manuscript.pdf
 
 .PHONY : help
 help : Makefile
