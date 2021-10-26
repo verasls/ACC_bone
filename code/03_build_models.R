@@ -28,7 +28,7 @@ ver_mechanical_load_data <- map(
 
 GRF_formula <- as.formula(
   "pGRF_N ~ pACC_g + body_mass + pACC_g:body_mass +
-    (1 | subj) + (1 | jump_height)"
+    (1 | subj) + (1 | jump_type : jump_height)"
 )
 
 # Resultant vector
@@ -71,7 +71,7 @@ plot_ver_GRF_models <- map(
 
 LR_formula <- as.formula(
   "pLR_Ns ~ pAR_gs + body_mass + pAR_gs:body_mass +
-    (1 | subj) + (1 | jump_height)"
+    (1 | subj) + (1 | jump_type : jump_height)"
 )
 
 # Resultant vector
