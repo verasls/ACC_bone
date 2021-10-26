@@ -9,7 +9,7 @@ output:
   word_document:
     reference_docx: style_reference.docx
 always_allow_html: true
-# bibliography: bibliography.bib
+bibliography: bibliography.bib
 csl: nlm.csl
 ---
 
@@ -65,3 +65,15 @@ FP and accelerometer data were processed using MATLAB (Version 2019a, Mathworks,
 \[f_{i_{max}}^{'} = max(f_i^{'})\]
 
 Finally, pGRF, pACC, pLR and pAR means of the resultant and its vertical component for each participant at each jump type and height for each accelerometer placement were extracted and used in all remaining analyses.
+
+Statistical analyses were conducted using R statistical software (version `r paste(R.Version()$major, R.Version()$minor, sep = ".")`, R Foundation for Statistical Computing, Vienna, Austria). All statistical analyses were registered in an open platform, where R code utilized can be assessed (LINK). The statistically significant value was set as $\alpha$ = 0.05.
+
+Linear mixed models were used to develop pGRF and pLR prediction equations for each vector (resultant and vertical) and accelerometer placement (ankle, lower back and  hip). Body mass was tested as predictor in all models, along with the acceleration magnitude (pACC) in the pGRF models and its rate (pAR) in the pLR models. All predictors were tested as fixed effects and were shown to be significant. Subject and the interaction between jump type and height were tested as random effects, and both factors have shown to improve the models. Final models were chosen according to the -2 log-likelihood statistic [@Field2012]. Traditional coefficient of determination (R^2^) was represented by conditional R^2^, which estimates the variance explained by the whole model [@Nakagawa2013].
+
+Model validation was performed using the leave-one-out cross-validation [@Staudenmayer2012]. In this approach, each participant’s data is split into a testing dataset (one participant at a time), and the remaining data is in the training dataset. New linear mixed models with the same specification as determined for the whole sample are developed using the training dataset and then used to predict the outcome for the participant in the testing dataset. This process is, then, repeated for all participants (`r max(sample_size$pGRF_N)` times). Data from the testing dataset was used in the remaining statistical analyses.
+
+\newpage
+
+# References {.unnumbered}
+
+<div id="refs"></div>
