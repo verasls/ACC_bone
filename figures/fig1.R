@@ -50,6 +50,7 @@ boxplot_ACC_res <- mechanical_load_data |>
   ) +
   theme_light() +
   theme(
+    axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
     axis.text.y = element_text(size = 13),
     axis.title.y = element_text(size = 16),
     legend.title = element_blank()
@@ -69,7 +70,6 @@ boxplot_LR_res <- mechanical_load_data |>
   ) +
   theme_light() +
   theme(
-    axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
     axis.text.y = element_text(size = 13),
     axis.title.y = element_text(size = 16)
   ) +
@@ -99,8 +99,8 @@ boxplot_AR_res <- mechanical_load_data |>
 # Combine and save plots --------------------------------------------------
 
 fig1 <- boxplot_GRF_res + theme(axis.text.x = element_blank()) +
-  boxplot_ACC_res + theme(axis.text.x = element_blank()) +
-  boxplot_LR_res +
+  boxplot_LR_res + theme(axis.text.x = element_blank()) +
+  boxplot_ACC_res +
   boxplot_AR_res +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides = "collect") &
