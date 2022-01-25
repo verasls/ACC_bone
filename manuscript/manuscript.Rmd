@@ -22,7 +22,96 @@ knitr::opts_chunk$set(
 ```{r source}
 library(here)
 library(bookdown)
+library(broman)
 source(here("code", "02_explore.R"))
+```
+
+```{r GRF_accuracy}
+load(here("output", "prediction_models.rda"))
+res_GRF_accuracy <- purrr::map(
+  accuracy_res_GRF_models,
+  ~ dplyr::mutate(.x, MAPE = as.numeric(MAPE))
+) %>%
+  purrr::map_dfr(rbind) %>%
+  dplyr::mutate(
+    placement = c("ankle", "lower back", "hip"),
+    vector = "resultant"
+  )
+ver_GRF_accuracy <- purrr::map(
+  accuracy_ver_GRF_models,
+  ~ dplyr::mutate(.x, MAPE = as.numeric(MAPE))
+) %>%
+  purrr::map_dfr(rbind) %>%
+  dplyr::mutate(
+    placement = c("ankle", "lower back", "hip"),
+    vector = "vertical"
+  )
+GRF_accuracy <- rbind(res_GRF_accuracy, ver_GRF_accuracy)
+hip_GRF_accuracy <- GRF_accuracy %>%
+  filter(placement == "hip" & vector == "resultant")
+```
+
+```{r LR_accuracy}
+load(here("output", "prediction_models.rda"))
+res_LR_accuracy <- purrr::map(
+  accuracy_res_LR_models,
+  ~ dplyr::mutate(.x, MAPE = as.numeric(MAPE))
+) %>%
+  purrr::map_dfr(rbind) %>%
+  dplyr::mutate(
+    placement = c("ankle", "lower back", "hip"),
+    vector = "resultant"
+  )
+ver_LR_accuracy <- purrr::map(
+  accuracy_ver_LR_models,
+  ~ dplyr::mutate(.x, MAPE = as.numeric(MAPE))
+) %>%
+  purrr::map_dfr(rbind) %>%
+  dplyr::mutate(
+    placement = c("ankle", "lower back", "hip"),
+    vector = "vertical"
+  )
+LR_accuracy <- rbind(res_LR_accuracy, ver_LR_accuracy)
+hip_LR_accuracy <- LR_accuracy %>%
+  filter(placement == "hip" & vector == "resultant")
+```
+
+```{r ba_agreement}
+load(here("output", "loocv_data.rda"))
+percent_inside_loa <- function(data) {
+  lower <- lvmisc::loa(
+    data[[".actual"]], data[[".predicted"]], na.rm = TRUE
+  )$lower
+  upper <- lvmisc::loa(
+    data[[".actual"]], data[[".predicted"]], na.rm = TRUE
+  )$upper
+  diff <- dplyr::transmute(
+    data, diff = .data[[".actual"]] - .data[[".predicted"]]
+  )
+  diff <- dplyr::mutate(
+    diff,
+    inside = as.factor(ifelse(diff > lower & diff < upper, "yes", "no"))
+  )
+  round(prop.table(table(diff$inside))[[2]] * 100, 0)
+}
+
+ba_agreement <- min(
+  map_dbl(cv_res_GRF_models, percent_inside_loa) %>% min(),
+  map_dbl(cv_ver_GRF_models, percent_inside_loa) %>% min(),
+  map_dbl(cv_res_LR_models, percent_inside_loa) %>% min(),
+  map_dbl(cv_ver_LR_models, percent_inside_loa) %>% min()
+)
+```
+
+```{r ba_regression}
+source(here("code", "04_analyse_results.R"))
+ba_regression_ankle_R2 <- c(
+  ba_regression_res_GRF$ankle["adj.r.squared"],
+  ba_regression_ver_GRF$ankle["adj.r.squared"],
+  ba_regression_res_LR$ankle["adj.r.squared"],
+  ba_regression_ver_LR$ankle["adj.r.squared"]
+) %>%
+  as_vector()
 ```
 
 <!--
@@ -73,6 +162,30 @@ Linear mixed models were used to develop pGRF and pLR prediction equations for e
 Model validation was performed using the leave-one-out cross-validation [@Staudenmayer2012]. This method consists in separating data from one of the subjects into a testing dataset, and keeping the remainder in the training dataset. Then, a new model is developed using the training dataset, with the same parameters that were defined using the whole sample. This new model is then applied to predict the outcome for the subject in the testing dataset. The whole process is repeated once for each participant (`r max(sample_size$pGRF_N)` times). Data from the testing dataset were used in all subsequent analyses.
 
 The quality of the models was then evaluated both numerically and graphically. The numerical assessment was made by computing the following accuracy indices: the mean absolute error (MAE), mean absolute percent error (MAPE) and root mean square error (RMSE). To visualize the agreement between the values predicted by the models and measured by the FP, Bland-Altman plots were drawn. This type of plot is made by plotting the mean of the actual and predicted values on the x axis and their difference on the y axis. Then, the bias was calculated as the mean of these differences and plotted as a continuous horizontal line, and the limits of agreement were defined by bias ± 1.96 standard deviation and plotted as horizontal dashed lines [@Bland1986]. To further test if there were any consistent under- or over-estimation of the values by the models, one-sample *t*-tests were done to check whether the bias were different than zero. Finally, linear regressions were employed to examine if the difference between actual and predicted values were affected by their magnitude, verifying, therefore, whether the prediction was constant throughout the magnitude range that was tested [@Giavarina2015].
+
+# Results {.unnumbered}
+
+In our protocol, three distinct jump types were performed, in several different heights. This variety of jump trials produced a varying response in both the FP- and accelerometer-measured variables. These responses in pGRF, pLR, pACC and pAR, regarding their resultant vector, can be observed in Figure 1 (see Supplemental Figure S1 for the vertical vector). Panels A and B show the FP-measured variables normalized by the subjects body mass, the pGRF and pLR, respectively. It can be seen that in the drop jump trials, there is a tendency to increase the loading magnitude the higher the jump, and in the box jumps this tendency is lower. As for the continuous jumps, both assayed heights elicit resonably constant loadings. The same pattern can be observed in the accelerometer-measured variables, pACC and pAR, in Panels C and D, respectively. Also, regarding the influence of the accelerometer placement, in most of the trials accelerometers worn at hip and lower back produced approximately similar values, with a tendency to higher dispersion in data derived from lower back accelerometers.
+
+\begin{figure}[ht]
+	\captionsetup{singlelinecheck = false, format = hang, justification = raggedright, font = footnotesize, labelsep = space}
+	\centering
+	\begin{measuredfigure}
+		\includegraphics[width=\textwidth]{fig1.png}
+		\caption{INSERT CAPTION}
+	\end{measuredfigure}
+\end{figure}
+
+Accelerometer-based mechanical loading prediction equations were developed based on linear mixed models. The regression coefficients, R^2^ and accuracy indices of the models derived from accelerometers worn at ankle, lower back and hip, and from the resultant and vertical vectors are presented in Table 1. The R^2^ values for the pGRF models ranged from `r min(GRF_accuracy$R2_cond)` to `r max(GRF_accuracy$R2_cond)`. These values represent a reasonably good prediction accuracy, that is also reflected on the MAPE values between `r myround(min(GRF_accuracy$MAPE) * 100, 1)`\% and `r myround(max(GRF_accuracy$MAPE) * 100, 1)`\%. Despite similar accuracy results achieved by all equations, data from the resultant vector of accelerometers at the hip have shown the lower accuracy error, represented by the smallest MAE (`r myround(hip_GRF_accuracy$MAE, 1)` N), MAPE (`r myround(hip_GRF_accuracy$MAPE * 100, 1)`\%) and RMSE (`r myround(hip_GRF_accuracy$RMSE, 1)` N). Compared to the pGRF models, the pLR equations yielded poorer results. Their R^2^ ranged from `r min(LR_accuracy$R2_cond)` to `r max(LR_accuracy$R2_cond)` and MAPE from `r myround(min(LR_accuracy$MAPE) * 100, 1)`\% to `r myround(max(LR_accuracy$MAPE) * 100, 1)`\%. However, similar to the pGRF models, the best pLR prediction equation in terms of prediction accuracy was the one from the resultant vector of hip-worn accelerometers, with a MAE of `r myround(hip_LR_accuracy$MAE, 1)` N, MAPE of `r myround(hip_LR_accuracy$MAPE * 100, 1)`\% and RMSE of `r myround(hip_LR_accuracy$RMSE, 1)` N.
+
+```{r accuracy_table, results = "show"}
+source(here("tables", "tab1.R"))
+tab1
+```
+
+To visualize the agreement between the pGRF and pLR values measured by the FP and predicted by the models, a series of Bland-Altman plots were built for both the resultant and vetical vectors and for all accelerometer placements. Figure 2 shows the Bland-Altman plots for the pGRF (Panel A) and pLR (Panel B) resultant vector of hip-worn accelerometers. Both plots have shown good agreement levels, as at least `r ba_agreement`\% of the data points are within the limits of agreement and data tended to cluster around zero. Bland-Altman plots for the other accelerometer placements and vectors have shown the same patterns described previously, and can be found in the Supplemental Figure S2. Also, as could be observed by the one-sample *t*-tests results, none of the equations presented a bias different than zero (*p* > 0.05). Furthermore, all of the equations have shown a proportional bias, i.e., the magnitude of the values influence the prediction error. However, as the linear regressions presented a very low R^2^ (maximum value of `r myround(max(ba_regression_ankle_R2), 2)`) this effect is neglectable.
+
+Finally, it is important to mention that an R package was developed [@Veras2021] to make easier to apply all the necessary data processing steps to use the prediction equations. The package website (https://lveras.com/impactr) has all the installation instructions and documentation necessary to apply this method on your own data.
 
 \newpage
 
