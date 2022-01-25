@@ -73,7 +73,7 @@ boxplot_LR_res <- mechanical_load_data |>
     axis.text.y = element_text(size = 13),
     axis.title.y = element_text(size = 16)
   ) +
-  labs(x = "", y = quote("pLR" ~ (N %.% s^-1)))
+  labs(x = "", y = quote("pLR" ~ (BW %.% s^-1)))
 
 # AR boxplots -------------------------------------------------------------
 
