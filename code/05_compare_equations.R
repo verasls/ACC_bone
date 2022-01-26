@@ -90,3 +90,16 @@ compute_accuracy(
 compute_accuracy(
   hip_ver_LR_df$pLR_Ns, hip_ver_LR_df$.predicted_Veras2020
 )
+
+# Save predictions --------------------------------------------------------
+
+if (!dir.exists(here("output"))) {
+  dir.create(here("output"))
+}
+save(
+  lower_back_res_GRF_df, hip_res_GRF_df,
+  lower_back_ver_GRF_df, hip_ver_GRF_df,
+  lower_back_res_LR_df, hip_res_LR_df,
+  lower_back_ver_LR_df, hip_ver_LR_df,
+  file = here("output", "veras2020_predictions.rda")
+)
