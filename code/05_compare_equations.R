@@ -62,32 +62,32 @@ hip_ver_LR_df <- predict_Veras2020(
 # Compute accuracy --------------------------------------------------------
 
 # GRF
-compute_accuracy(
+lower_back_res_GRF_accuracy <- compute_accuracy(
   lower_back_res_GRF_df$pGRF_N, lower_back_res_GRF_df$.predicted_Veras2020
 )
-compute_accuracy(
+hip_res_GRF_accuracy <- compute_accuracy(
   hip_res_GRF_df$pGRF_N, hip_res_GRF_df$.predicted_Veras2020
 )
 
-compute_accuracy(
+lower_back_ver_GRF_accuracy <- compute_accuracy(
   lower_back_ver_GRF_df$pGRF_N, lower_back_ver_GRF_df$.predicted_Veras2020
 )
-compute_accuracy(
+hip_ver_GRF_accuracy <- compute_accuracy(
   hip_ver_GRF_df$pGRF_N, hip_ver_GRF_df$.predicted_Veras2020
 )
 
 # LR
-compute_accuracy(
+lower_back_res_LR_accuracy <- compute_accuracy(
   lower_back_res_LR_df$pLR_Ns, lower_back_res_LR_df$.predicted_Veras2020
 )
-compute_accuracy(
+hip_res_LR_accuracy <- compute_accuracy(
   hip_res_LR_df$pLR_Ns, hip_res_LR_df$.predicted_Veras2020
 )
 
-compute_accuracy(
+lower_back_ver_LR_accuracy <- compute_accuracy(
   lower_back_ver_LR_df$pLR_Ns, lower_back_ver_LR_df$.predicted_Veras2020
 )
-compute_accuracy(
+hip_ver_LR_accuracy <- compute_accuracy(
   hip_ver_LR_df$pLR_Ns, hip_ver_LR_df$.predicted_Veras2020
 )
 
@@ -102,4 +102,11 @@ save(
   lower_back_res_LR_df, hip_res_LR_df,
   lower_back_ver_LR_df, hip_ver_LR_df,
   file = here("output", "veras2020_predictions.rda")
+)
+save(
+  lower_back_res_GRF_accuracy, hip_res_GRF_accuracy,
+  lower_back_ver_GRF_accuracy, hip_ver_GRF_accuracy,
+  lower_back_res_LR_accuracy, hip_res_LR_accuracy,
+  lower_back_ver_LR_accuracy, hip_ver_LR_accuracy,
+  file = here("output", "veras2020_accuracy.rda")
 )
