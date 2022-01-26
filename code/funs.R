@@ -164,3 +164,124 @@ compute_accuracy <- function(actual, predicted) {
     2
   )
 }
+
+# Predict mechanical loading using the equations by Veras et al. (2020)
+# (doi.org/10.1007/s00198-020-05295-2)
+#
+# Params:
+#    data: A data.frame
+#    outcome, acc_placement, vector: A character string
+#
+# Returns:
+#    The input data.frame with the predicted values in the column
+# .predicted_Veras2020
+predict_Veras2020 <- function(data, outcome, acc_placement, vector) {
+  c <- get_coefficients(outcome, acc_placement, vector)
+  dplyr::mutate(
+    data,
+    .predicted_Veras2020 = c$b0 +
+      c$b1 * pACC_g +
+      c$b2 * (pACC_g^2) +
+      c$b3 * body_mass +
+      c$b4 * pACC_g * body_mass
+  )
+}
+
+# Get the mechanical loading prediction equation coefficients
+#
+# Coefficients from the equations by Veras et al. 2020
+# (doi.org/10.1007/s00198-020-05295-2)
+#
+# Params:
+#    outcome, acc_placement, vector: A character string
+#
+# Returns:
+#    A named list with the coefficients as follows:
+#      b0: Intercept
+#      b1: ACC
+#      b2: ACC2
+#      b3: body mass
+#      b4: ACC:body_mass
+get_coefficients <- function(outcome, acc_placement, vector) {
+  if (
+    outcome == "GRF" & acc_placement == "lower_back" & vector == "resultant"
+  ) {
+    list(
+      b0 = - 698.7031,
+      b1 = 1047.5129,
+      b2 = - 345.2605,
+      b3 = 3.8294,
+      b4 = 6.0219
+    )
+  } else if (
+    outcome == "GRF" & acc_placement == "hip" & vector == "resultant"
+  ) {
+    list(
+      b0 = - 300.9909,
+      b1 = 522.6850,
+      b2 = - 171.5606,
+      b3 = 3.9596,
+      b4 = 5.3671
+    )
+  } else if (
+    outcome == "GRF" & acc_placement == "lower_back" & vector == "vertical"
+  ) {
+    list(
+      b0 = - 776.8934,
+      b1 = 1042.9052,
+      b2 = - 336.2115,
+      b3 = 6.2132,
+      b4 = 5.0805
+    )
+  } else if (
+    outcome == "GRF" & acc_placement == "hip" & vector == "vertical"
+  ) {
+    list(
+      b0 = - 435.7365,
+      b1 = 586.6627,
+      b2 = - 188.9689,
+      b3 = 5.8047,
+      b4 = 4.9544
+    )
+  } else if (
+    outcome == "LR" & acc_placement == "lower_back" & vector == "resultant"
+  ) {
+    list(
+      b0 = - 287.0209,
+      b1 = 572.7967,
+      b2 = - 9.8958,
+      b3 = 18.1178,
+      b4 = 3.4078
+    )
+  } else if (
+    outcome == "LR" & acc_placement == "hip" & vector == "resultant"
+  ) {
+    list(
+      b0 = - 3510.410,
+      b1 = 514.898,
+      b2 = - 8.639,
+      b3 = 51.937,
+      b4 = 2.929
+    )
+  } else if (
+    outcome == "LR" & acc_placement == "lower_back" & vector == "vertical"
+  ) {
+    list(
+      b0 = - 324.0761,
+      b1 = 552.8242,
+      b2 = - 11.9453,
+      b3 = 18.1405,
+      b4 = 3.9586
+    )
+  } else if (
+    outcome == "LR" & acc_placement == "hip" & vector == "vertical"
+  ) {
+    list(
+      b0 = - 2687.8662,
+      b1 = 407.8434,
+      b2 = - 7.6603,
+      b3 = 45.8905,
+      b4 = 3.8995
+    )
+  }
+}
