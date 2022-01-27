@@ -167,8 +167,6 @@ Lastly, our pGRF and pLR prediction models were compared with a previously publi
 
 # Results {.unnumbered}
 
-In our protocol, three distinct jump types were performed, in several different heights. This variety of jump trials produced a varying response in both the FP- and accelerometer-measured variables. These responses in pGRF, pLR, pACC and pAR, regarding their resultant vector, can be observed in Figure 1 (see Supplemental Figure S1 for the vertical vector). Panels A and B show the FP-measured variables normalized by the subjects body mass, the pGRF and pLR, respectively. It can be seen that in the drop jump trials, there is a tendency to increase the loading magnitude the higher the jump, and in the box jumps this tendency is lower. As for the continuous jumps, both assayed heights elicit resonably constant loadings. The same pattern can be observed in the accelerometer-measured variables, pACC and pAR, in Panels C and D, respectively. Also, regarding the influence of the accelerometer placement, in most of the trials accelerometers worn at hip and lower back produced approximately similar values, with a tendency to higher dispersion in data derived from lower back accelerometers.
-
 \begin{figure}[ht]
 	\captionsetup{singlelinecheck = false, format = hang, justification = raggedright, font = footnotesize, labelsep = space}
 	\centering
@@ -178,12 +176,23 @@ In our protocol, three distinct jump types were performed, in several different 
 	\end{measuredfigure}
 \end{figure}
 
-Accelerometer-based mechanical loading prediction equations were developed based on linear mixed models. The regression coefficients, R^2^ and accuracy indices of the models derived from accelerometers worn at ankle, lower back and hip, and from the resultant and vertical vectors are presented in Table 1. The R^2^ values for the pGRF models ranged from `r min(GRF_accuracy$R2_cond)` to `r max(GRF_accuracy$R2_cond)`, showing that the models can explain at least `r round(min(GRF_accuracy$R2_cond), 1) * 100`\% of the pGRF variance. The observed MAPE values were between `r myround(min(GRF_accuracy$MAPE) * 100, 1)`\% and `r myround(max(GRF_accuracy$MAPE) * 100, 1)`\%, which falls outside of the proposed threshold of 8\%. Nevertheless, these MAPE values are similar to the results usually found in accelerometer-based energy expenditure prediction [@Diniz-Sousa2020], which have widespread use in research. Despite similar accuracy results achieved by all equations, data from the resultant vector of accelerometers at the hip have shown the lower accuracy error, represented by the smallest MAE (`r myround(hip_GRF_accuracy$MAE, 1)` N), MAPE (`r myround(hip_GRF_accuracy$MAPE * 100, 1)`\%) and RMSE (`r myround(hip_GRF_accuracy$RMSE, 1)` N). Compared to the pGRF models, the pLR equations yielded poorer results, which is expected based on past research [@Fortune2014; @Veras2020]. Their R^2^ ranged from `r min(LR_accuracy$R2_cond)` to `r max(LR_accuracy$R2_cond)` and MAPE from `r myround(min(LR_accuracy$MAPE) * 100, 1)`\% to `r myround(max(LR_accuracy$MAPE) * 100, 1)`\%. However, similar to the pGRF models, the best pLR prediction equation in terms of prediction accuracy was the one from the resultant vector of hip-worn accelerometers, with a MAE of `r myround(hip_LR_accuracy$MAE, 1)` N, MAPE of `r myround(hip_LR_accuracy$MAPE * 100, 1)`\% and RMSE of `r myround(hip_LR_accuracy$RMSE, 1)` N.
+In our protocol, three distinct jump types were performed, in several different heights. This variety of jump trials produced a varying response in both the FP- and accelerometer-measured variables. These responses in pGRF, pLR, pACC and pAR, regarding their resultant vector, can be observed in Figure 1 (see Supplemental Figure S1 for the vertical vector). Panels A and B show the FP-measured variables normalized by the subjects body mass, the pGRF and pLR, respectively. It can be seen that in the drop jump trials, there is a tendency to increase the loading magnitude the higher the jump, and in the box jumps this tendency is lower. As for the continuous jumps, both assayed heights elicit resonably constant loadings. The same pattern can be observed in the accelerometer-measured variables, pACC and pAR, in Panels C and D, respectively. Also, regarding the influence of the accelerometer placement, in most of the trials accelerometers worn at hip and lower back produced approximately similar values, with a tendency to higher dispersion in data derived from lower back accelerometers.
 
 ```{r accuracy_table, results = "show"}
 source(here("tables", "tab1.R"))
 tab1
 ```
+
+Accelerometer-based mechanical loading prediction equations were developed based on linear mixed models. The regression coefficients, R^2^ and accuracy indices of the models derived from accelerometers worn at ankle, lower back and hip, and from the resultant and vertical vectors are presented in Table 1. The R^2^ values for the pGRF models ranged from `r min(GRF_accuracy$R2_cond)` to `r max(GRF_accuracy$R2_cond)`, showing that the models can explain at least `r round(min(GRF_accuracy$R2_cond), 1) * 100`\% of the pGRF variance. The observed MAPE values were between `r myround(min(GRF_accuracy$MAPE) * 100, 1)`\% and `r myround(max(GRF_accuracy$MAPE) * 100, 1)`\%, which falls outside of the proposed threshold of 8\%. Nevertheless, these MAPE values are similar to the results usually found in accelerometer-based energy expenditure prediction [@Diniz-Sousa2020], which have widespread use in research. Despite similar accuracy results achieved by all equations, data from the resultant vector of accelerometers at the hip have shown the lower accuracy error, represented by the smallest MAE (`r myround(hip_GRF_accuracy$MAE, 1)` N), MAPE (`r myround(hip_GRF_accuracy$MAPE * 100, 1)`\%) and RMSE (`r myround(hip_GRF_accuracy$RMSE, 1)` N). Compared to the pGRF models, the pLR equations yielded poorer results, which is expected based on past research [@Fortune2014; @Veras2020]. Their R^2^ ranged from `r min(LR_accuracy$R2_cond)` to `r max(LR_accuracy$R2_cond)` and MAPE from `r myround(min(LR_accuracy$MAPE) * 100, 1)`\% to `r myround(max(LR_accuracy$MAPE) * 100, 1)`\%. However, similar to the pGRF models, the best pLR prediction equation in terms of prediction accuracy was the one from the resultant vector of hip-worn accelerometers, with a MAE of `r myround(hip_LR_accuracy$MAE, 1)` N, MAPE of `r myround(hip_LR_accuracy$MAPE * 100, 1)`\% and RMSE of `r myround(hip_LR_accuracy$RMSE, 1)` N.
+
+\begin{figure}[ht]
+	\captionsetup{singlelinecheck = false, format = hang, justification = raggedright, font = footnotesize, labelsep = space}
+	\centering
+	\begin{measuredfigure}
+		\includegraphics[width=\textwidth]{fig2.png}
+		\caption{INSERT CAPTION}
+	\end{measuredfigure}
+\end{figure}
 
 To visualize the agreement between the pGRF and pLR values measured by the FP and predicted by the models, a series of Bland-Altman plots were built for both the resultant and vetical vectors and for all accelerometer placements. Figure 2 shows the Bland-Altman plots for the pGRF (Panel A) and pLR (Panel B) resultant vector of hip-worn accelerometers. Both plots have shown good agreement levels, as at least `r ba_agreement`\% of the data points are within the limits of agreement and data tended to cluster around zero. Bland-Altman plots for the other accelerometer placements and vectors have shown the same patterns described previously, and can be found in the Supplemental Figure S2. Also, as could be observed by the one-sample *t*-tests results, none of the equations presented a bias different than zero (*p* > 0.05). Furthermore, all of the equations have shown a proportional bias, i.e., the magnitude of the values influence the prediction error. However, as the linear regressions presented a very low R^2^ (maximum value of `r myround(max(ba_regression_ankle_R2), 2)`) this effect is neglectable.
 
@@ -191,6 +200,17 @@ To visualize the agreement between the pGRF and pLR values measured by the FP an
 source(here("tables", "tab2.R"))
 tab2
 ```
+
+\begin{figure}[ht]
+	\captionsetup{singlelinecheck = false, format = hang, justification = raggedright, font = footnotesize, labelsep = space}
+	\centering
+	\begin{measuredfigure}
+		\includegraphics[width=\textwidth]{fig3.png}
+		\caption{INSERT CAPTION}
+	\end{measuredfigure}
+\end{figure}
+
+Although the accuracy of our equations showed to be beyond the established 8\% threshold, when applying a model not developed for jumping activies we can se that the accuracy tremendously decreases, reaching values of MAPE around `r floor(mean(as.numeric(substr(tab2_df$MAPE, 1, nchar(tab2_df$MAPE) - 2))[1:4]) / 50) * 50`\% for pGRF prediction and around `r floor(mean(as.numeric(substr(tab2_df$MAPE, 1, nchar(tab2_df$MAPE) - 2))[5:8]) / 10) * 10`\% for pLR prediction as can be observed in Table 2. Furthermore, applying to our accelerometer-recorded jumping data a model that is not specific for this activity yield unresonable results, such as the negative values for pGRF that can be observed in Figure 3, Panel A.
 
 Finally, it is important to mention that an R package was developed [@Veras2021] to make easier to apply all the necessary data processing steps to use the prediction equations. The package website (https://lveras.com/impactr) has all the installation instructions and documentation necessary to apply this method on your own data.
 
