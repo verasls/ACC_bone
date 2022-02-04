@@ -17,20 +17,21 @@ plot_data_GRF <- cv_res_GRF_models$hip |>
     select(
       hip_res_GRF_df,
       id, trial, filename, subj, acc_placement, vector,
-      jump_type, jump_height, .predicted_Veras2020
+      jump_type, jump_height, pGRF_N, .predicted_Veras2020
     )
   ) |>
-  select(pACC_g, .predicted, .predicted_Veras2020) |>
+  select(pACC_g, pGRF_N, .predicted, .predicted_Veras2020) |>
   pivot_longer(
-    cols = starts_with("."),
-    names_to = "equation",
-    values_to = "pGRF_N"
+    cols = c(pGRF_N, .predicted, .predicted_Veras2020),
+    names_to = "measure",
+    values_to = "pGRF"
   ) |>
   mutate(
-    equation = recode_factor(
-      as.factor(equation),
-      .predicted = "Jumping equation",
-      .predicted_Veras2020 = "Walking equation"
+    measure = recode_factor(
+      as.factor(measure),
+      pGRF_N = "Measured by the force plates",
+      .predicted = "Predicted by equation for jumping",
+      .predicted_Veras2020 = "Predicted by equation for walking"
     )
   )
 
@@ -39,20 +40,21 @@ plot_data_LR <- cv_res_LR_models$hip |>
     select(
       hip_res_LR_df,
       id, trial, filename, subj, acc_placement, vector,
-      jump_type, jump_height, .predicted_Veras2020
+      jump_type, jump_height, pLR_Ns, .predicted_Veras2020
     )
   ) |>
-  select(pAR_gs, .predicted, .predicted_Veras2020) |>
+  select(pAR_gs, pLR_Ns, .predicted, .predicted_Veras2020) |>
   pivot_longer(
-    cols = starts_with("."),
-    names_to = "equation",
-    values_to = "pLR_Ns"
+    cols = c(pLR_Ns, .predicted, .predicted_Veras2020),
+    names_to = "measure",
+    values_to = "pLR"
   ) |>
   mutate(
-    equation = recode_factor(
-      as.factor(equation),
-      .predicted = "Jumping equation",
-      .predicted_Veras2020 = "Walking equation"
+    measure = recode_factor(
+      as.factor(measure),
+      pLR_Ns = "Measured by the force plates",
+      .predicted = "Predicted by equation for jumping",
+      .predicted_Veras2020 = "Predicted by equation for walking"
     )
   )
 
@@ -60,11 +62,11 @@ plot_data_LR <- cv_res_LR_models$hip |>
 
 predicted_GRF_plot <- ggplot(plot_data_GRF) +
   geom_point(
-    aes(x = pACC_g, y = pGRF_N, color = equation),
+    aes(x = pACC_g, y = pGRF, color = measure, shape = measure),
     alpha = 0.3
   ) +
   geom_hline(yintercept = 0) +
-  scale_color_manual(values = c("#0072B5", "#BC3C29")) +
+  scale_color_manual(values = c("black", "#0072B5", "#BC3C29")) +
   scale_y_continuous(
     expand = c(0, 0),
     limits = c(-15000, 10000),
@@ -96,11 +98,11 @@ predicted_GRF_plot <- ggplot(plot_data_GRF) +
 
 predicted_LR_plot <- ggplot(plot_data_LR) +
   geom_point(
-    aes(x = pAR_gs, y = pLR_Ns, color = equation),
+    aes(x = pAR_gs, y = pLR, color = measure, shape = measure),
     alpha = 0.3
   ) +
   geom_hline(yintercept = 0) +
-  scale_color_manual(values = c("#0072B5", "#BC3C29")) +
+  scale_color_manual(values = c("black", "#0072B5", "#BC3C29")) +
   scale_y_continuous(
     labels = scales::label_number(),
     expand = c(0, 0),
