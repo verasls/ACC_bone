@@ -214,6 +214,10 @@ Although the accuracy of our equations showed to be beyond the established 8\% t
 
 Finally, it is important to mention that an R package was developed [@Veras2021] to make easier to apply all the necessary data processing steps to use the prediction equations. The package website (https://lveras.com/impactr) has all the installation instructions and documentation necessary to apply this method on your own data.
 
+# Discussion {.unnumbered}
+
+This study aimed to develop accelerometer-based mechanical loading predition equations for jumps of diverse types and heights, testing different accelerometer placements and using both the resultant and vertical vectors. The results have shown that jumping pGRF prediction models based on accelerometry data have a lower accuracy compared to models developed for other activies, such as walking and running. Despite that, these models are the correct choice for this kind of activity eliciting hight levels of impact, as applying a model developed for walking in a sample similar to the current study yielded far worse results in terms of prediction accuracy. Also, as expected, the pLR prediction models performed poorly compared to the pGRF equations.
+
 \newpage
 
 # References {.unnumbered}
