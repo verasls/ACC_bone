@@ -172,7 +172,7 @@ Lastly, our pGRF and pLR prediction models were compared with a previously publi
 	\centering
 	\begin{measuredfigure}
 		\includegraphics[width=\textwidth]{fig1.png}
-		\caption{INSERT CAPTION}
+    \caption{Distribution of the resultant vector of mechanical loading (peak ground reaction force and peak loading rate) and acceleration (peak acceleration and peak acceleration rate) variables per jump type and height combination. Abbreviations: BW, body weight; pACC, peak acceleration; pAR, peak acceleration rate; pGRF, peak ground reaction force; pLR, peak loading rate.}
 	\end{measuredfigure}
 \end{figure}
 
@@ -190,7 +190,7 @@ Accelerometer-based mechanical loading prediction equations were developed based
 	\centering
 	\begin{measuredfigure}
 		\includegraphics[width=\textwidth]{fig2.png}
-		\caption{INSERT CAPTION}
+		\caption{Bland-Altman plots showing agreement between actual and predicted peak ground reaction force (Panel A) and loading rate (Panel B) for the resultant vector from hip-worn accelerometers. Continuous thick lines show bias (average of the differences between actual and predicted values) while dashed lines show the limits of agreement (bias \pm 1.96 standard deviation). Abbreviations: pGRF, peak ground reaction force; pLR, peak loading rate.}
 	\end{measuredfigure}
 \end{figure}
 
@@ -206,7 +206,7 @@ tab2
 	\centering
 	\begin{measuredfigure}
 		\includegraphics[width=\textwidth]{fig3.png}
-		\caption{INSERT CAPTION}
+    \caption{A comparison of the relationship between peak acceleration and peak ground reaction force (Panel A) and peak acceleration rate and peak loading rate (Panel B) in three ways: i) as measured by the force plates (black round points); ii) predicted by the equations developed in the current study (blue triangle points); and iii) predicted by the equations developed for walking by Veras et al (red square points). Abbreviations: pACC, peak acceleration; pAR, peak acceleration rate; pGRF, peak ground reaction force; pLR, peak loading rate.}
 	\end{measuredfigure}
 \end{figure}
 
@@ -237,3 +237,17 @@ Mechanical loading prediction equations based on accelerometer data have already
 # References {.unnumbered}
 
 <div id="refs"></div>
+
+\newpage
+
+# Figure captions {.unnumbered}
+
+**Figure 1:** Distribution of the resultant vector of mechanical loading (peak ground reaction force and peak loading rate) and acceleration (peak acceleration and peak acceleration rate) variables per jump type and height combination. Abbreviations: BW, body weight; pACC, peak acceleration; pAR, peak acceleration rate; pGRF, peak ground reaction force; pLR, peak loading rate.
+
+**Figure 2:** Bland-Altman plots showing agreement between actual and predicted peak ground reaction force (Panel A) and loading rate (Panel B) for the resultant vector from hip-worn accelerometers. Continuous thick lines show bias (average of the differences between actual and predicted values) while dashed lines show the limits of agreement (bias \pm 1.96 standard deviation). Abbreviations: pGRF, peak ground reaction force; pLR, peak loading rate.
+
+**Figure 3:** A comparison of the relationship between peak acceleration and peak ground reaction force (Panel A) and peak acceleration rate and peak loading rate (Panel B) in three ways: i) as measured by the force plates (black round points); ii) predicted by the equations developed in the current study (blue triangle points); and iii) predicted by the equations developed for walking by Veras et al (red square points). Abbreviations: pACC, peak acceleration; pAR, peak acceleration rate; pGRF, peak ground reaction force; pLR, peak loading rate.
+
+**Supplemental Figure S1:** Distribution of the vertical vector of mechanical loading (peak ground reaction force and peak loading rate) and acceleration (peak acceleration and peak acceleration rate) variables per jump type and height combination. Abbreviations: BW, body weight; pACC, peak acceleration; pAR, peak acceleration rate; pGRF, peak ground reaction force; pLR, peak loading rate.
+
+**Supplemental Figure S2:** Bland-Altman plots showing agreement between actual and predicted peak ground reaction force for accelerometers worn at ankle (Panels A and D), lower back (Panels B and E) and hip (Panels C and F), for both the resultant vector (Panels A to C) and its vertical component (Panels D to F). Continuous thick lines show bias (average of the differences between actual and predicted values) while dashed lines show the limits of agreement (bias ±1.96 standard deviation). Abbreviations: pGRF, peak ground reaction force.
