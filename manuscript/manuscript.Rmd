@@ -136,6 +136,9 @@ Lucas Veras$^{1,2}$, Florêncio Diniz-Sousa$^{1,2}$, Giorjines Boppre$^{1,2}$, V
 \bigskip
 -->
 
+# Introduction {.unnumbered}
+
+The objective of this study was to develop accelerometry-based pGRF and pLR prdiction equation for different types and height of jumps.
 
 # Methods {.unnumbered}
 
