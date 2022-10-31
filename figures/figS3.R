@@ -1,242 +1,121 @@
-# Load packages -----------------------------------------------------------
+# Load packages and functions ---------------------------------------------
 
 library(here)
 library(tidyverse)
-library(lvmisc)
-library(ggsci)
-library(patchwork)
 library(ragg)
+library(patchwork)
 
 # Load data ---------------------------------------------------------------
 
-load(here("output", "loocv_data.rda"))
+load(here("data", "mechanical_load_data.rda"))
+mechanical_load_data <- mechanical_load_data |>
+  mutate(
+    acc_placement = recode_factor(
+      acc_placement,
+      hip = "Hip",
+      lower_back = "Lower back",
+      ankle = "Ankle"
+    )
+  )
 
-# Ankle resultant pLR Bland-Altman plot -----------------------------------
+# GRF boxplot -------------------------------------------------------------
 
-BA_LR_res_ankle <- cv_res_LR_models$ankle %>%
-  plot_bland_altman(color = BMI_cat, alpha = 0.5) +
-  scale_color_nejm() +
+boxplot_GRF_ver <- mechanical_load_data |>
+  filter(acc_placement == "Lower back" & vector == "vertical") |>
+  ggplot(aes(x = jump, y = pGRF_BW)) +
+  geom_boxplot() +
   scale_y_continuous(
-    labels = scales::label_number(),
-    limits = c(-120000, 120000),
+    limits = c(0, 7),
     expand = c(0, 0),
-    breaks = seq(-120000, 120000, 40000)
-  ) +
-  scale_x_continuous(
-    labels = scales::label_number(),
-    limits = c(0, 260000),
-    expand = c(0, 0),
-    breaks = seq(50000, 250000, 50000)
+    breaks = seq(0, 7, 1)
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
     axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    axis.title.y = element_text(size = 16)
   ) +
-  guides(alpha = "none") +
-  labs(
-    title = "Resultant vector - Ankle placement",
-    x = quote("Mean of Actual and Predicted pLR" ~ (N %.% s^-1)),
-    y = quote("Actual - Predicted pLR" ~ (N %.% s^-1))
-  )
+  labs(x = "", y = "pGRF (BW)")
 
-# Lower back resultant pLR Bland-Altman plot ------------------------------
+# ACC boxplots ------------------------------------------------------------
 
-BA_LR_res_back <- cv_res_LR_models$lower_back %>%
-  plot_bland_altman(color = BMI_cat, alpha = 0.5) +
-  scale_color_nejm() +
+boxplot_ACC_ver <- mechanical_load_data |>
+  filter(vector == "vertical") |>
+  ggplot(aes(x = jump, y = pACC_g)) +
+  geom_boxplot(aes(fill = acc_placement), outlier.size = 0.8) +
+  scale_fill_manual(values = c("gray90", "gray70", "gray50")) +
   scale_y_continuous(
-    labels = scales::label_number(),
-    limits = c(-120000, 120000),
+    limits = c(0, 14),
     expand = c(0, 0),
-    breaks = seq(-120000, 120000, 40000)
-  ) +
-  scale_x_continuous(
-    labels = scales::label_number(),
-    limits = c(0, 270000),
-    expand = c(0, 0),
-    breaks = seq(50000, 250000, 50000)
+    breaks = seq(0, 14, 2)
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
+    axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
     axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    axis.title.y = element_text(size = 16),
+    legend.title = element_blank()
   ) +
-  guides(alpha = "none") +
-  labs(
-    title = "Resultant vector - Lower back placement",
-    x = quote("Mean of Actual and Predicted pLR" ~ (N %.% s^-1)),
-    y = quote("Actual - Predicted pLR" ~ (N %.% s^-1))
-  )
+  labs(x = "", y = quote("pACC" ~ (italic(g))))
 
-# Hip resultant pLR Bland-Altman plot -------------------------------------
+# LR boxplot --------------------------------------------------------------
 
-BA_LR_res_hip <- cv_res_LR_models$hip %>%
-  plot_bland_altman(color = BMI_cat, alpha = 0.5) +
-  scale_color_nejm() +
+boxplot_LR_ver <- mechanical_load_data |>
+  filter(acc_placement == "Lower back" & vector == "vertical") |>
+  ggplot(aes(x = jump, y = pLR_BWs)) +
+  geom_boxplot() +
   scale_y_continuous(
-    labels = scales::label_number(),
-    limits = c(-80000, 80000),
+    limits = c(0, 350),
     expand = c(0, 0),
-    breaks = seq(-80000, 80000, 40000)
-  ) +
-  scale_x_continuous(
-    labels = scales::label_number(),
-    limits = c(0, 270000),
-    expand = c(0, 0),
-    breaks = seq(50000, 250000, 50000)
+    breaks = seq(0, 350, 50)
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
     axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    axis.title.y = element_text(size = 16)
   ) +
-  guides(alpha = "none") +
-  labs(
-    title = "Resultant vector - Hip placement",
-    x = quote("Mean of Actual and Predicted pLR" ~ (N %.% s^-1)),
-    y = quote("Actual - Predicted pLR" ~ (N %.% s^-1))
-  )
+  labs(x = "", y = quote("pLR" ~ (BW %.% s^-1)))
 
-# Ankle vertical pLR Bland-Altman plot ------------------------------------
+# AR boxplots -------------------------------------------------------------
 
-BA_LR_ver_ankle <- cv_ver_LR_models$ankle %>%
-  plot_bland_altman(color = BMI_cat, alpha = 0.5) +
-  scale_color_nejm() +
+boxplot_AR_ver <- mechanical_load_data |>
+  filter(vector == "vertical") |>
+  ggplot(aes(x = jump, y = pAR_gs)) +
+  geom_boxplot(aes(fill = acc_placement), outlier.size = 0.8) +
+  scale_fill_manual(values = c("gray90", "gray70", "gray50")) +
   scale_y_continuous(
-    labels = scales::label_number(),
-    limits = c(-120000, 120000),
+    limits = c(0, 700),
     expand = c(0, 0),
-    breaks = seq(-120000, 120000, 40000)
-  ) +
-  scale_x_continuous(
-    labels = scales::label_number(),
-    limits = c(0, 270000),
-    expand = c(0, 0),
-    breaks = seq(50000, 250000, 50000)
+    breaks = seq(0, 700, 100)
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
+    axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
     axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
-  ) +
-  guides(alpha = "none") +
-  labs(
-    title = "Vertical vector - Ankle placement",
-    x = quote("Mean of Actual and Predicted pLR" ~ (N %.% s^-1)),
-    y = quote("Actual - Predicted pLR" ~ (N %.% s^-1))
-  )
-
-# Lower back vertical pLR Bland-Altman plot -------------------------------
-
-BA_LR_ver_back <- cv_ver_LR_models$lower_back %>%
-  plot_bland_altman(color = BMI_cat, alpha = 0.5) +
-  scale_color_nejm() +
-  scale_y_continuous(
-    labels = scales::label_number(),
-    limits = c(-120000, 120000),
-    expand = c(0, 0),
-    breaks = seq(-120000, 120000, 40000)
-  ) +
-  scale_x_continuous(
-    labels = scales::label_number(),
-    limits = c(0, 270000),
-    expand = c(0, 0),
-    breaks = seq(50000, 250000, 50000)
-  ) +
-  theme_light() +
-  theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
+    axis.title.y = element_text(size = 16),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
   ) +
-  guides(alpha = "none") +
-  labs(
-    title = "Vertical vector - Lower back placement",
-    x = quote("Mean of Actual and Predicted pLR" ~ (N %.% s^-1)),
-    y = quote("Actual - Predicted pLR" ~ (N %.% s^-1))
-  )
-
-# Hip vertical pLR Bland-Altman plot --------------------------------------
-
-BA_LR_ver_hip <- cv_ver_LR_models$hip %>%
-  plot_bland_altman(color = BMI_cat, alpha = 0.5) +
-  scale_color_nejm() +
-  scale_y_continuous(
-    labels = scales::label_number(),
-    limits = c(-90000, 90000),
-    expand = c(0, 0),
-    breaks = seq(-90000, 90000, 30000)
-  ) +
-  scale_x_continuous(
-    labels = scales::label_number(),
-    limits = c(0, 270000),
-    expand = c(0, 0),
-    breaks = seq(50000, 250000, 50000)
-  ) +
-  theme_light() +
-  theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
-    legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
-  ) +
-  guides(alpha = "none") +
-  labs(
-    title = "Vertical vector - Hip placement",
-    x = quote("Mean of Actual and Predicted pLR" ~ (N %.% s^-1)),
-    y = quote("Actual - Predicted pLR" ~ (N %.% s^-1))
-  )
+  labs(x = "", y = quote("pAR" ~ (italic(g) %.% s^-1)))
 
 # Combine and save plots --------------------------------------------------
 
-figS3 <- BA_LR_res_ankle +
-  BA_LR_res_back +
-  BA_LR_res_hip +
-  BA_LR_ver_ankle +
-  BA_LR_ver_back +
-  BA_LR_ver_hip +
+figS1 <- boxplot_GRF_ver + theme(axis.text.x = element_blank()) +
+  boxplot_LR_ver + theme(axis.text.x = element_blank()) +
+  boxplot_ACC_ver +
+  boxplot_AR_ver +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides = "collect") &
   theme(
-    legend.position = "bottom",
-    plot.tag = element_text(size = 16)
+    legend.position = "right",
+    plot.tag = element_text(size = 17)
   )
 
 agg_png(
-  here("figures", "figS3.png"),
-  width = 120,
-  height = 50,
+  here("figures", "figS1.png"),
+  width = 90,
+  height = 80,
   units = "cm",
   res = 100,
   scaling = 2
 )
-plot(figS3)
+plot(figS1)
 dev.off()
