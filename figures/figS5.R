@@ -217,7 +217,7 @@ BA_LR_ver_hip <- cv_ver_LR_models$hip %>%
 
 # Combine and save plots --------------------------------------------------
 
-figS3 <- BA_LR_res_ankle +
+figS5 <- BA_LR_res_ankle +
   BA_LR_res_back +
   BA_LR_res_hip +
   BA_LR_ver_ankle +
@@ -231,12 +231,12 @@ figS3 <- BA_LR_res_ankle +
   )
 
 agg_png(
-  here("figures", "figS3.png"),
+  here("figures", "figS5.png"),
   width = 120,
   height = 50,
   units = "cm",
   res = 100,
   scaling = 2
 )
-plot(figS3)
+plot(figS5)
 dev.off()

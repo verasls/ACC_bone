@@ -98,7 +98,7 @@ boxplot_AR_ver <- mechanical_load_data |>
 
 # Combine and save plots --------------------------------------------------
 
-figS1 <- boxplot_GRF_ver + theme(axis.text.x = element_blank()) +
+figS3 <- boxplot_GRF_ver + theme(axis.text.x = element_blank()) +
   boxplot_LR_ver + theme(axis.text.x = element_blank()) +
   boxplot_ACC_ver +
   boxplot_AR_ver +
@@ -110,12 +110,12 @@ figS1 <- boxplot_GRF_ver + theme(axis.text.x = element_blank()) +
   )
 
 agg_png(
-  here("figures", "figS1.png"),
+  here("figures", "figS3.png"),
   width = 90,
   height = 80,
   units = "cm",
   res = 100,
   scaling = 2
 )
-plot(figS1)
+plot(figS3)
 dev.off()
