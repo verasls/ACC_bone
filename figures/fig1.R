@@ -18,6 +18,34 @@ mechanical_load_data <- mechanical_load_data |>
     )
   )
 
+# Add new jump values to separate the boxplot by jump types
+mechanical_load_data <- mechanical_load_data |>
+  # filter(acc_placement == "Lower back" & vector == "resultant") |>
+  add_row(
+    acc_placement = rep(c("Ankle", "Lower back", "Hip"), 4),
+    vector = c(rep("resultant", 6), rep("vertical", 6)),
+    jump = rep(c(rep("1", 3), rep("2", 3)), 2),
+    .before = 1
+  ) |>
+  mutate(
+    jump = fct_relevel(
+      as.factor(jump),
+      levels = c(
+        "Drop jumps 5cm", "Drop jumps 10cm", "Drop jumps 15cm",
+        "Drop jumps 20cm", "Drop jumps 25cm", "Drop jumps 30cm",
+        "Drop jumps 35cm", "Drop jumps 40cm", "1",
+        "Box jumps 5cm", "Box jumps 15cm", "Box jumps 30cm", "2",
+        "Continuous jumps 5cm", "Continuous jumps 15cm"
+      )
+    ),
+    acc_placement = fct_relevel(
+      as.factor(acc_placement),
+      levels = c("Hip", "Lower back", "Ankle")
+    )
+  )
+
+levels(mechanical_load_data$acc_placement)
+
 # GRF boxplot -------------------------------------------------------------
 
 boxplot_GRF_res <- mechanical_load_data |>
@@ -43,6 +71,15 @@ boxplot_ACC_res <- mechanical_load_data |>
   ggplot(aes(x = jump, y = pACC_g)) +
   geom_boxplot(aes(fill = acc_placement), outlier.size = 0.8) +
   scale_fill_manual(values = c("gray90", "gray70", "gray50")) +
+  scale_x_discrete(
+    labels = c(
+      "Drop jumps 5cm", "Drop jumps 10cm", "Drop jumps 15cm",
+      "Drop jumps 20cm", "Drop jumps 25cm", "Drop jumps 30cm",
+      "Drop jumps 35cm", "Drop jumps 40cm", " ",
+      "Box jumps 5cm", "Box jumps 15cm", "Box jumps 30cm", " ",
+      "Continuous jumps 5cm", "Continuous jumps 15cm"
+    )
+  ) +
   scale_y_continuous(
     limits = c(0, 16),
     expand = c(0, 0),
@@ -82,6 +119,15 @@ boxplot_AR_res <- mechanical_load_data |>
   ggplot(aes(x = jump, y = pAR_gs)) +
   geom_boxplot(aes(fill = acc_placement), outlier.size = 0.8) +
   scale_fill_manual(values = c("gray90", "gray70", "gray50")) +
+  scale_x_discrete(
+    labels = c(
+      "Drop jumps 5cm", "Drop jumps 10cm", "Drop jumps 15cm",
+      "Drop jumps 20cm", "Drop jumps 25cm", "Drop jumps 30cm",
+      "Drop jumps 35cm", "Drop jumps 40cm", " ",
+      "Box jumps 5cm", "Box jumps 15cm", "Box jumps 30cm", " ",
+      "Continuous jumps 5cm", "Continuous jumps 15cm"
+    )
+  ) +
   scale_y_continuous(
     limits = c(0, 700),
     expand = c(0, 0),
