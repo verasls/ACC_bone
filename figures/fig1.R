@@ -20,7 +20,6 @@ mechanical_load_data <- mechanical_load_data |>
 
 # Add new jump values to separate the boxplot by jump types
 mechanical_load_data <- mechanical_load_data |>
-  # filter(acc_placement == "Lower back" & vector == "resultant") |>
   add_row(
     acc_placement = rep(c("Ankle", "Lower back", "Hip"), 4),
     vector = c(rep("resultant", 6), rep("vertical", 6)),
@@ -43,8 +42,6 @@ mechanical_load_data <- mechanical_load_data |>
       levels = c("Hip", "Lower back", "Ankle")
     )
   )
-
-levels(mechanical_load_data$acc_placement)
 
 # GRF boxplot -------------------------------------------------------------
 
