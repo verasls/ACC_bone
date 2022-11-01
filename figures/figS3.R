@@ -57,7 +57,7 @@ boxplot_GRF_ver <- mechanical_load_data |>
   ) +
   theme_light() +
   theme(
-    axis.text.y = element_text(size = 13),
+    axis.text.y = element_text(size = 16),
     axis.title.y = element_text(size = 16)
   ) +
   labs(x = "", y = "pGRF (BW)")
@@ -85,10 +85,11 @@ boxplot_ACC_ver <- mechanical_load_data |>
   ) +
   theme_light() +
   theme(
-    axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 13),
+    axis.text.x = element_text(size = 16, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 16),
     axis.title.y = element_text(size = 16),
-    legend.title = element_blank()
+    legend.title = element_blank(),
+    legend.text = element_text(size = 16)
   ) +
   labs(x = "", y = quote("pACC" ~ (italic(g))))
 
@@ -105,7 +106,7 @@ boxplot_LR_ver <- mechanical_load_data |>
   ) +
   theme_light() +
   theme(
-    axis.text.y = element_text(size = 13),
+    axis.text.y = element_text(size = 16),
     axis.title.y = element_text(size = 16)
   ) +
   labs(x = "", y = quote("pLR" ~ (BW %.% s^-1)))
@@ -133,10 +134,11 @@ boxplot_AR_ver <- mechanical_load_data |>
   ) +
   theme_light() +
   theme(
-    axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 13),
+    axis.text.x = element_text(size = 16, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 16),
     axis.title.y = element_text(size = 16),
     legend.title = element_blank(),
+    legend.text = element_text(size = 16)
   ) +
   labs(x = "", y = quote("pAR" ~ (italic(g) %.% s^-1)))
 

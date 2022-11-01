@@ -30,13 +30,13 @@ BA_LR_res_ankle <- cv_res_LR_models$ankle %>%
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
+    plot.title = element_text(size = 18, hjust = 0.5),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    legend.text = element_text(size = 18),
+    axis.title.y = element_text(size = 16),
+    axis.title.x = element_text(size = 16),
+    axis.text.y = element_text(size = 16),
+    axis.text.x = element_text(size = 16)
   ) +
   guides(alpha = "none") +
   labs(
@@ -64,13 +64,13 @@ BA_LR_res_back <- cv_res_LR_models$lower_back %>%
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
+    plot.title = element_text(size = 18, hjust = 0.5),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    legend.text = element_text(size = 18),
+    axis.title.y = element_text(size = 16),
+    axis.title.x = element_text(size = 16),
+    axis.text.y = element_text(size = 16),
+    axis.text.x = element_text(size = 16)
   ) +
   guides(alpha = "none") +
   labs(
@@ -98,13 +98,13 @@ BA_LR_res_hip <- cv_res_LR_models$hip %>%
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
+    plot.title = element_text(size = 18, hjust = 0.5),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    legend.text = element_text(size = 18),
+    axis.title.y = element_text(size = 16),
+    axis.title.x = element_text(size = 16),
+    axis.text.y = element_text(size = 16),
+    axis.text.x = element_text(size = 16)
   ) +
   guides(alpha = "none") +
   labs(
@@ -132,13 +132,13 @@ BA_LR_ver_ankle <- cv_ver_LR_models$ankle %>%
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
+    plot.title = element_text(size = 18, hjust = 0.5),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    legend.text = element_text(size = 18),
+    axis.title.y = element_text(size = 16),
+    axis.title.x = element_text(size = 16),
+    axis.text.y = element_text(size = 16),
+    axis.text.x = element_text(size = 16)
   ) +
   guides(alpha = "none") +
   labs(
@@ -166,13 +166,13 @@ BA_LR_ver_back <- cv_ver_LR_models$lower_back %>%
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
+    plot.title = element_text(size = 18, hjust = 0.5),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    legend.text = element_text(size = 18),
+    axis.title.y = element_text(size = 16),
+    axis.title.x = element_text(size = 16),
+    axis.text.y = element_text(size = 16),
+    axis.text.x = element_text(size = 16)
   ) +
   guides(alpha = "none") +
   labs(
@@ -200,13 +200,13 @@ BA_LR_ver_hip <- cv_ver_LR_models$hip %>%
   ) +
   theme_light() +
   theme(
-    plot.title = element_text(size = 15, hjust = 0.5),
+    plot.title = element_text(size = 18, hjust = 0.5),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    axis.title.y = element_text(size = 13),
-    axis.title.x = element_text(size = 13),
-    axis.text.y = element_text(size = 13),
-    axis.text.x = element_text(size = 13)
+    legend.text = element_text(size = 18),
+    axis.title.y = element_text(size = 16),
+    axis.title.x = element_text(size = 16),
+    axis.text.y = element_text(size = 16),
+    axis.text.x = element_text(size = 16)
   ) +
   guides(alpha = "none") +
   labs(
