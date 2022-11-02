@@ -11,7 +11,7 @@ manuscript/manuscript.docx: manuscript/manuscript.Rmd manuscript/nlm.csl manuscr
 	Rscript -e 'rmarkdown::render("$<", output_format = "word_document")'
 
 ## figures    : Generates all figures
-figures: figures/fig1.png figures/fig2.png figures/figS1.png figures/figS2.png figures/figS3.png
+figures: figures/fig1.png figures/fig2.png figures/figS3.png figures/figS4.png figures/figS5.png
 
 figures/fig1.png: data/mechanical_load_data.rda figures/fig1.R
 	R CMD BATCH figures/fig1.R
@@ -19,17 +19,17 @@ figures/fig1.png: data/mechanical_load_data.rda figures/fig1.R
 figures/fig2.png: output/loocv_data.rda figures/fig2.R
 	R CMD BATCH figures/fig2.R
 
-figures/figS1.png: data/mechanical_load_data.rda figures/figS1.R
-	R CMD BATCH figures/figS1.R
+figures/figS1.png: data/mechanical_load_data.rda figures/figS3.R
+	R CMD BATCH figures/figS3.R
 
-figures/figS2.png: output/loocv_data.rda figures/figS2.R
-	R CMD BATCH figures/figS2.R
+figures/figS2.png: output/loocv_data.rda figures/figS4.R
+	R CMD BATCH figures/figS4.R
 
-figures/figS3.png: output/loocv_data.rda figures/figS3.R
-	R CMD BATCH figures/figS2.R
+figures/figS3.png: output/loocv_data.rda figures/figS5.R
+	R CMD BATCH figures/figS5.R
 
 ## output     : Generates all output
-output: output/loocv_data.rda output/prediction_models.rda output/jump_type_accuracy.rda
+output: output/loocv_data.rda output/prediction_models.rda
 
 output/loocv_data.rda: data/mechanical_load_data.rda code/03_build_models.R
 	R CMD BATCH code/03_build_models.R
